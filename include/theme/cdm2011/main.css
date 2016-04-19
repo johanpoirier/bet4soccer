@@ -1,0 +1,695 @@
+/** GENERAL **/
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #011748;
+    font: normal small Verdana, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #fff;
+    font: normal 185%/1em Arial, sans-serif;
+    letter-spacing: -1px;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    color: #BC9848;
+    clear: both;
+    font: bold 120%/1em Arial, sans-serif;
+    letter-spacing: 0;
+    margin: 30px 0 15px 0;
+    padding: 0px;
+}
+
+h3 {
+    color: #fff;
+    font: normal 185%/1em Arial, sans-serif;
+    letter-spacing: -1px;
+    margin: 0;
+    padding: 0;
+}
+
+h5 {
+    color: #009148;
+    clear: both;
+    font: bold 120%/1em Arial, sans-serif;
+    letter-spacing: 0;
+    margin: 30px 0 15px 0;
+    padding: 0px;
+}
+
+h6 {
+    color: #000000;
+    clear: both;
+    font: bold 100%/1em Arial, sans-serif;
+    letter-spacing: 0;
+    margin: 30px 0 15px 0;
+    padding: 0px;
+}
+
+p {
+    clear: both;
+    padding: 0;
+    margin: 10px 0 10px 0;
+    font: normal 90%/1.4em Verdana, sans-serif;
+}
+
+a img {
+    border: 0;
+}
+
+a {
+    color: #005d2e;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #005d2e;
+}
+
+table {
+    border-spacing: 0;
+}
+
+/************* FORM ***************/
+form {
+    align-items: left;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+form.noflex {
+    display: block;
+}
+
+form.login {
+    align-items: center;
+}
+
+textarea {
+    color: #363842;
+    background: #F7FAFF;
+    border: 1px solid #363842;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: left;
+}
+
+input {
+    padding: 0.2rem;
+}
+
+input.text {
+    color: #004410;
+    background: #DCFEE4;
+    border: 1px solid #006F20;
+    font-size: 1rem;
+    font-weight: normal;
+    padding: 0.2rem;
+    text-align: center;
+}
+
+input[type='number'] {
+    color: #004410;
+    border: 1px solid #006F20;
+    font-size: 0.8rem;
+    font-weight: normal;
+    padding: 0.2rem;
+    text-align: center;
+    width: 2.2rem;
+}
+
+input[type='submit'] {
+    background-color: #A4D153;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 2px 2px 2px #ccc;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 2rem 0.2rem 1rem;
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+    text-transform: uppercase;
+    width: 9rem;
+}
+
+input[type='submit'].big {
+    width: 15rem;
+}
+
+input:disabled {
+    background: #d7d7d7;
+}
+
+input.submit {
+    color: #000000;
+    background: #FFFFFF;
+    border: 1px solid #363842;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+input.invalid {
+    border-color: red;
+    background-color: #FBEDE9;
+}
+
+select {
+    color: #004410;
+    background: #DCFEE4;
+    border: 1px solid #006F20;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/************* DIVS ***************/
+#main {
+    background-color: #ffffff;
+    border-left: 2px solid #00A952;
+    border-right: 2px solid #00A952;
+    font-size: 95%;
+    margin: 0 auto;
+    max-width: 1200px;
+    min-height: 100%;
+    min-width: 700px;
+    padding: 0 4px;
+    text-align: left;
+}
+
+header {
+    background: #ffffff;
+    height: 4rem;
+    width: 100%;
+}
+
+span.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+nav {
+    background-color: #70808C;
+    clear: both;
+    color: #ffffff;
+    display: flex;
+    flex-flow: row wrap;
+    min-height: 35px;
+    margin: 0.5rem 0;
+    padding: 0;
+    width: 100%;
+}
+
+nav a, nav a:visited {
+    color: #ffffff;
+}
+
+.nav-group {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-group:first-child {
+    padding-left: 1rem;
+}
+
+.nav-group:last-child {
+    padding-right: 1rem;
+}
+
+.nav-group-item {
+    border-left: 1px dashed white;
+    height: 100%;
+    text-align: center;
+    flex-grow: 1;
+    line-height: 35px;
+    min-width: 100px;
+}
+
+.nav-group-item:last-child {
+    border-right: 1px dashed white;
+}
+
+.admin .nav-group-item {
+    background-color: #816E7B;
+}
+
+.nav-group-item a {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+section#mainarea {
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0 0 20px 0;
+    overflow: auto;
+    padding: 10px;
+}
+
+aside {
+    flex-grow: 1;
+    font-size: 90%;
+    margin: 0 0 0 1rem;
+    min-width: 15rem;
+    max-width: 33%;
+    padding: 0;
+}
+
+aside .headline {
+
+    margin: 0 0 0.5rem;
+}
+
+aside .headline h2 {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: normal;
+    letter-spacing: 0;
+    margin: 0;
+    padding: 0px;
+}
+
+footer {
+    border-top: 1px dashed #000000;
+    clear: both;
+    font-size: 90%;
+    line-height: 1.6em;
+    margin: 0;
+    padding: 8px 17px 20px 17px;
+}
+
+#logo {
+    float: left;
+    padding-top: 3px;
+    padding-left: 3px;
+}
+
+#infos {
+    float: left;
+    padding-top: 3px;
+    padding-left: 30px;
+}
+
+.headline {
+    background: -moz-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* FF3.6+ */
+    background: -webkit-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* IE10+ */
+    background: linear-gradient(to right, #00A952 0%, #c0f4cd 100%); /* W3C */
+    border: 0px solid #ffffff;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0;
+    padding: 7px 12px 5px 15px;
+}
+
+.headline-title {
+    flex-grow: 2;
+}
+
+.headline-menu {
+    align-items: center;
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+    justify-content: space-around;
+}
+
+/************* CLASSES ***************/
+.maincontent {
+    background-color: #fff;
+    color: #333;
+    flex-grow: 3;
+    padding: 0;
+}
+
+.formfield {
+    margin: 5px;
+}
+
+.ppp {
+    margin: 10px;
+}
+
+.tag_cloud {
+    background-color: #EBFAF0;
+    border-top: 2px solid #00A952;
+    border-bottom: 2px solid #00A952;
+    border-right: 2px solid #00A952;
+    border-left: 2px solid #00A952;
+    margin: 0 0 1rem 0;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.tag_cloud span a {
+    line-height: 1.5em;
+    color: #00d561;
+}
+
+.tag_cloud span a:visited {
+    color: #00d561;
+}
+
+.tag_cloud span a:hover {
+    color: #00d561;
+}
+
+.tag_cloud span a:active {
+    color: #00d561;
+}
+
+.list_element > td {
+    border-bottom: 1px dashed black;
+    height: 2.5rem;
+}
+
+.highlight {
+    -webkit-animation-name: glow;
+    -moz-animation-name: glow;
+    -ms-animation-name: glow;
+    animation-name: glow;
+    -webkit-animation-duration: 1.2s;
+    -moz-animation-duration: 1.2s;
+    -ms-animation-duration: 1.2s;
+    animation-duration: 1.2s;
+    -webkit-animation-iteration-count: 3;
+    -moz-animation-iteration-count: 3;
+    -ms-animation-iteration-count: 3;
+    animation-iteration-count: 3;
+    background-color: #fffc89;
+}
+
+.info {
+    float: left;
+    font-size: 90%;
+    padding: 3px;
+    margin-left: 30px;
+}
+
+.info h5 {
+    background: #fff url(images/arrow_green_small.gif) no-repeat left top;
+    margin: 0;
+    padding: 0 0 2px 18px;
+}
+
+.rules caption {
+    padding-bottom: 15px;
+    font-size: 95%;
+    font-style: italic;
+}
+
+.rules th {
+    border-bottom: 1px solid #000;
+    font-size: 90%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.rules td {
+    border-bottom: 1px dotted #000;
+    font-size: 85%;
+    margin: 0;
+    padding: 3px;
+    text-align: center;
+}
+
+ul.rules > li {
+    margin-bottom: 10px;
+}
+
+.rule_title {
+    font-weight: bold;
+}
+
+.rule_subtitle {
+    margin-left: 5px;
+    text-decoration: underline;
+}
+
+.bonus {
+    font-style: italic;
+    color: grey;
+}
+
+.maincontent.login {
+    padding: 0 20%;
+}
+
+.login-content {
+    align-items: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+.login-content > h2 {
+    align-items: center;
+    flex-grow: 1;
+    width: auto;
+}
+
+.login-form-button {
+    margin-top: 2rem;
+}
+
+
+/*************** specific *********************/
+td.game-result-date {
+    font-style: italic;
+    text-align: center;
+    padding-top: 1rem;
+    white-space: nowrap;
+}
+
+td.result-teamA, td.result-teamB {
+    line-height: 36px;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+td.result-teamA {
+    text-align: right;
+}
+
+td.result-teamB {
+    text-align: left;
+}
+
+td.result-teamA .tLogo, td.result-teamA .tLogoSmall {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.result-teamA-name {
+    float: right;
+}
+
+.result-teamB-name {
+    float: left;
+}
+
+table.ranking {
+    width: 100%;
+}
+
+table.ranking-pool {
+    font-size: 0.7rem;
+    width: 100%;
+}
+
+td.ranking-pool-team {
+    line-height: 26px;
+    white-space: nowrap;
+}
+
+td.ranking-pool-team-points {
+    text-align: center;
+}
+
+.tag {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.tag input {
+    width: 95%;
+}
+
+.tag-date {
+    display: block;
+    text-decoration: underline;
+    width: 100%;
+}
+
+.tag-author {
+    display: block;
+    font-weight: bold;
+    text-decoration: underline;
+    width: 100%;
+}
+
+.tag-content {
+    width: 100%;
+}
+
+.tag > img {
+    cursor: pointer;
+    float: right;
+}
+
+
+/************* media queries ******************/
+@media (min-width: 1200px) {
+    body {
+        background: url(images/cover.jpg) #3a511d no-repeat center fixed;
+        -ms-behavior: url(backgroundsize.min.htc);
+        background-size: cover;
+    }
+
+    #main {
+        box-shadow: 0 0 6rem #000000;
+    }
+}
+
+@media (max-width: 700px) {
+    header {
+        display: none;
+    }
+
+    #main {
+        border: 0;
+        min-width: inherit;
+        padding: 0;
+    }
+
+    nav {
+        font-size: 0.7rem;
+        margin-top: inherit;
+    }
+    
+    .nav-group:first-child, .nav-group:last-child {
+        padding: 0;
+    }
+
+    .nav-group-item {
+        min-width: inherit;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    section#mainarea {
+        flex-flow: row wrap;
+        padding: 0;
+    }
+
+    aside {
+        border-left: none;
+        border-right: none;
+        display: flex;
+        flex-flow: row wrap;
+        margin: 1rem 0;
+        max-width: none;
+    }
+
+    aside .headline {
+        margin: 0.5rem;
+        width: 100%;
+    }
+
+    .tag_cloud {
+        border: none;
+        flex-grow: 1;
+        margin: 0.5rem;
+    }
+
+    .tag_cloud.uniq {
+        margin: 0.5rem 0;
+    }
+
+    td.result-teamA .tLogoSmall {
+        margin-left: 5px;
+    }
+
+    td.result-teamB .tLogoSmall {
+        margin-right: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+    table.ranking th:last-child, table.ranking td:last-child {
+        display: none;
+    }
+
+    .headline {
+        padding: 0.5rem 0.2rem;
+    }
+
+    .headline-title {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .headline-title > span {
+        display: none;
+    }
+
+    .headline-menu {
+        flex-flow: column nowrap;
+    }
+
+    .maincontent.login {
+        padding: 0;
+    }
+}
+
+
+@-webkit-keyframes glow {
+    0%, 100% { background-color: #fffc89; }
+    50% { background-color: #fcffb6; }
+}
+
+@-moz-keyframes glow {
+    0%, 100% { background-color: #fffc89; }
+    50% { background-color: #fcffb6; }
+}
+
+@keyframes glow {
+    0%, 100% { background-color: #fffc89; }
+    50% { background-color: #fcffb6; }
+}

@@ -1,0 +1,10 @@
+drwx---r-x    4 89365      users              10 Sep 28  2015 .
+drwx---r-x    3 89365      users               3 Jun 19  2015 ..
+-rw----r--    1 89365      users            5768 Jun 23  2015 backgroundsize.min.htc
+-rw----r--    1 89365      users           14960 Sep 18  2015 fanions.css
+-rw----r--    1 89365      users             368 Jun 23  2015 footer_private.php
+-rw----r--    1 89365      users             335 Jun 23  2015 footer_public.php
+-rw----r--    1 89365      users             206 Jun 23  2015 header.php
+drwx---r-x    2 89365      users              67 Jun 29  2015 images
+-rw----r--    1 89365      users           11383 Sep 28  2015 main.css
+drwx---r-x    2 89365      users               6 Jun 29  2015 sprites
