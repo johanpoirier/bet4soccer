@@ -39,90 +39,85 @@ class DB {
         $startTime = get_moment();
         $this->nb_queries++;
 
-        if ($this->debug)
+        if ($this->debug) {
             echo "REQUEST N°" . $this->nb_queries . "='" . $req . "'";
+        }
 
-        if (!$this->cnx)
-            $this->cnx = @mysql_connect($this->host, $this->username, $this->password);
-        if (!$this->cnx)
+        if (!$this->cnx) {
+            $this->cnx = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->dbname, $this->username, $this->password);
+        }
+        if (!$this->cnx) {
             return $this->error_query("Echec Connexion MySql", $this->cnx);
+        }
 
-        mysql_query("SET NAMES UTF8");
-        mysql_query("SET SQL_MODE='ANSI_QUOTES'");
-        
-        $ret_db = mysql_select_db($this->dbname, $this->cnx);
-        if (!$ret_db)
-            return $this->error_query(mysql_error($this->cnx), $req);
-
-        $ret_id = mysql_query($req, $this->cnx);
-        if (!$ret_id)
-            return $this->error_query(mysql_error($this->cnx), $req);
+        try {
+            $result = $this->cnx->query($req, PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            return $e;
+        }
 
         $elapsed_time = get_elapsed_time($startTime, get_moment());
 
-        if ($this->debug)
+        if ($this->debug) {
             echo $elapsed_time . "s<br/>";
+        }
 
         $this->exec_time += $elapsed_time;
 
-        return $ret_id;
+        return $result;
     }
 
-    // Fonctions de renvoi de resultset, en cas d'erreur : 1ere valeur = chr(31) + message d'erreur
-    // Renvoie une unique valeur (ne renvoie que la 1ere valeur)
     function select_one($req) {
-        $ret_id = $this->exec_query($req);
-        if ($this->test_error($ret_id))
-            return $ret_id;
-        if (mysql_num_rows($ret_id)) {
-            $resultset = mysql_fetch_array($ret_id);
-            return $resultset [0];
+        $statement = $this->exec_query($req);
+        if ($this->test_error($statement)) {
+            return $statement;
+        }
+        if ($statement->rowCount() > 0) {
+            $result = $statement->fetch();
+            return array_shift($result);
         }
         return false;
     }
 
-    // Renvoie une ligne (i.e. un enregistrement), ne renvoie que le 1er si plusieurs
-    function select_line($req, &$NbLig) {
-        $ret_id = $this->exec_query($req);
-        if ($this->test_error($ret_id))
-            return $ret_id;
-        else {
-            $NbLig = mysql_num_rows($ret_id);
-            $resultset = $NbLig ? mysql_fetch_array($ret_id) : "";
+    function select_line($req, &$nbLines) {
+        $statement = $this->exec_query($req);
+        if ($this->test_error($statement)) {
+            return $statement;
         }
-        return $resultset;
+        $nbLines = $statement->rowCount();
+        return $statement->fetch();
     }
 
-    // Renvoie resultset complet
-    function select_col($req, &$NbCol) {
-        $ret_id = $this->exec_query($req);
-        if ($this->test_error($ret_id))
-            return $ret_id;
+    function select_col($req, &$nbCols) {
+        $statement = $this->exec_query($req);
+        $resultSet = [];
+        if ($this->test_error($statement))
+            return $statement;
         else {
-            $NbCol = mysql_num_rows($ret_id);
-            for ($i = 0; $i < $NbCol; $i++) {
-                $tmp_resultset = mysql_fetch_array($ret_id);
-                $resultset[$i] = $tmp_resultset[0];
+            $nbCols = $statement->rowCount();
+            for ($i = 0; $i < $nbCols; $i++) {
+                $tmpResultSet = $statement->fetch();
+                $resultSet[$i] = $tmpResultSet[0];
             }
         }
-        return $resultset;
+        return $resultSet;
     }
 
-    // Renvoie resultset complet
-    function select_array($req, &$NbLig) {
-        $ret_id = $this->exec_query($req);
-        $resultset = array();
-        if ($this->test_error($ret_id))
-            return $ret_id;
-        else {
-            $NbLig = mysql_num_rows($ret_id);
-            for ($i = 0; $i < $NbLig; $i++)
-                $resultset[$i] = mysql_fetch_array($ret_id);
+    function select_array($req, &$nbLines) {
+        $statement = $this->exec_query($req);
+        $resultSet = [];
+        if ($this->test_error($statement)) {
+            return $statement;
         }
-        return $resultset;
+        else {
+            $nbLines = $statement->rowCount();
+            for ($i = 0; $i < $nbLines; $i++) {
+                $resultSet[$i] = $statement->fetch();
+            }
+        }
+        return $resultSet;
     }
 
-    // Renvoie une ligne (i.e. un enregistrement), ne renvoie que le 1er si plusieurs
     function select_line_o($req, &$NbLig) {
         $ret_id = $this->exec_query($req);
         if ($this->test_error($ret_id))
@@ -134,7 +129,6 @@ class DB {
         return $resultset;
     }
 
-    // Renvoie resultset complet
     function select_col_o($req, &$NbCol) {
         $ret_id = $this->exec_query($req);
         if ($this->test_error($ret_id))
@@ -149,7 +143,6 @@ class DB {
         return $resultset;
     }
 
-    // Renvoie resultset complet
     function select_array_o($req, &$NbLig) {
         $ret_id = $this->exec_query($req);
         $resultset = array();
@@ -170,18 +163,10 @@ class DB {
 
     // Insert returning
     function insert($req) {
-        $tmp = explode(" ", $req);
-        if (strtolower($tmp[0]) != "insert" || strtolower($tmp[1]) != "into") {
-            return $this->exec_query("Insert appel� sur requ�te qui n'est pas un insert", $req);
-        }
-        $table = $tmp[2];
-        $ret_id = $this->exec_query($req);
-        if (substr($ret_id, 0, 1) == chr(31))
-            return $ret_id;
-        return mysql_insert_id();
+        return $this->exec_query($req);
     }
 
-    // Proc�dure d'erreur
+    // Procédure d'erreur
     function error_query($msg, $req) {
         if ($this->error)
             $this->display_error($msg, $req);
@@ -190,15 +175,13 @@ class DB {
         exit;
     }
 
-    // note : substr (0,1) renvoie "A" pour Array si le resultat est un tableau (donc pas de risque d'avoir un chr31)
-    function test_error($ret) {
-        return substr(strval($ret), 0, 1) == chr(31) ? substr(strval($ret), 1) : 0;
+    function test_error($result) {
+        return $result === false;
     }
 
-    // Envoi mail, �criture log, affichage...
+    // Envoi mail, écriture log, affichage...
     function display_error($msg, $req) {
         echo "<b><i>" . $msg . "</i></b>&nbsp";
-        echo " g�n�r� par la requ�te : <i>\"" . $req . "\"</i><br>";
+        echo " généré par la requête : <i>\"" . $req . "\"</i><br>";
     }
-
 }

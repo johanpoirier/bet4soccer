@@ -1,12 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
-
 CREATE TABLE `euro2016__invitations` (
   `code` varchar(32) COLLATE utf8_bin NOT NULL,
   `senderID` int(9) UNSIGNED NOT NULL,
@@ -52,6 +46,14 @@ CREATE TABLE `euro2016__pools` (
   `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+INSERT INTO `euro2016__pools` (`poolID`, `phaseID`, `name`) VALUES
+  (1, NULL, 'Groupe A'),
+  (2, NULL, 'Groupe B'),
+  (3, NULL, 'Groupe C'),
+  (4, NULL, 'Groupe D'),
+  (5, NULL, 'Groupe E'),
+  (6, NULL, 'Groupe F');
+
 CREATE TABLE `euro2016__pronos` (
   `userID` int(9) NOT NULL DEFAULT '0',
   `matchID` int(9) NOT NULL DEFAULT '0',
@@ -70,13 +72,13 @@ CREATE TABLE `euro2016__settings` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `euro2016__settings` (`name`, `value`, `date`, `status`) VALUES
-('LAST_RESULT', NULL, '2006-06-18 11:54:05', 0),
-('LAST_GENERATE', NULL, '2015-11-01 12:23:08', 0),
-('NB_MATCHS_PLAYED', '0', NULL, 0),
-('DATE_DEBUT', NULL, '2015-09-18 21:00:00', 0),
-('DATE_FIN', NULL, '2011-10-31 17:00:00', 0),
-('NB_POINTS_VICTOIRE', '4', NULL, 0),
-('NB_POINTS_NUL', '2', NULL, 0);
+  ('LAST_RESULT', NULL, '2006-06-18 11:54:05', 0),
+  ('LAST_GENERATE', NULL, '2015-11-01 12:23:08', 0),
+  ('NB_MATCHS_PLAYED', '0', NULL, 0),
+  ('DATE_DEBUT', NULL, '2016-06-10 21:00:00', 0),
+  ('DATE_FIN', NULL, '2016-07-10 21:00:00', 0),
+  ('NB_POINTS_VICTOIRE', '3', NULL, 0),
+  ('NB_POINTS_NUL', '1', NULL, 0);
 
 CREATE TABLE `euro2016__tags` (
   `tagID` int(5) NOT NULL,
@@ -107,6 +109,8 @@ CREATE TABLE `euro2016__users` (
   `userTeamID` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `status` int(9) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `euro2016__users` (`userID`, `name`, `login`, `email`, `password`, `status`) VALUES (1, 'John Foo', 'admin', 'admin@bet4soccer.fr', 'f71dbe52628a3f83a77ab494817525c6', 1);
 
 CREATE TABLE `euro2016__user_teams` (
   `userTeamID` int(10) UNSIGNED NOT NULL,
@@ -149,7 +153,3 @@ ALTER TABLE `euro2016__users`
 
 ALTER TABLE `euro2016__user_teams`
   ADD PRIMARY KEY (`userTeamID`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
