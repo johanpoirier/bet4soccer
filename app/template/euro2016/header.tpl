@@ -13,33 +13,8 @@
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-32210485-3', 'jops-dev.com');
+		ga('create', 'UA-32210485-3', 'auto');
 		ga('send', 'pageview');
-	</script>
-	<script type="text/javascript">
-	/* <![CDATA[ */
-		(function() {
-			var s = document.createElement('script');
-			var t = document.getElementsByTagName('script')[0];
-
-			s.type = 'text/javascript';
-			s.async = true;
-			s.src = '//api.flattr.com/js/0.6/load.js?'+
-					'mode=auto&uid=dst17&language=fr_FR&category=text';
-
-			t.parentNode.insertBefore(s, t);
-		})();
-
-		window.onload = function() {
-			FlattrLoader.render({
-				'uid': 'dst17',
-				'url': 'http://euro2016.jops-dev.com',
-				'title': 'Pronostics de la coupe du monde 2014',
-				'description': 'Aidez nous à payer l\'hébergement du site !'
-			}, 'flattr_button', 'replace');
-		};
-	/* ]]> */
-	</script>
 	</script>
 </head>
 <body>

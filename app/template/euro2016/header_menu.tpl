@@ -4,7 +4,7 @@
       <tr>
         <td>
           <div id="logo">
-            <a href="index.php"><img src="{TPL_WEB_PATH}images/euro2016.jpg" alt="FIFA Coupe du Monde 2014" border="0" /></a>
+            <a href="index.php"><img src="{TPL_WEB_PATH}images/euro2016.svg" alt="UEFA Euro 2016" border="0" /></a>
           </div>
 		</td>
 	    <td valign="middle">
@@ -37,21 +37,7 @@
 			  </tr>
 		    </table>
 		</td>
-		<td valign="middle">
-			<div id="flattr_button"></div>
-			<br/><br/>
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-				<input type="hidden" name="cmd" value="_donations">
-				<input type="hidden" name="business" value="johan.poirier@gmail.com">
-				<input type="hidden" name="lc" value="FR">
-				<input type="hidden" name="item_name" value="Hebergement du site de la Coupe du monde 2014">
-				<input type="hidden" name="no_note" value="0">
-				<input type="hidden" name="currency_code" value="EUR">
-				<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest">
-				<input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
-				<img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
-			</form>
-		</td>
+		<td valign="middle"></td>
       </tr>
     </table>
   </div>
