@@ -1,155 +1,327 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+--
+-- Base de données :  `bets`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `euro2016__bets`
+--
+
+CREATE TABLE `euro2016__bets` (
+  `userID` int(9) UNSIGNED NOT NULL,
+  `matchID` int(9) UNSIGNED NOT NULL,
+  `scoreA` int(2) UNSIGNED DEFAULT NULL,
+  `scoreB` int(2) UNSIGNED DEFAULT NULL,
+  `teamA` int(9) UNSIGNED DEFAULT NULL,
+  `teamB` int(9) UNSIGNED DEFAULT NULL,
+  `teamW` enum('A','B') COLLATE utf8_general_ci DEFAULT NULL,
+  `status` int(2) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `euro2016__groups`
+--
+
+CREATE TABLE `euro2016__groups` (
+  `groupID` int(9) UNSIGNED NOT NULL,
+  `password` varchar(30) COLLATE utf8_general_ci NOT NULL,
+  `ownerID` int(9) UNSIGNED DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8_general_ci NOT NULL,
+  `avgPoints` float UNSIGNED NOT NULL DEFAULT '0',
+  `totalPoints` int(9) UNSIGNED NOT NULL DEFAULT '0',
+  `maxPoints` int(9) UNSIGNED NOT NULL DEFAULT '0',
+  `lastRank` int(9) UNSIGNED NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `euro2016__invitations`
+--
+
 CREATE TABLE `euro2016__invitations` (
-  `code` varchar(32) COLLATE utf8_bin NOT NULL,
+  `code` varchar(32) COLLATE utf8_general_ci NOT NULL,
   `senderID` int(9) UNSIGNED NOT NULL,
-  `userTeamID` int(9) UNSIGNED NOT NULL,
-  `email` varchar(255) COLLATE utf8_bin NOT NULL,
+  `groupID` int(9) UNSIGNED NOT NULL,
+  `email` varchar(255) COLLATE utf8_general_ci NOT NULL,
   `expiration` datetime NOT NULL,
   `status` int(2) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-CREATE TABLE `euro2016__matchs` (
-  `matchID` int(11) UNSIGNED NOT NULL,
-  `teamA` int(11) NOT NULL DEFAULT '0',
-  `teamB` int(11) NOT NULL DEFAULT '0',
-  `scoreA` int(11) DEFAULT NULL,
-  `scoreB` int(11) DEFAULT NULL,
-  `pnyA` int(5) DEFAULT NULL,
-  `pnyB` int(5) DEFAULT NULL,
-  `bonusA` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `bonusB` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `phaseID` int(10) UNSIGNED NOT NULL DEFAULT '1',
-  `status` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
 
-CREATE TABLE `euro2016__phases` (
-  `phaseID` int(10) UNSIGNED NOT NULL,
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `aller_retour` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `nb_matchs` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `nb_qualifies` int(3) NOT NULL DEFAULT '1',
-  `phasePrecedente` int(10) UNSIGNED DEFAULT NULL,
-  `nbPointsRes` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `nbPointsQualifie` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `nbPointsScoreNiv1` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `nbPointsScoreNiv2` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `nbPointsEcartNiv1` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `nbPointsEcartNiv2` int(6) UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+--
+-- Structure de la table `euro2016__matches`
+--
 
-CREATE TABLE `euro2016__pools` (
-  `poolID` int(10) UNSIGNED NOT NULL,
-  `phaseID` int(10) UNSIGNED DEFAULT NULL,
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+CREATE TABLE `euro2016__matches` (
+  `matchID` int(9) UNSIGNED NOT NULL,
+  `teamA` int(9) UNSIGNED DEFAULT NULL,
+  `teamB` int(9) UNSIGNED DEFAULT NULL,
+  `scoreA` int(2) UNSIGNED DEFAULT NULL,
+  `scoreB` int(2) UNSIGNED DEFAULT NULL,
+  `teamW` enum('A','B') COLLATE utf8_general_ci DEFAULT NULL,
+  `date` datetime NOT NULL,
+  `round` int(2) UNSIGNED DEFAULT NULL,
+  `rank` int(2) UNSIGNED DEFAULT NULL,
+  `status` int(2) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `euro2016__pools` (`poolID`, `phaseID`, `name`) VALUES
-  (1, NULL, 'Groupe A'),
-  (2, NULL, 'Groupe B'),
-  (3, NULL, 'Groupe C'),
-  (4, NULL, 'Groupe D'),
-  (5, NULL, 'Groupe E'),
-  (6, NULL, 'Groupe F');
+-- --------------------------------------------------------
 
-CREATE TABLE `euro2016__pronos` (
-  `userID` int(9) NOT NULL DEFAULT '0',
-  `matchID` int(9) NOT NULL DEFAULT '0',
-  `scoreA` int(2) DEFAULT NULL,
-  `scoreB` int(2) DEFAULT NULL,
-  `pnyA` int(5) DEFAULT NULL,
-  `pnyB` int(5) DEFAULT NULL,
-  `status` int(2) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+--
+-- Structure de la table `euro2016__settings`
+--
 
 CREATE TABLE `euro2016__settings` (
-  `name` varchar(35) NOT NULL DEFAULT '',
-  `value` varchar(35) DEFAULT NULL,
+  `name` varchar(35) COLLATE utf8_general_ci NOT NULL,
+  `value` varchar(35) COLLATE utf8_general_ci DEFAULT NULL,
   `date` datetime DEFAULT NULL,
-  `status` int(2) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `status` int(2) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Contenu de la table `euro2016__settings`
+--
 
 INSERT INTO `euro2016__settings` (`name`, `value`, `date`, `status`) VALUES
-  ('LAST_RESULT', NULL, '2006-06-18 11:54:05', 0),
-  ('LAST_GENERATE', NULL, '2015-11-01 12:23:08', 0),
-  ('NB_MATCHS_PLAYED', '0', NULL, 0),
-  ('DATE_DEBUT', NULL, '2016-06-10 21:00:00', 0),
-  ('DATE_FIN', NULL, '2016-07-10 21:00:00', 0),
-  ('NB_POINTS_VICTOIRE', '3', NULL, 0),
-  ('NB_POINTS_NUL', '1', NULL, 0);
+  ('IS_GROUP_RANKING_GENERATING', '', NULL, 0),
+  ('IS_RANKING_GENERATING', '', '0000-00-00 00:00:00', 0),
+  ('IS_USER_RANKING_GENERATING', '', NULL, 0),
+  ('LAST_GENERATE', NULL, '2014-07-13 23:36:35', 0),
+  ('LAST_RESULT', NULL, '2014-06-27 11:43:55', 0),
+  ('MONEY', '2', NULL, 0),
+  ('NB_MATCHES_GENERATED', '64', NULL, 0),
+  ('RANK_GROUPS_UPDATE', NULL, '2014-07-13 23:36:35', 0),
+  ('RANK_UPDATE', NULL, '2014-07-13 23:36:34', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `euro2016__stats_user`
+--
+
+CREATE TABLE `euro2016__stats_user` (
+  `userID` int(9) UNSIGNED NOT NULL DEFAULT '0',
+  `label` varchar(30) COLLATE utf8_general_ci NOT NULL,
+  `rank` int(5) UNSIGNED NOT NULL DEFAULT '1',
+  `rank_group` int(5) UNSIGNED NOT NULL DEFAULT '1',
+  `points` int(9) UNSIGNED NOT NULL DEFAULT '0',
+  `nbresults` int(5) UNSIGNED NOT NULL DEFAULT '0',
+  `nbscores` int(5) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `euro2016__tags`
+--
 
 CREATE TABLE `euro2016__tags` (
-  `tagID` int(5) NOT NULL,
-  `userID` int(5) NOT NULL DEFAULT '0',
-  `userTeamID` int(6) NOT NULL DEFAULT '-1',
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `tag` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `tagID` int(9) UNSIGNED NOT NULL,
+  `userID` int(9) UNSIGNED NOT NULL,
+  `groupID` int(9) UNSIGNED DEFAULT NULL,
+  `date` datetime NOT NULL,
+  `tag` text COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `euro2016__teams`
+--
 
 CREATE TABLE `euro2016__teams` (
-  `teamID` int(11) NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `poolID` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `status` int(5) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `teamID` int(9) UNSIGNED NOT NULL,
+  `name` varchar(50) COLLATE utf8_general_ci NOT NULL,
+  `fifaRank` int(4) NOT NULL DEFAULT '0',
+  `pool` char(1) COLLATE utf8_general_ci NOT NULL,
+  `status` int(2) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+--
+-- Structure de la table `euro2016__users`
+--
 
 CREATE TABLE `euro2016__users` (
   `userID` int(9) UNSIGNED NOT NULL,
-  `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `login` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `password` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `points` int(9) NOT NULL DEFAULT '0',
-  `nbresults` int(5) NOT NULL DEFAULT '0',
-  `nbscores` int(5) NOT NULL DEFAULT '0',
-  `diff` int(5) NOT NULL DEFAULT '0',
-  `last_rank` int(3) UNSIGNED NOT NULL DEFAULT '1',
-  `userTeamID` int(11) UNSIGNED NOT NULL DEFAULT '0',
-  `status` int(9) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `name` varchar(40) COLLATE utf8_general_ci NOT NULL,
+  `login` varchar(30) COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(32) COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `points` int(9) UNSIGNED DEFAULT '0',
+  `nbresults` int(9) UNSIGNED DEFAULT '0',
+  `nbscores` int(9) UNSIGNED DEFAULT '0',
+  `diff` int(9) DEFAULT '0',
+  `last_rank` int(9) UNSIGNED DEFAULT '1',
+  `groupID` int(9) UNSIGNED DEFAULT NULL,
+  `groupID2` int(9) UNSIGNED DEFAULT NULL,
+  `groupID3` int(9) UNSIGNED DEFAULT NULL,
+  `theme` varchar(60) COLLATE utf8_general_ci DEFAULT NULL,
+  `match_display` varchar(10) COLLATE utf8_general_ci DEFAULT NULL,
+  `status` int(2) UNSIGNED NOT NULL DEFAULT '0',
+  `last_connection` timestamp NULL DEFAULT NULL,
+  `last_bet` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `euro2016__users` (`userID`, `name`, `login`, `email`, `password`, `status`) VALUES (1, 'John Foo', 'admin', 'admin@bet4soccer.fr', 'f71dbe52628a3f83a77ab494817525c6', 1);
+--
+-- Contenu de la table `euro2016__users`
+--
 
-CREATE TABLE `euro2016__user_teams` (
-  `userTeamID` int(10) UNSIGNED NOT NULL,
-  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `password` varchar(30) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `ownerID` int(9) NOT NULL,
-  `avgPoints` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `totalPoints` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `maxPoints` int(6) UNSIGNED NOT NULL DEFAULT '0',
-  `lastRank` int(6) UNSIGNED NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+INSERT INTO `euro2016__users` (`userID`, `name`, `login`, `password`, `email`, `status`) VALUES
+  (1, 'John Foo', 'admin', 'f71dbe52628a3f83a77ab494817525c6', 'admin@bet4soccer.fr', 1);
 
 
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `euro2016__bets`
+--
+ALTER TABLE `euro2016__bets`
+ADD PRIMARY KEY (`userID`,`matchID`),
+ADD KEY `teamA` (`teamA`),
+ADD KEY `teamB` (`teamB`),
+ADD KEY `matchID` (`matchID`);
+
+--
+-- Index pour la table `euro2016__groups`
+--
+ALTER TABLE `euro2016__groups`
+ADD PRIMARY KEY (`groupID`),
+ADD UNIQUE KEY `name` (`name`),
+ADD KEY `ownerID` (`ownerID`);
+
+--
+-- Index pour la table `euro2016__invitations`
+--
 ALTER TABLE `euro2016__invitations`
-  ADD PRIMARY KEY (`code`);
+ADD PRIMARY KEY (`code`),
+ADD KEY `groupID` (`groupID`);
 
-ALTER TABLE `euro2016__matchs`
-  ADD PRIMARY KEY (`matchID`);
+--
+-- Index pour la table `euro2016__matches`
+--
+ALTER TABLE `euro2016__matches`
+ADD PRIMARY KEY (`matchID`),
+ADD UNIQUE KEY `round` (`round`,`rank`),
+ADD KEY `teamA` (`teamA`),
+ADD KEY `teamB` (`teamB`);
 
-ALTER TABLE `euro2016__phases`
-  ADD PRIMARY KEY (`phaseID`);
-
-ALTER TABLE `euro2016__pools`
-  ADD PRIMARY KEY (`poolID`);
-
-ALTER TABLE `euro2016__pronos`
-  ADD PRIMARY KEY (`userID`,`matchID`);
-
+--
+-- Index pour la table `euro2016__settings`
+--
 ALTER TABLE `euro2016__settings`
-  ADD PRIMARY KEY (`name`);
+ADD PRIMARY KEY (`name`);
 
+--
+-- Index pour la table `euro2016__stats_user`
+--
+ALTER TABLE `euro2016__stats_user`
+ADD KEY `userID` (`userID`);
+
+--
+-- Index pour la table `euro2016__tags`
+--
 ALTER TABLE `euro2016__tags`
-  ADD PRIMARY KEY (`tagID`);
+ADD PRIMARY KEY (`tagID`),
+ADD KEY `userID` (`userID`),
+ADD KEY `groupID` (`groupID`);
 
+--
+-- Index pour la table `euro2016__teams`
+--
 ALTER TABLE `euro2016__teams`
-  ADD PRIMARY KEY (`teamID`);
+ADD PRIMARY KEY (`teamID`);
 
+--
+-- Index pour la table `euro2016__users`
+--
 ALTER TABLE `euro2016__users`
-  ADD PRIMARY KEY (`userID`);
+ADD PRIMARY KEY (`userID`),
+ADD KEY `login` (`login`);
 
-ALTER TABLE `euro2016__user_teams`
-  ADD PRIMARY KEY (`userTeamID`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `euro2016__groups`
+--
+ALTER TABLE `euro2016__groups`
+MODIFY `groupID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `euro2016__matches`
+--
+ALTER TABLE `euro2016__matches`
+MODIFY `matchID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `euro2016__tags`
+--
+ALTER TABLE `euro2016__tags`
+MODIFY `tagID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `euro2016__teams`
+--
+ALTER TABLE `euro2016__teams`
+MODIFY `teamID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `euro2016__users`
+--
+ALTER TABLE `euro2016__users`
+MODIFY `userID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `euro2016__bets`
+--
+ALTER TABLE `euro2016__bets`
+ADD CONSTRAINT `euro2016__bets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `euro2016__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `euro2016__bets_ibfk_2` FOREIGN KEY (`matchID`) REFERENCES `euro2016__matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `euro2016__bets_ibfk_3` FOREIGN KEY (`teamA`) REFERENCES `euro2016__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `euro2016__bets_ibfk_4` FOREIGN KEY (`teamB`) REFERENCES `euro2016__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `euro2016__groups`
+--
+ALTER TABLE `euro2016__groups`
+ADD CONSTRAINT `euro2016__groups_ibfk_1` FOREIGN KEY (`ownerID`) REFERENCES `euro2016__users` (`userID`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Contraintes pour la table `euro2016__invitations`
+--
+ALTER TABLE `euro2016__invitations`
+ADD CONSTRAINT `euro2016__invitations_ibfk_1` FOREIGN KEY (`groupID`) REFERENCES `euro2016__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `euro2016__invitations_ibfk_10` FOREIGN KEY (`groupID`) REFERENCES `euro2016__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `euro2016__matches`
+--
+ALTER TABLE `euro2016__matches`
+ADD CONSTRAINT `euro2016__matches_ibfk_1` FOREIGN KEY (`teamA`) REFERENCES `euro2016__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `euro2016__matches_ibfk_2` FOREIGN KEY (`teamB`) REFERENCES `euro2016__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `euro2016__stats_user`
+--
+ALTER TABLE `euro2016__stats_user`
+ADD CONSTRAINT `euro2016__stats_user_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `euro2016__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `euro2016__tags`
+--
+ALTER TABLE `euro2016__tags`
+ADD CONSTRAINT `euro2016__tags_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `euro2016__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `euro2016__tags_ibfk_2` FOREIGN KEY (`groupID`) REFERENCES `euro2016__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
