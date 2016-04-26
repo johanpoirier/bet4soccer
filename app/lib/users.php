@@ -42,11 +42,11 @@ class Users {
                 $passwordReq = ' password=\'' . md5($pass) . '\',';
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
             $req .= ' SET name=\'' . addslashes($name) . '\',' . $passwordReq . ' email=\'' . addslashes($email) . '\',';
-            $req .= ' "groupID"=' . (($groupID != '') ? addslashes($groupID) : 'NULL') . ', status=' . addslashes($status) . ' WHERE login=\'' . addslashes($login) . '\'';
+            $req .= ' groupID=' . (($groupID != '') ? addslashes($groupID) : 'NULL') . ', status=' . addslashes($status) . ' WHERE login=\'' . addslashes($login) . '\'';
             return $this->parent->db->exec_query($req);
         }
         else {
-            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,"groupID",status)';
+            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,groupID,status)';
             $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . md5($pass) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
             return $this->parent->db->insert($req);
         }
@@ -67,7 +67,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET name=\'' . $name . '\', email=\'' . $email . '\'';
-        $req .= ' WHERE "userID" = ' . $user['userID'] . '';
+        $req .= ' WHERE userID = ' . $user['userID'] . '';
         $ret = $this->parent->db->exec_query($req);
         $this->parent->update_session();
         if ($ret)
@@ -85,7 +85,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET theme=\'' . $theme . '\', match_display=\'' . $match_display . '\'';
-        $req .= ' WHERE "userID"=' . $user['userID'] . '';
+        $req .= ' WHERE userID=' . $user['userID'] . '';
         $ret = $this->parent->db->exec_query($req);
         $this->parent->update_session();
         if ($ret)
@@ -97,7 +97,7 @@ class Users {
     function delete($userID) {
         $req = 'DELETE';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
         $this->parent->db->exec_query($req);
         return;
     }
@@ -120,7 +120,7 @@ class Users {
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
         if ($nb_args > 0)
-            $req .= ' WHERE "userID" = ' . $userID . '';
+            $req .= ' WHERE userID = ' . $userID . '';
         $req .= ' ORDER by name';
 
         // Execute Query
@@ -198,7 +198,7 @@ class Users {
 
     function count() {
         // Main Query
-        $req = 'SELECT COUNT("userID")';
+        $req = 'SELECT COUNT(userID)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
 
         $nb_user = $this->parent->db->select_one($req);
@@ -213,14 +213,14 @@ class Users {
 
     function count_active() {
         // Main Query
-        $req = 'SELECT COUNT("userID")';
+        $req = 'SELECT COUNT(userID)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' WHERE "userID" IN (';
-        $req .= ' SELECT u."userID"';
+        $req .= ' WHERE userID IN (';
+        $req .= ' SELECT u.userID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users u';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u."userID" = b."userID" AND b."scoreA" IS NOT NULL AND b."scoreB" IS NOT NULL)';
-        $req .= ' GROUP BY u."userID"';
-        $req .= ' HAVING COUNT(b."matchID") > 0';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
+        $req .= ' GROUP BY u.userID';
+        $req .= ' HAVING COUNT(b.matchID) > 0';
         $req .= ')';
         $req .= ' AND points IS NOT NULL';
 
@@ -236,18 +236,18 @@ class Users {
 
     function count_active_by_group($groupID) {
         // Main Query
-        $req = 'SELECT COUNT("userID")';
+        $req = 'SELECT COUNT(userID)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' WHERE "userID" IN (';
-        $req .= ' SELECT u."userID"';
+        $req .= ' WHERE userID IN (';
+        $req .= ' SELECT u.userID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users u';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u."userID" = b."userID" AND b."scoreA" IS NOT NULL AND b."scoreB" IS NOT NULL)';
-        $req .= ' WHERE (u."groupID" = ' . $groupID . '';
-        $req .= ' OR u."groupID2" = ' . $groupID . '';
-        $req .= ' OR u."groupID3" = ' . $groupID . ')';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
+        $req .= ' WHERE (u.groupID = ' . $groupID . '';
+        $req .= ' OR u.groupID2 = ' . $groupID . '';
+        $req .= ' OR u.groupID3 = ' . $groupID . ')';
         $req .= ' AND u.status >= 0';
-        $req .= ' GROUP BY u."userID"';
-        $req .= ' HAVING COUNT(b."matchID") > 0';
+        $req .= ' GROUP BY u.userID';
+        $req .= ' HAVING COUNT(b.matchID) > 0';
         $req .= ')';
 
         $nb_active_user = $this->parent->db->select_one($req);
@@ -299,11 +299,11 @@ class Users {
 
     function count_by_group($groupID) {
         // Main Query
-        $req = 'SELECT COUNT(u."userID")';
+        $req = 'SELECT COUNT(u.userID)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users u';
-        $req .= ' WHERE (u."groupID" = ' . $groupID . '';
-        $req .= ' OR u."groupID2" = ' . $groupID . '';
-        $req .= ' OR u."groupID3" = ' . $groupID . ')';
+        $req .= ' WHERE (u.groupID = ' . $groupID . '';
+        $req .= ' OR u.groupID2 = ' . $groupID . '';
+        $req .= ' OR u.groupID3 = ' . $groupID . ')';
         $req .= ' AND u.status >= 0';
 
         $nb_users = $this->parent->db->select_one($req);
@@ -317,15 +317,15 @@ class Users {
 
     function get_by_group($groupID, $all_users = false) {
         // Main Query
-        $req = 'SELECT DISTINCT(u."userID"), u.name, u.login, u.points, u.nbresults, u.nbscores, u.diff, u.last_rank, u.status, t.name AS group_name';
+        $req = 'SELECT DISTINCT(u.userID), u.name, u.login, u.points, u.nbresults, u.nbscores, u.diff, u.last_rank, u.status, t.name AS group_name';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users u';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets AS b ON(b."userID" = u."userID")';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups AS t ON(t."groupID" = u."groupID")';
-        $req .= ' WHERE u."groupID" = ' . $groupID . '';
-        $req .= ' OR u."groupID2" = ' . $groupID . '';
-        $req .= ' OR u."groupID3" = ' . $groupID . '';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets AS b ON(b.userID = u.userID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups AS t ON(t.groupID = u.groupID)';
+        $req .= ' WHERE u.groupID = ' . $groupID . '';
+        $req .= ' OR u.groupID2 = ' . $groupID . '';
+        $req .= ' OR u.groupID3 = ' . $groupID . '';
         if (!$all_users) {
-            $req .= ' AND (b."scoreA" IS NOT null) AND (b."scoreB" IS NOT null) AND u.status >= 0';
+            $req .= ' AND (b.scoreA IS NOT null) AND (b.scoreB IS NOT null) AND u.status >= 0';
         }
         $req .= ' ORDER BY u.name ASC';
 
@@ -338,7 +338,7 @@ class Users {
 
     function is_exist($login) {
         // Main Query
-        $req = 'SELECT "userID"';
+        $req = 'SELECT userID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE login = \'' . $login . '\'';
 
@@ -355,7 +355,7 @@ class Users {
 
     function is_exist_by_email($email) {
         // Main Query
-        $req = 'SELECT "userID"';
+        $req = 'SELECT userID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE email = \'' . $email . '\'';
 
@@ -364,7 +364,7 @@ class Users {
 
     function is_name_exist($name) {
         // Main Query
-        $req = 'SELECT "userID"';
+        $req = 'SELECT userID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE name = \'' . $name . '\'';
 
@@ -392,7 +392,7 @@ class Users {
             $pos = "";
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET "groupID' . $pos . '" = NULL';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
         $ret = $this->parent->db->exec_query($req);
         $this->parent->update_session();
         return $ret;
@@ -462,7 +462,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET "groupID' . $pos . '" = ' . $groupID . '';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
         $ret = $this->parent->db->exec_query($req);
         $this->parent->update_session();
         if ($ret)
@@ -480,7 +480,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET last_rank = ' . $last_rank . '';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
 
         return $this->parent->db->exec_query($req);
     }
@@ -494,7 +494,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET last_connection = NOW()';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
 
         return $this->parent->db->exec_query($req);
     }
@@ -508,7 +508,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET last_bet = NOW()';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
 
         return $this->parent->db->exec_query($req);
     }
@@ -521,7 +521,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET password = \'' . md5($new_pass) . '\'';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
 
         if ($this->parent->db->exec_query($req))
             return $new_pass;
@@ -540,7 +540,7 @@ class Users {
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET password = \'' . md5($new_password1) . '\'';
-        $req .= ' WHERE "userID" = ' . $userID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
 
         if ($this->parent->db->exec_query($req))
             return CHANGE_PASSWORD_OK;
@@ -585,7 +585,7 @@ class Users {
     }
 
     function get_active_users_who_have_not_bet($nbDays, $nbGames) {
-        $req = "SELECT * FROM " . $this->parent->config['db_prefix'] . "users";
+        $req = "SELECT * FROM " . $this->parent->config['db_prefix'] . users;
         $req .= " WHERE userID NOT IN (";
         $req .= "SELECT b.userID FROM " . $this->parent->config['db_prefix'] . "users u";
         $req .= " RIGHT JOIN " . $this->parent->config['db_prefix'] . "bets b ON(u.userID = b.userID)";
@@ -717,12 +717,12 @@ class Users {
             if ($update_rank) {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
                 $req .= ' SET points = ' . $user['points'] . ', nbresults = ' . $user['nbresults'] . ', nbscores = ' . $user['nbscores'] . ', diff = ' . $user['diff'] . ', last_rank = ' . $user['rank'] . '';
-                $req .= ' WHERE "userID" = ' . $ID . '';
+                $req .= ' WHERE userID = ' . $ID . '';
                 $this->parent->db->exec_query($req);
             } else {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
                 $req .= ' SET points = ' . $user['points'] . ', nbresults = ' . $user['nbresults'] . ', nbscores = ' . $user['nbscores'] . ', diff = ' . $user['diff'] . '';
-                $req .= ' WHERE "userID" = ' . $ID . '';
+                $req .= ' WHERE userID = ' . $ID . '';
                 $this->parent->db->exec_query($req);
             }
         }

@@ -25,7 +25,7 @@ class Teams
 			$req = 'UPDATE '.$this->parent->config['db_prefix'].'teams';
 			$req .= ' SET pool = \''.addslashes($team_pool).'\'';
             $req .= ', fifaRank = ' . $fifaRank;
-			$req .= ' WHERE "teamID" = '.$teamID.'';
+			$req .= ' WHERE teamID = '.$teamID.'';
 			return $this->parent->db->exec_query($req);  
 		} else {
 			$req = 'INSERT INTO '.$this->parent->config['db_prefix'].'teams (name,pool)';
@@ -50,7 +50,7 @@ class Teams
 		// Main Query
 		$req = 'SELECT *';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'teams';
-		if($nb_args > 0) $req .= ' WHERE "teamID" = '.$teamID.'';
+		if($nb_args > 0) $req .= ' WHERE teamID = '.$teamID.'';
 					
 		// Execute Query			
 		$teams = $this->parent->db->select_array($req,$nb_teams);
@@ -97,7 +97,7 @@ class Teams
 		prepare_numeric_data(array(&$teamID));
 		$req = 'DELETE';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'teams';
-		$req .= ' WHERE "teamID" = '.$teamID.'';
+		$req .= ' WHERE teamID = '.$teamID.'';
 		$this->parent->db->exec_query($req);
 		return;
 	}
@@ -114,7 +114,7 @@ class Teams
 	function is_exist($team)
 	{
 	  // Main Query
-		$req = 'SELECT "teamID"';
+		$req = 'SELECT teamID';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'teams t ';
 		$req .= ' WHERE name = \''.addslashes($team).'\'';
 		
