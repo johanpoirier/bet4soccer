@@ -141,46 +141,41 @@ class Users {
         }
     }
 
-    function get() {
-        // 0 arg = get all users
-        // 1 arg = get one user
-
+    function get($userID=null)
+    {
         $nb_args = func_num_args();
-        $args = func_get_args();
-        $userID = null;
-
-        if ($nb_args > 0) {
-            $userID = $args[0];
-            prepare_numeric_data(array(&$userID));
-        }
 
         // Main Query
-        $req = 'SELECT u.*, t.name as "groupName", t2.name as "groupName2", t3.name as "groupName3"';
+        $req = 'SELECT u.*, t.name as groupName, t2.name as groupName2, t3.name as groupName3';
         $req .= ', DATE_FORMAT(u.last_connection, \'%d/%m\') as last_connection';
         $req .= ', DATE_FORMAT(u.last_bet, \'%d/%m\') as last_bet';
         $req .= ', count(b.userID) as nb_bets';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users u';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t ON (u."groupID" = t."groupID")';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t2 ON (u."groupID2" = t2."groupID")';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u."groupID3" = t3."groupID")';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u."userID" = b."userID")';
-        $req .= ' WHERE b."scoreA" IS NOT NULL AND b."scoreB" IS NOT NULL';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t ON (u.groupID = t.groupID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t2 ON (u.groupID2 = t2.groupID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u.groupID3 = t3.groupID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID)';
+        $req .= ' WHERE b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL';
         if ($nb_args > 0) {
-            $req .= ' AND u."userID" = ' . $userID . '';
-		}
-        $req .= ' GROUP BY b."userID"';
-        $req .= ' ORDER by u."name"';
+            $req .= ' AND u.userID = ' . $userID . '';
+        }
+        $req .= ' GROUP BY b.userID';
+        $req .= ' ORDER by u.name';
 
         // Execute Query
+        $nb_users = 0;
         $users = $this->parent->db->select_array($req, $nb_users);
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($users);
+        }
 
         // Return results
-        if ($nb_args > 0 && isset($users[0]))
-            return $users[0];
-        else
+        if ($nb_args > 0 && isset($users[0])) {
+             return $users[0];
+        }
+        else {
             return $users;
+        }
     }
 
 	function get_with_no_vote() {
@@ -599,6 +594,7 @@ class Users {
         $req .= " WHERE DATEDIFF(m.date, NOW()) >= 0  AND DATEDIFF(m.date, NOW()) <= " . $nbDays . ")";
         $req .= " GROUP BY b.userID HAVING count(b.userID) = " . $nbGames . ")";
 
+        $nbUsers = 0;
         $users = $this->parent->db->select_array($req, $nbUsers);
         if ($this->parent->debug) {
             array_show($users);
@@ -614,37 +610,35 @@ class Users {
         $i = 1;
         $j = 0;
         $max_val = 0;
-        $max_id = 0;
         $min_val = 0;
-        $min_id = 0;
-        $last_user = $users[0];
-        foreach ($users as $ID => $user) {
-            $ranks[$user['userID']] = $user;
-            if (compare_users($user, $last_user) != 0)
-                $i = $j + 1;
-            if ($nb_bets[$user['userID']] == 0) {
-                $ranks[$user['userID']]['rank'] = null;
-                $ranks[$user['userID']]['evol'] = 0;
-                continue;
-            }
-            if (!($user['last_rank'] > 0)) {
+        if (sizeof($users) > 0) {
+            $last_user = $users[0];
+            foreach ($users as $ID => $user) {
+                $ranks[$user['userID']] = $user;
+                if (compare_users($user, $last_user) != 0)
+                    $i = $j + 1;
+                if ($nb_bets[$user['userID']] == 0) {
+                    $ranks[$user['userID']]['rank'] = null;
+                    $ranks[$user['userID']]['evol'] = 0;
+                    continue;
+                }
+                if (!($user['last_rank'] > 0)) {
+                    $ranks[$user['userID']]['rank'] = $i;
+                    $ranks[$user['userID']]['evol'] = 0;
+                    continue;
+                }
                 $ranks[$user['userID']]['rank'] = $i;
-                $ranks[$user['userID']]['evol'] = 0;
-                continue;
+                $evol = $user['last_rank'] - $i;
+                $ranks[$user['userID']]['evol'] = $evol;
+                if ($evol > $max_val) {
+                    $max_val = $evol;
+                }
+                if ($evol < $min_val) {
+                    $min_val = $evol;
+                }
+                $j++;
+                $last_user = $user;
             }
-            $ranks[$user['userID']]['rank'] = $i;
-            $evol = $user['last_rank'] - $i;
-            $ranks[$user['userID']]['evol'] = $evol;
-            if ($evol > $max_val) {
-                $max_val = $evol;
-                $max_id = $user['userID'];
-            }
-            if ($evol < $min_val) {
-                $min_val = $evol;
-                $min_id = $user['userID'];
-            }
-            $j++;
-            $last_user = $user;
         }
         return $ranks;
     }

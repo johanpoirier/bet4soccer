@@ -720,7 +720,7 @@ class BetEngine {
             ));
         }
 
-        if ($users[$_SESSION['userID']]['rank'] != null) {
+        if (sizeof($users) > 0 && $users[$_SESSION['userID']]['rank'] != null) {
             $evol = $users[$_SESSION['userID']]['evol'];
             $this->template->assign_block_vars('mine', array(
                 'ID' => $_SESSION['userID'],
@@ -1113,7 +1113,6 @@ class BetEngine {
         $tags = $this->tags->get_by_group($groupID, $start, 10);
 
         $nb_tags = $this->tags->count_by_group($groupID);
-        $nb_pages = ceil($nb_tags / 10);
         $max = ceil($nb_tags / 10);
         $page = ceil(($start + 1) / 10);
         $prev = ($page - 2) * 10;

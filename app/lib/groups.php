@@ -20,7 +20,7 @@ class Groups
 		if($group_id = $this->is_exist($group_id)) {
 			$req = 'UPDATE '.$this->parent->config['db_prefix'].'groups ';
 			$req .= ' SET name = \''.$group_name.'\', password = \''.$group_name.'\'';
-			$req .= ' WHERE "groupID" = '.$group_id.'';
+			$req .= ' WHERE groupID = '.$group_id.'';
 			return $this->parent->db->exec_query($req);
 		} else {
 			if($this->get_by_name($group_name)) return false;
@@ -96,7 +96,7 @@ class Groups
 		// Main Query
 		$req = 'SELECT *';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'groups';
-		if($nb_args > 0) $req .= ' WHERE "groupID" = '.$groupID.'';
+		if($nb_args > 0) $req .= ' WHERE groupID = '.$groupID.'';
 		$req .= ' ORDER BY name ASC';
 					
 		// Execute Query			
@@ -123,10 +123,10 @@ class Groups
 	function get_with_users()
 	{
 		// Main Query
-		$req = 'SELECT g."groupID", g.name , count("userID") as nb_users';
+		$req = 'SELECT g.groupID, g.name , count(userID) as nb_users';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'groups AS g';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'users AS u ON ((g."groupID" = u."groupID") OR (g."groupID" = u."groupID3") OR (g."groupID" = u."groupID2"))';
-		$req .= ' GROUP BY g."groupID",g.name';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'users AS u ON ((g.groupID = u.groupID) OR (g.groupID = u.groupID3) OR (g.groupID = u.groupID2))';
+		$req .= ' GROUP BY g.groupID,g.name';
 		$req .= ' ORDER BY g.name ASC';
 						
 		// Execute Query			
@@ -144,8 +144,8 @@ class Groups
         if(!$group) return false;
         
         $req = 'UPDATE '.$this->parent->config['db_prefix'].'groups';
-        $req .= ' SET "lastRank" = '.$last_rank.'';
-        $req .= ' WHERE "groupID" = '.$groupID.'';
+        $req .= ' SET lastRank = '.$last_rank;
+        $req .= ' WHERE groupID = '.$groupID;
         
         return $this->parent->db->exec_query($req);
 	}
@@ -153,7 +153,7 @@ class Groups
 	function count()
 	{
 		// Main Query
-		$req = 'SELECT COUNT("groupID")';
+		$req = 'SELECT COUNT(groupID)';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'groups';
 		
 		$nb_group = $this->parent->db->select_one($req);
@@ -166,26 +166,26 @@ class Groups
 	function count_active()
 	{
 		// Main Query
-        $req = 'SELECT COUNT("groupID")';
+        $req = 'SELECT COUNT(groupID)';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'groups';
-		$req .= ' WHERE "groupID" IN (';
-		$req .= ' SELECT u."groupID"';
+		$req .= ' WHERE groupID IN (';
+		$req .= ' SELECT u.groupID';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'users u';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'bets b ON (u."userID" = b."userID" AND b."scoreA" IS NOT NULL AND b."scoreB" IS NOT NULL)';
-		$req .= ' GROUP BY u."userID", u."groupID"';
-        $req .= ' HAVING COUNT(b."matchID") > 0';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
+		$req .= ' GROUP BY u.userID, u.groupID';
+        $req .= ' HAVING COUNT(b.matchID) > 0';
         $req .= ' UNION';
-		$req .= ' SELECT u."groupID2"';
+		$req .= ' SELECT u.groupID2';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'users u';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'bets b ON (u."userID" = b."userID" AND b."scoreA" IS NOT NULL AND b."scoreB" IS NOT NULL)';
-		$req .= ' GROUP BY u."userID", u."groupID2"';
-        $req .= ' HAVING COUNT(b."matchID") > 0';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
+		$req .= ' GROUP BY u.userID, u.groupID2';
+        $req .= ' HAVING COUNT(b.matchID) > 0';
         $req .= ' UNION';
-		$req .= ' SELECT u."groupID3"';
+		$req .= ' SELECT u.groupID3';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'users u';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'bets b ON (u."userID" = b."userID" AND b."scoreA" IS NOT NULL AND b."scoreB" IS NOT NULL)';
-		$req .= ' GROUP BY u."userID", u."groupID3"';
-        $req .= ' HAVING COUNT(b."matchID") > 0';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
+		$req .= ' GROUP BY u.userID, u.groupID3';
+        $req .= ' HAVING COUNT(b.matchID) > 0';
         $req .= ')';
 
 		$nb_active_group = $this->parent->db->select_one($req);
@@ -220,8 +220,8 @@ class Groups
 		// Main Query
 		$req = 'SELECT i.*,(expiration < NOW()) as expired,g.name as group_name';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'invitations i';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'groups g ON (i."groupID" = g."groupID")';
-		$req .= ' WHERE "code" = \''.$code.'\'';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'groups g ON (i.groupID = g.groupID)';
+		$req .= ' WHERE code = \''.$code.'\'';
 		$invitation = $this->parent->db->select_line($req,$null);
 		if($this->parent->debug) array_show($invitation);
 		return $invitation;
@@ -233,8 +233,8 @@ class Groups
 		// Main Query
 		$req = 'SELECT i.*,(expiration < NOW()) as expired,g.name as group_name';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'invitations i';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'groups g ON (i."groupID" = g."groupID")';
-		$req .= ' WHERE "senderID" = '.$senderID.'';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'groups g ON (i.groupID = g.groupID)';
+		$req .= ' WHERE senderID = '.$senderID.'';
 		$invitations = $this->parent->db->select_array($req,$null);
 		if($this->parent->debug) array_show($invitations);
 		return $invitations;
@@ -259,8 +259,8 @@ class Groups
 		$invitation = $this->get_invitation($code);
 		if($invitation['status'] < 0) return true;
 		$req = 'UPDATE '.$this->parent->config['db_prefix'].'invitations';
-		$req .= ' SET "status" = -'.$invitation['status'].'';
-		$req .= ' WHERE "code" = \''.$code.'\';';
+		$req .= ' SET status = -'.$invitation['status'].'';
+		$req .= ' WHERE code = \''.$code.'\';';
 		$this->parent->db->exec_query($req);
 		return true;
 	}
@@ -331,8 +331,8 @@ class Groups
 		// Main Query
 		$req = 'SELECT t.name';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'users u';
-		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'groups t ON (u."groupID'.$order.'" = t."groupID")';
-		$req .= ' WHERE u."userID" = '.$userID.'';
+		$req .= ' LEFT JOIN '.$this->parent->config['db_prefix'].'groups t ON (u.groupID'.$order.' = t.groupID)';
+		$req .= ' WHERE u.userID = '.$userID.'';
 
 		$group_name = $this->parent->db->select_one($req);
 		if($this->parent->debug) echo $group_name;
@@ -344,9 +344,9 @@ class Groups
 	{
 		if(!$group_id || ($group_id == "")) return false;
 		// Main Query
-		$req = 'SELECT "groupID"';
+		$req = 'SELECT groupID';
 		$req .= ' FROM '.$this->parent->config['db_prefix'].'groups ';
-		$req .= ' WHERE "groupID" = '.$group_id.'';
+		$req .= ' WHERE groupID = '.$group_id.'';
 		
 		return $this->parent->db->select_one($req,null);
 
@@ -394,14 +394,14 @@ class Groups
 
             if($update_rank) {
 				$req = 'UPDATE '.$this->parent->config['db_prefix'].'groups';
-				$req .= ' SET "avgPoints" = '.$group['avgPoints'].', "totalPoints" = '.$group['totalPoints'].', "maxPoints" = '.$group['maxPoints'].', "lastRank" = '.$group['rank'].'';
-				$req .= ' WHERE "groupID" = '.$group['groupID'].';';
+				$req .= ' SET avgPoints = '.$group['avgPoints'].', totalPoints = '.$group['totalPoints'].', maxPoints = '.$group['maxPoints'].', lastRank = '.$group['rank'].'';
+				$req .= ' WHERE groupID = '.$group['groupID'].';';
                 $this->parent->db->exec_query($req);
             }
             else {
 				$req = 'UPDATE '.$this->parent->config['db_prefix'].'groups';
-				$req .= ' SET "avgPoints" = '.$group['avgPoints'].', "totalPoints" = '.$group['totalPoints'].', "maxPoints" = '.$group['maxPoints'].'';
-				$req .= ' WHERE "groupID" = '.$group['groupID'].';';
+				$req .= ' SET avgPoints = '.$group['avgPoints'].', totalPoints = '.$group['totalPoints'].', maxPoints = '.$group['maxPoints'].'';
+				$req .= ' WHERE groupID = '.$group['groupID'].';';
                 $this->parent->db->exec_query($req);
             }
         }
