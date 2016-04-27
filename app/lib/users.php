@@ -652,7 +652,8 @@ class Users
             $req .= ' WHERE lower(login) = \'' . strtolower($login) . '\'';
             $req .= ' AND password = \'' . md5($pass) . '\'';
 
-            $user = $this->parent->db->select_line($req, null);
+	    $nb_user = 0;
+            $user = $this->parent->db->select_line($req, $nb_user);
             if ($nb_user == 1) {
                 return true;
             } else {

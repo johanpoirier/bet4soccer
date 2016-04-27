@@ -567,7 +567,7 @@ class Matches
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' WHERE m.matchID = ' . $matchID . '';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function get_last_pool()
@@ -584,7 +584,8 @@ class Matches
         $req .= ')';
         $req .= ' AND m1.round IS NULL';
 
-        $match = $this->parent->db->select_line($req, null);
+	$nb_pools = 0;
+        $match = $this->parent->db->select_line($req, $nb_pools);
 
         if ($this->parent->debug)
             array_show($match);

@@ -151,7 +151,8 @@ class Tags
             $req .= ' LIMIT ' . $limit . ' OFFSET ' . $start . '';
         }
 
-        $tags = $this->parent->db->select_array($req, null);
+        $nb_tags = 0;
+        $tags = $this->parent->db->select_array($req, $nb_tags);
 
         if ($this->parent->debug) {
             array_show($tags);
