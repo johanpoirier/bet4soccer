@@ -1,16 +1,19 @@
 <?php
 
-class Matches {
+class Matches
+{
 
     var $parent;
 
-    public function __construct(&$parent) {
+    public function __construct(&$parent)
+    {
         $this->parent = $parent;
     }
 
     /*     * **************** */
 
-    function add($match_date, $match_teamA, $match_teamB, $round = 0, $rank = 0) {
+    function add($match_date, $match_teamA, $match_teamB, $round = 0, $rank = 0)
+    {
         prepare_numeric_data(array(&$match_teamA, &$match_teamB, &$round, &$rank));
         prepare_alphanumeric_data(array(&$match_date));
         if ($rank > 0 && $round > 0) {
@@ -45,20 +48,22 @@ class Matches {
         }
     }
 
-    function delete($matchID) {
+    function delete($matchID)
+    {
         prepare_numeric_data(array(&$matchID));
         $req = 'DELETE';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches';
-        $req .= ' WHERE "matchID" = ' . $matchID . ';';
+        $req .= ' WHERE matchID = ' . $matchID . ';';
         $this->parent->db->exec_query($req);
         return;
     }
 
-    function count_played() {
+    function count_played()
+    {
         // Main Query
-        $req = 'SELECT count(DISTINCT m."matchID")';
+        $req = 'SELECT count(DISTINCT m.matchID)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
-        $req .= ' WHERE m."scoreA" IS NOT NULL AND m."scoreB" IS NOT NULL';
+        $req .= ' WHERE m.scoreA IS NOT NULL AND m.scoreB IS NOT NULL';
 
         $nb_matches = $this->parent->db->select_one($req);
 
@@ -67,9 +72,10 @@ class Matches {
 
     /*     * **************** */
 
-    function count() {
+    function count()
+    {
         // Main Query
-        $req = 'SELECT count("matchID")';
+        $req = 'SELECT count(matchID)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
 
         $nb_matches = $this->parent->db->select_one($req);
@@ -80,7 +86,8 @@ class Matches {
         return $nb_matches;
     }
 
-    function get_next() {
+    function get_next()
+    {
         // Main Query
         $req = 'SELECT *,';
         $req .= ' tA.teamID AS teamAid,';
@@ -110,37 +117,32 @@ class Matches {
         return $matches;
     }
 
-    function get_next_by_pool($pool) {
+    function get_next_by_pool($pool)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" "m1"';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON ("m1"."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON ("m1"."teamB" = "tB"."teamID")';
-        $req .= ' WHERE "date" = ( ';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m1';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m1.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m1.teamB = tB.teamID)';
+        $req .= ' WHERE date = ( ';
         $req .= '		SELECT MIN(date)';
-        $req .= ' 		FROM "' . $this->parent->config['db_prefix'] . 'matches" "m2"';
-        $req .= '    	LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams "tA" ON (m2."teamA" = "tA"."teamID")';
-        $req .= '    	LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams "tB" ON (m2."teamB" = "tB"."teamID")';
-        $req .= '    	WHERE "date" > NOW()';
-        $req .= '    	AND "tA".pool = \'' . $pool . '\'';
-        $req .= '   	 AND "tB".pool = \'' . $pool . '\'';
+        $req .= ' 		FROM "' . $this->parent->config['db_prefix'] . 'matches" m2';
+        $req .= '    	LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m2.teamA = tA.teamID)';
+        $req .= '    	LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m2.teamB = tB.teamID)';
+        $req .= '    	WHERE date > NOW()';
+        $req .= '    	AND tA.pool = \'' . $pool . '\'';
+        $req .= '   	 AND tB.pool = \'' . $pool . '\'';
         $req .= ')';
-        $req .= ' AND "tA".pool = \'' . $pool . '\'';
-        $req .= ' AND "tB".pool = \'' . $pool . '\'';
+        $req .= ' AND tA.pool = \'' . $pool . '\'';
+        $req .= ' AND tB.pool = \'' . $pool . '\'';
 
         $matches = $this->parent->db->select_array($req, $nb_matches);
 
@@ -150,27 +152,22 @@ class Matches {
         return $matches;
     }
 
-    function get_first() {
+    function get_first()
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' ORDER BY m."date" ASC';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' ORDER BY m.date ASC';
         $req .= ' LIMIT 1 OFFSET 0';
 
         $match = $this->parent->db->select_line($req, $null);
@@ -181,28 +178,23 @@ class Matches {
         return $match;
     }
 
-    function get_first_played() {
+    function get_first_played()
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE m."scoreA" IS NOT NULL and m."scoreB" IS NOT NULL';
-        $req .= ' ORDER BY m."date" ASC';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE m.scoreA IS NOT NULL and m.scoreB IS NOT NULL';
+        $req .= ' ORDER BY m.date ASC';
         $req .= ' LIMIT 1 OFFSET 0';
 
         $match = $this->parent->db->select_line($req, $null);
@@ -213,30 +205,25 @@ class Matches {
         return $match;
     }
 
-    function get_played_until_day($day) {
+    function get_played_until_day($day)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
 
-        $req .= ' WHERE m."scoreA" IS NOT NULL and m."scoreB" IS NOT NULL';
+        $req .= ' WHERE m.scoreA IS NOT NULL and m.scoreB IS NOT NULL';
         $req .= ' AND date <= \'' . $day . ' 23:59:59\'';
-        $req .= ' ORDER BY m."date" ASC';
+        $req .= ' ORDER BY m.date ASC';
 
         $matches = $this->parent->db->select_array($req, $nb_matches);
 
@@ -246,26 +233,21 @@ class Matches {
         return $matches;
     }
 
-    function get_last() {
+    function get_last()
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         $req .= ' ORDER BY m.date DESC';
         $req .= ' LIMIT 1 OFFSET 0';
 
@@ -277,29 +259,23 @@ class Matches {
         return $match;
     }
 
-    function get_last_played_until_day($day) {
+    function get_last_played_until_day($day)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date")::integer as "time",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %H:%i\') as "date_str",';
-            $req .= ' UNIX_TIMESTAMP("date") as "time",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE m."scoreA" IS NOT NULL and m."scoreB" IS NOT NULL';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %H:%i\') as date_str,';
+        $req .= ' UNIX_TIMESTAMP(date) as time,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE m.scoreA IS NOT NULL and m.scoreB IS NOT NULL';
         $req .= ' AND date <= \'' . $day . ' 23:59:59\'';
         $req .= ' ORDER BY m.date DESC';
         $req .= ' LIMIT 1 OFFSET 0';
@@ -312,29 +288,23 @@ class Matches {
         return $match;
     }
 
-    function get_last_played() {
+    function get_last_played()
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date")::integer as "time",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %H:%i\') as "date_str",';
-            $req .= ' UNIX_TIMESTAMP("date") as "time",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE m."scoreA" IS NOT NULL and m."scoreB" IS NOT NULL';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %H:%i\') as date_str,';
+        $req .= ' UNIX_TIMESTAMP(date) as time,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE m.scoreA IS NOT NULL and m.scoreB IS NOT NULL';
         $req .= ' ORDER BY m.date DESC';
         $req .= ' LIMIT 1 OFFSET 0';
 
@@ -346,29 +316,24 @@ class Matches {
         return $match;
     }
 
-    function get_final($round, $rank) {
+    function get_final($round, $rank)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         $req .= ' WHERE m.round = ' . $round;
         $req .= ' AND m.rank = ' . $rank;
-        $req .= ' ORDER BY date, "teamAname"';
+        $req .= ' ORDER BY date, teamAname';
 
         $match = $this->parent->db->select_line($req, $null);
 
@@ -380,7 +345,8 @@ class Matches {
 
     /*     * **************** */
 
-    function get() {
+    function get()
+    {
         // 0 arg = get all matches
         // 1 arg = get one match
 
@@ -396,26 +362,20 @@ class Matches {
 
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         if ($nb_args > 0)
-            $req .= ' WHERE m."matchID" = ' . $matchID . '';
-        $req .= ' ORDER BY "date", "teamAname"';
+            $req .= ' WHERE m.matchID = ' . $matchID . '';
+        $req .= ' ORDER BY date, teamAname';
 
         // Execute Query			
         $matches = $this->parent->db->select_array($req, $nb_matches);
@@ -431,28 +391,23 @@ class Matches {
 
     /*     * **************** */
 
-    function get_by_teams($teamA, $teamB) {
+    function get_by_teams($teamA, $teamB)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE m."teamA" = ' . $teamA . '';
-        $req .= ' AND m."teamB" = ' . $teamB . '';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE m.teamA = ' . $teamA . '';
+        $req .= ' AND m.teamB = ' . $teamB . '';
 
         $matches = $this->parent->db->select_line($req, $nb_teams);
 
@@ -464,29 +419,24 @@ class Matches {
 
     /*     * **************** */
 
-    function get_by_pool($pool) {
+    function get_by_pool($pool)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE "tA".pool = \'' . $pool . '\'';
-        $req .= ' AND "tB".pool = \'' . $pool . '\'';
-        $req .= ' ORDER BY "date", "teamAname"';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE tA.pool = \'' . $pool . '\'';
+        $req .= ' AND tB.pool = \'' . $pool . '\'';
+        $req .= ' ORDER BY date, teamAname';
 
         $matches = $this->parent->db->select_array($req, $nb_teams);
 
@@ -498,30 +448,25 @@ class Matches {
 
     /*     * **************** */
 
-    function get_by_pool_before_now($pool) {
+    function get_by_pool_before_now($pool)
+    {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' "tA"."teamID" as "teamAid",';
-        $req .= ' "tB"."teamID" as "teamBid",';
-        $req .= ' "tA"."name" as "teamAname",';
-        $req .= ' "tB"."name" as "teamBname",';
-        $req .= ' "tA"."pool" as "teamPool",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec",';
-            $req .= ' EXTRACT(DAY FROM "date" - NOW())::integer as "delay_days"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec",';
-            $req .= ' DATEDIFF("date",NOW()) as "delay_days"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" m';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE "tA".pool = \'' . $pool . '\'';
-        $req .= ' AND "tB".pool = \'' . $pool . '\'';
-        $req .= ' AND m."date" <= NOW()';
-        $req .= ' ORDER BY "date", "teamAname"';
+        $req .= ' tA.teamID as teamAid,';
+        $req .= ' tB.teamID as teamBid,';
+        $req .= ' tA.name as teamAname,';
+        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
+        $req .= ' DATEDIFF(date,NOW()) as delay_days';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE tA.pool = \'' . $pool . '\'';
+        $req .= ' AND tB.pool = \'' . $pool . '\'';
+        $req .= ' AND m.date <= NOW()';
+        $req .= ' ORDER BY date, teamAname';
 
         $matches = $this->parent->db->select_array($req, $nb_teams);
 
@@ -531,7 +476,8 @@ class Matches {
         return $matches;
     }
 
-    function get_HTTP($matchID, $isRounds = 0) {
+    function get_HTTP($matchID, $isRounds = 0)
+    {
         $match = $this->get($matchID);
         if (isset($match)) {
             if ($isRounds == 1) {
@@ -555,9 +501,10 @@ class Matches {
 
     /*     * **************** */
 
-    function is_final_exist($round, $rank) {
+    function is_final_exist($round, $rank)
+    {
         // Main Query
-        $req = 'SELECT "matchID"';
+        $req = 'SELECT matchID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' WHERE round = ' . $round . '';
         $req .= ' AND rank = ' . $rank . '';
@@ -565,7 +512,8 @@ class Matches {
         return $this->parent->db->select_one($req, null);
     }
 
-    function is_exist() {
+    function is_exist()
+    {
         // 1 arg = test by matchID
         // 2 arg = test by teams
 
@@ -577,63 +525,57 @@ class Matches {
             if (($matchID == "") || ($matchID == NULL))
                 $matchID = 'NULL';
             // Main Query
-            $req = 'SELECT "matchID"';
+            $req = 'SELECT matchID';
             $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-            $req .= ' WHERE m."matchID" = ' . $matchID . '';
+            $req .= ' WHERE m.matchID = ' . $matchID . '';
             return $this->parent->db->select_one($req, null);
         } elseif ($nb_args == 2) {
             $teamA = $args[0];
             $teamB = $args[1];
             // Main Query
-            $req = 'SELECT "matchID"';
+            $req = 'SELECT matchID';
             $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-            $req .= ' WHERE m."teamA" = ' . $teamA . '';
-            $req .= ' AND m."teamB" = ' . $teamB . '';
+            $req .= ' WHERE m.teamA = ' . $teamA . '';
+            $req .= ' AND m.teamB = ' . $teamB . '';
             return $this->parent->db->select_one($req, null);
         } else
             return false;
     }
 
-    function is_open($matchID) {
+    function is_open($matchID)
+    {
         // Main Query
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req = 'SELECT to_char("date",\'HH24:MI:SS:MM:DD:YYYY\') as "date_str"';
-        } else {
-            $req = 'SELECT DATE_FORMAT("date",\'%H:%i:%s:%m:%d:%Y\') as "date_str"';
-        }
+        $req = 'SELECT DATE_FORMAT(date,\'%H:%i:%s:%m:%d:%Y\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-        $req .= ' WHERE m."matchID" = ' . $matchID . '';
+        $req .= ' WHERE m.matchID = ' . $matchID . '';
 
         $date_str = $this->parent->db->select_one($req);
         if ($date_str) {
             $date_array = explode(":", $date_str);
             $time_match = mktime($date_array[0], $date_array[1] - 15, $date_array[2], $date_array[3], $date_array[4], $date_array[5]);
             $time_now = mktime();
-            return($time_now < $time_match);
+            return ($time_now < $time_match);
         } else
             return false;
     }
 
-    function get_pool($matchID) {
+    function get_pool($matchID)
+    {
         // Main Query
-        $req = 'SELECT "tA".pool as "teamPool"';
+        $req = 'SELECT tA.pool as teamPool';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' WHERE m."matchID" = ' . $matchID . '';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' WHERE m.matchID = ' . $matchID . '';
 
         return $this->parent->db->select_one($req, null);
     }
 
-    function get_last_pool() {
+    function get_last_pool()
+    {
         // Main Query
         $req = 'SELECT *,';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= ' to_char("date",\'le DD/MM à HH24:MI\') as "date_str",';
-            $req .= ' EXTRACT(EPOCH FROM "date" - NOW())::integer as "delay_sec"';
-        } else {
-            $req .= ' DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str",';
-            $req .= ' TIME_TO_SEC(TIMEDIFF("date",NOW())) as "delay_sec"';
-        }
+        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m1';
         $req .= ' WHERE date = (';
         $req .= '    SELECT MAX(date) ';
@@ -642,7 +584,7 @@ class Matches {
         $req .= ')';
         $req .= ' AND m1.round IS NULL';
 
-        $match = $this->parent->db->select_line($req, $null);
+        $match = $this->parent->db->select_line($req, null);
 
         if ($this->parent->debug)
             array_show($match);
@@ -650,7 +592,8 @@ class Matches {
         return $match;
     }
 
-    function get_nb_matchs_in_the_next_n_days($nbDays) {
+    function get_nb_matchs_in_the_next_n_days($nbDays)
+    {
         // Main Query
         $req = "SELECT count(m.matchID) FROM " . $this->parent->config['db_prefix'] . "matches AS m";
         $req .= " WHERE DATEDIFF(m.date, NOW()) >= 0 AND DATEDIFF(m.date, NOW()) <= " . $nbDays;
@@ -662,7 +605,8 @@ class Matches {
 
     /*     * **************** */
 
-    function add_HTTP_final_result($matchID, $team, $score, $teamID, $teamW, $num) {
+    function add_HTTP_final_result($matchID, $team, $score, $teamID, $teamW, $num)
+    {
         $match = $this->get($matchID);
         if (!$match)
             return false;
@@ -673,11 +617,11 @@ class Matches {
             $score = 'NULL';
         if ($this->is_final_exist($round, $rank)) {
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches';
-            $req .= ' SET "score' . $team . '" = ' . $score . ', "team' . $team . '" = ' . $teamID . ', "teamW" = \'' . addslashes($teamW) . '\'';
-            $req .= ' WHERE "matchID" = ' . $matchID . '';
+            $req .= ' SET score' . $team . ' = ' . $score . ', team' . $team . ' = ' . $teamID . ', teamW = \'' . addslashes($teamW) . '\'';
+            $req .= ' WHERE matchID = ' . $matchID . '';
             $ret = $this->parent->db->exec_query($req);
         } else {
-            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches ("matchID","score' . $team . '","team' . $team . '","teamW")';
+            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches (matchID,score' . $team . ',team' . $team . ',teamW)';
             $req .= ' VALUES (' . $matchID . ',' . $score . ',' . $teamID . ',\'' . $teamW . '\')';
             $ret = $this->parent->db->insert($req);
         }
@@ -692,11 +636,11 @@ class Matches {
 
                 if ($this->is_final_exist($next_round, $next_rank)) {
                     $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches';
-                    $req .=' SET "team' . $next_team . '" = ' . $next_teamID . '';
-                    $req .=' WHERE "matchID" = ' . $next_matchID . '';
+                    $req .= ' SET team' . $next_team . ' = ' . $next_teamID . '';
+                    $req .= ' WHERE matchID = ' . $next_matchID . '';
                     $ret = $this->parent->db->exec_query($req);
                 } else {
-                    $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches ("matchID","team' . $next_team . '")';
+                    $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches (matchID,team' . $next_team . ')';
                     $req .= ' VALUES (' . $next_matchID . ',' . $next_teamID . ')';
                     $ret = $this->parent->db->insert($req);
                 }
@@ -709,12 +653,14 @@ class Matches {
 
     /*     * **************** */
 
-    function add_HTTP_result($matchID, $team, $score, $num) {
-        if ($score == "")
+    function add_HTTP_result($matchID, $team, $score, $num)
+    {
+        if ($score == "") {
             $score = 'NULL';
+        }
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches';
-        $req .= ' SET "score' . $team . '" = ' . $score . '';
-        $req .= ' WHERE "matchID" = ' . $matchID . '';
+        $req .= ' SET score' . $team . ' = ' . $score . '';
+        $req .= ' WHERE matchID = ' . $matchID . '';
         $ret = $this->parent->db->exec_query($req);
 
         $pool = $this->get_pool($matchID);
@@ -731,5 +677,4 @@ class Matches {
         $this->parent->settings->set_last_result();
         return $ret;
     }
-
 }

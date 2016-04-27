@@ -35,15 +35,15 @@ class Bets {
                 $final_teamID = 'NULL';
             /* Set score */
             if ($this->is_exist($userID, $matchID)) {
-                $req = 'UPDATE "' . $this->parent->config['db_prefix'] . 'bets"';
-                $req .= ' SET "score' . $team . '" =  ' . $score . ',';
-                $req .= ' "team' . $team . '" = ' . $final_teamID . ',';
-                $req .= ' "teamW" = \'' . $final_teamW . '\'';
-                $req .= ' WHERE "userID" = ' . $userID . '';
-                $req .= ' AND "matchID" = ' . $matchID . '';
+                $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
+                $req .= ' SET score' . $team . ' =  ' . $score . ',';
+                $req .= ' team' . $team . ' = ' . $final_teamID . ',';
+                $req .= ' teamW = \'' . $final_teamW . '\'';
+                $req .= ' WHERE userID = ' . $userID . '';
+                $req .= ' AND matchID = ' . $matchID . '';
                 $ret = $this->parent->db->exec_query($req);
             } else {
-                $req = 'INSERT INTO "' . $this->parent->config['db_prefix'] . 'bets" ("userID","matchID","score' . $team . '","team' . $team . '","teamW")';
+                $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,score' . $team . ',team' . $team . ',teamW)';
                 $req .= ' VALUES (' . $userID . ',' . $matchID . ',' . $score . ',' . $final_teamID . ',\'' . $final_teamW . '\');';
                 $ret = $this->parent->db->insert($req);
             }
@@ -75,12 +75,12 @@ class Bets {
             }
         } else {
             if ($this->is_exist($userID, $matchID)) {
-                $req = 'UPDATE "' . $this->parent->config['db_prefix'] . 'bets"';
-                $req .= ' SET "score' . $team . '" = ' . $score . '';
-                $req .= ' WHERE "userID" = ' . $userID . ' AND "matchID" = ' . $matchID . ';';
+                $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
+                $req .= ' SET score' . $team . ' = ' . $score . '';
+                $req .= ' WHERE userID = ' . $userID . ' AND matchID = ' . $matchID . ';';
                 $ret = $this->parent->db->exec_query($req);
             } else {
-                $req = 'INSERT INTO "' . $this->parent->config['db_prefix'] . 'bets" ("userID","matchID","score' . $team . '")';
+                $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,score' . $team . ')';
                 $req .= ' VALUES (' . $userID . ',' . $matchID . ',' . $score . ');';
                 $ret = $this->parent->db->insert($req);
             }
@@ -91,9 +91,9 @@ class Bets {
     function delete_by_match_and_user($matchID, $userID) {
         prepare_numeric_data(array(&$matchID, &$userID));
         $req = 'DELETE';
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'bets"';
-        $req .= ' WHERE "userID" = ' . $userID . '';
-        $req .= ' AND "matchID" = ' . $matchID . ';';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'bets';
+        $req .= ' WHERE userID = ' . $userID . '';
+        $req .= ' AND matchID = ' . $matchID . ';';
         $this->parent->db->exec_query($req);
         return;
     }
@@ -170,12 +170,12 @@ class Bets {
         if ($next_teamID == "")
             $next_teamID = 'NULL';
         if ($this->is_exist($userID, $next_matchID)) {
-            $req = 'UPDATE "' . $this->parent->config['db_prefix'] . 'bets"';
-            $req .= ' SET "team' . $next_team . '" = ' . addslashes($next_teamID) . '';
-            $req .= ' WHERE "userID" = ' . $userID . ' AND "matchID" = ' . $next_matchID . ';';
+            $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
+            $req .= ' SET team' . $next_team . ' = ' . addslashes($next_teamID) . '';
+            $req .= ' WHERE userID = ' . $userID . ' AND matchID = ' . $next_matchID . ';';
             $ret = $this->parent->db->exec_query($req);
         } else {
-            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets ("userID","matchID","team' . $next_team . '")';
+            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,team' . $next_team . ')';
             $req .= ' VALUES (' . $userID . ',' . $next_matchID . ',' . $next_teamID . ');';
             $ret = $this->parent->db->insert($req);
         }
@@ -188,19 +188,15 @@ class Bets {
         prepare_alphanumeric_data(array(&$pool));
 
         // Main Query
-        $req = 'SELECT "m"."matchID", "m"."scoreA" as "scoreMatchA", "m"."scoreB" as "scoreMatchB", "b"."scoreA" as "scoreBetA", "b"."scoreB" as "scoreBetB", "tA"."teamID" as "teamAid", "tB"."teamID" as "teamBid", "tA"."name" as "teamAname", "tB"."name" as "teamBname", "tA"."fifaRank" as "teamAfifaRank", "tB"."fifaRank" as "teamBfifaRank", "tA"."pool" as "teamPool", "b"."teamW",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= 'to_char("date",\'le DD/MM à HH24:MI\') as "date_str"';
-        } else {
-            $req .= 'DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" "m" ';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'bets" "b" ON ("m"."matchID" = "b"."matchID" AND "b"."userID" = ' . $userID . ')';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON ("m"."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON ("m"."teamB" = "tB"."teamID")';
-        $req .= ' WHERE "tA"."pool" = \'' . $pool . '\'';
-        $req .= ' AND "tB"."pool" = \'' . $pool . '\'';
-        $req .= ' ORDER BY "date", "teamAname";';
+        $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
+        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = ' . $userID . ')';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE tA.pool = \'' . $pool . '\'';
+        $req .= ' AND tB.pool = \'' . $pool . '\'';
+        $req .= ' ORDER BY date, teamAname;';
 
         $bets = $this->parent->db->select_array($req, $nb_teams);
 
@@ -419,19 +415,15 @@ class Bets {
     function get_by_match_group_by_score($matchID) {
         prepare_numeric_data(array(&$matchID));
         // Main Query
-        $req = 'SELECT *, m."scoreA" as "scoreMatchA", m."scoreB" as "scoreMatchB", b."teamA" as "teamBetA", b."teamB" as "teamBetB", b."scoreA" as "scoreBetA", b."scoreB" as "scoreBetB", "tA"."teamID" as "teamAid", "tB"."teamID" as "teamBid", "tA".name as "teamAname", "tB".name as "teamBname", "tA".pool as "teamPool", u.name as username,';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= 'to_char("date",\'le DD/MM à HH24:MI\') as "date_str"';
-        } else {
-            $req .= 'DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str"';
-        }
+        $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool, u.name as username,';
+        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-        $req .= ' RIGHT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m."matchID" = b."matchID" AND ( b."scoreA" IS NOT NULL OR b."scoreB" IS NOT NULL ))';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u."userID" = b."userID")';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams "tA" ON (m."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams "tB" ON (m."teamB" = "tB"."teamID")';
-        $req .= ' WHERE m."matchID" = ' . $matchID . '';
-        $req .= ' ORDER BY "date", "teamAname"';
+        $req .= ' RIGHT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND ( b.scoreA IS NOT NULL OR b.scoreB IS NOT NULL ))';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u.userID = b.userID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE m.matchID = ' . $matchID . '';
+        $req .= ' ORDER BY date, teamAname';
         $bets = $this->parent->db->select_array($req, $nb_bets);
         if ($this->parent->debug)
             array_show($bets);
@@ -470,21 +462,17 @@ class Bets {
             prepare_alphanumeric_data(array(&$option));
 
         // Main Query
-        $req = 'SELECT "m"."matchID", "m"."scoreA" as "scoreMatchA", "m"."scoreB" as "scoreMatchB", "b"."scoreA" as "scoreBetA", "b"."scoreB" as "scoreBetB", "tA"."teamID" as "teamAid", "tB"."teamID" as "teamBid", "tA"."name" as "teamAname", "tB"."name" as "teamBname", "tA"."fifaRank" as "teamAfifaRank", "tB"."fifaRank" as "teamBfifaRank", "tA"."pool" as "teamPool", "b"."teamW",';
-        if ($this->parent->config['DB'] == "PgSQL") {
-            $req .= 'to_char("date",\'le DD/MM à HH24:MI\') as "date_str"';
-        } else {
-            $req .= 'DATE_FORMAT("date",\'le %d/%m à %Hh%i\') as "date_str"';
-        }
-        $req .= ' FROM "' . $this->parent->config['db_prefix'] . 'matches" "m" ';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'bets" "b" ON ("m"."matchID" = "b"."matchID" AND "b"."userID" = ' . $userID . ')';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tA" ON ("m"."teamA" = "tA"."teamID")';
-        $req .= ' LEFT JOIN "' . $this->parent->config['db_prefix'] . 'teams" "tB" ON ("m"."teamB" = "tB"."teamID")';
+        $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
+        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = ' . $userID . ')';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         if ($option == "pool")
             $req .= ' WHERE round IS NULL';
         else if ($option == "rounds")
             $req .= ' WHERE round IS NOT NULL';
-        $req .= ' ORDER BY "date", "teamAname";';
+        $req .= ' ORDER BY date, teamAname;';
 
         $bets = $this->parent->db->select_array($req, $nb_teams);
 
@@ -497,10 +485,10 @@ class Bets {
     function is_exist($userID, $matchID) {
         prepare_numeric_data(array(&$userID, &$matchID));
         // Main Query
-        $req = 'SELECT "matchID"';
+        $req = 'SELECT matchID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'bets ';
-        $req .= ' WHERE "userID" = ' . $userID . '';
-        $req .= ' AND "matchID" = ' . $matchID . '';
+        $req .= ' WHERE userID = ' . $userID . '';
+        $req .= ' AND matchID = ' . $matchID . '';
 
         return $this->parent->db->select_one($req, null);
     }
