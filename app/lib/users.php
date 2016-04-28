@@ -202,7 +202,8 @@ class Users
         $req .= ' ORDER BY name';
 
         // Execute Query
-        $users = $this->parent->db->select_array($req, null);
+        $nb_users = 0;
+        $users = $this->parent->db->select_array($req, $nb_users);
         if ($this->parent->debug) {
             array_show($users);
         }
@@ -414,9 +415,9 @@ class Users
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE userID = ' . $userID;
 
-        $user = $this->parent->db->select_one($req, null);
+        $status = $this->parent->db->select_one($req);
 
-        return $user['status'] == 1;
+        return $status == 1;
     }
 
     function unset_group($groupID, $userID = false)

@@ -19,29 +19,29 @@ class Matches
         if ($rank > 0 && $round > 0) {
             if ($matchID = $this->is_final_exist($round, $rank)) {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches';
-                $req .= ' SET "date" =\'' . addslashes($match_date) . '\', "teamA" = ' . $match_teamA . ' , "teamB" = ' . $match_teamB . '';
-                $req .= ' WHERE "matchID" = ' . $matchID . '';
+                $req .= ' SET date =\'' . addslashes($match_date) . '\', teamA = ' . $match_teamA . ' , teamB = ' . $match_teamB . '';
+                $req .= ' WHERE matchID = ' . $matchID . '';
                 $res = $this->parent->db->exec_query($req);
                 if ($res) {
                     $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
-                    $req .= ' SET "teamA" = ' . $match_teamA . ' , "teamB" = ' . $match_teamB . '';
-                    $req .= ' WHERE "matchID" = ' . $matchID;
+                    $req .= ' SET teamA = ' . $match_teamA . ' , teamB = ' . $match_teamB . '';
+                    $req .= ' WHERE matchID = ' . $matchID;
                     return $this->parent->db->exec_query($req);
                 } else {
                     return $res;
                 }
             } else {
-                $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches (date,"teamA","teamB",round,rank)';
+                $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches (date,teamA,teamB,round,rank)';
                 $req .= ' VALUES (\'' . $match_date . '\',' . $match_teamA . ',' . $match_teamB . ',' . $round . ',' . $rank . ')';
                 return $this->parent->db->insert($req);
             }
         } else {
             if ($matchID = $this->is_exist($match_teamA, $match_teamB)) {
-                $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches SET "date" = \'' . addslashes($match_date) . '\'';
-                $req .= ' WHERE "matchID" = ' . $matchID . '';
+                $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches SET date = \'' . addslashes($match_date) . '\'';
+                $req .= ' WHERE matchID = ' . $matchID . '';
                 return $this->parent->db->exec_query($req);
             } else {
-                $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches ("date","teamA","teamB")';
+                $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'matches (date,teamA,teamB)';
                 $req .= ' VALUES (\'' . $match_date . '\',' . $match_teamA . ',' . $match_teamB . ')';
                 return $this->parent->db->insert($req);
             }
@@ -438,6 +438,7 @@ class Matches
         $req .= ' AND tB.pool = \'' . $pool . '\'';
         $req .= ' ORDER BY date, teamAname';
 
+        $nb_teams = 0;
         $matches = $this->parent->db->select_array($req, $nb_teams);
 
         if ($this->parent->debug)
@@ -553,7 +554,7 @@ class Matches
         if ($date_str) {
             $date_array = explode(":", $date_str);
             $time_match = mktime($date_array[0], $date_array[1] - 15, $date_array[2], $date_array[3], $date_array[4], $date_array[5]);
-            $time_now = mktime();
+            $time_now = time();
             return ($time_now < $time_match);
         } else
             return false;

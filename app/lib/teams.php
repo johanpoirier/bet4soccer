@@ -28,8 +28,8 @@ class Teams
             $req .= ' WHERE teamID = ' . $teamID . '';
             return $this->parent->db->exec_query($req);
         } else {
-            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'teams (name,pool)';
-            $req .= ' VALUES (\'' . addslashes($team_name) . '\',\'' . addslashes($team_pool) . '\',' . $fifaRank . ')';
+            $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'teams (name, pool, fifaRank)';
+            $req .= " VALUES ('" . addslashes($team_name) . "', '$team_pool', $fifaRank)";
             return $this->parent->db->insert($req);
         }
     }
@@ -85,8 +85,9 @@ class Teams
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'teams';
         $req .= ' WHERE pool = \'' . $pool . '\'';
-
-        $teams = $this->parent->db->select_array($req, null);
+        
+        $nb_teams = 0;
+        $teams = $this->parent->db->select_array($req, $nb_teams);
 
         if ($this->parent->debug) {
             array_show($teams);
