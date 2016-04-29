@@ -15,8 +15,7 @@ class Tags
     {
         if (!$userID) {
             $userID = $this->parent->users->get_current_id();
-        }
-        elseif ($userID != $this->parent->users->get_current_id()) {
+        } elseif ($userID != $this->parent->users->get_current_id()) {
             return false;
         }
         prepare_numeric_data(array(&$groupID, &$userID));
@@ -27,7 +26,7 @@ class Tags
         }
         $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'tags (userID,groupID,date,tag)';
         $req .= ' VALUES (' . $userID . ',' . $groupID . ',NOW(),\'' . $text . '\')';
-        
+
         return $this->parent->db->insert($req);
     }
 
@@ -52,7 +51,7 @@ class Tags
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'tags ';
         $req .= ' WHERE tagID = ' . $tagID;
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
 
     }
 
@@ -65,7 +64,8 @@ class Tags
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u.userID = t.userID)';
         $req .= ' WHERE tagID = ' . $tagID . '';
 
-        $tag = $this->parent->db->select_line($req, null);
+        $nb_tags = 0;
+        $tag = $this->parent->db->select_line($req, $nb_tags);
 
         if ($this->parent->debug) {
             array_show($tag);
@@ -127,7 +127,8 @@ class Tags
             $req .= ' LIMIT ' . $limit . ' OFFSET ' . $start . '';
         }
 
-        $tags = $this->parent->db->select_array($req, null);
+        $nb_tags = 0;
+        $tags = $this->parent->db->select_array($req, $nb_tags);
 
         if ($this->parent->debug) {
             array_show($tags);
@@ -170,7 +171,8 @@ class Tags
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'tags t ';
         $req .= ' WHERE t.tag = \'' . $text . '\'';
 
-        $tag = $this->parent->db->select_line($req, null);
+        $nb_tags = 0;
+        $tag = $this->parent->db->select_line($req, $nb_tags);
 
         if ($this->parent->debug) {
             array_show($tag);

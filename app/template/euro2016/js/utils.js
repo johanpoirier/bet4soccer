@@ -34,11 +34,13 @@ function getTags(groupID, startTag) {
 	XHR.resetData();
 	XHR.setRefreshArea("tags");
 	XHR.appendData("act", "get_HTTP_tags");
-	if (!startTag)
+	if (!startTag) {
 		startTag = 0;
+	}
 	XHR.appendData("start", startTag);
-	if (!groupID)
+	if (!groupID) {
 		groupID = '';
+	}
 	XHR.appendData("groupID", groupID);
 	XHR.sendAndLoad("/", "POST");
 
