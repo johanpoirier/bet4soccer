@@ -1,4 +1,4 @@
-<aside id="mainarea">
+<div id="mainarea">
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
@@ -23,7 +23,6 @@
             </div>
         </div>
 
-
         <!-- BEGIN mine -->
         <div class="focus_mine">
             <b>Votre classement</b><br/>
@@ -31,8 +30,8 @@
                 <b>{mine.RANK}</b><sup>e</sup><br/>
                 <span style="font-size: 0.4em;">{mine.POINTS} pts</span>
             </div>
-            <span style="font-size:11px;" ;><br/><a href="#{mine.ID}">{USERNAME}</a></span><br/>
-            <span style="font-size:10px;" ;><i>{mine.EVOL}</i></span><br/><br/>
+            <span style="font-size:11px;"><br/><a href="#{mine.ID}">{USERNAME}</a></span><br/>
+            <span style="font-size:10px;"><i>{mine.EVOL}</i></span><br/><br/>
         </div>
         <!-- END mine -->
         <!-- BEGIN max -->
@@ -47,15 +46,15 @@
         <div class="focus_most">
             <b>+ forte baisse</b><br/><br/>
             <div style="float:left;margin:2px;"><img src="{TPL_WEB_PATH}images/baisse.png" width="30px"/></div>
-            <span style="font-size:11px;" ;><a href="#{min.ID}">{min.NAME}</a></span><br/>
-            <span style="font-size:10px;" ;><i>{min.EVOL}</i></span><br/><br/>
+            <span style="font-size:11px;"><a href="#{min.ID}">{min.NAME}</a></span>
+            <span style="font-size:10px;"><i>{min.EVOL}</i></span><
         </div>
         <!-- END min -->
         <table>
             <tr>
                 <td width="35" style="font-size:80%;text-align:center;"><b>Rang</b></td>
-                <td width="{WIDTH_USERS}" style="font-size:80%"><b>Parieur</b></span>
-                <td width="{WIDTH_TEAMS}" style="font-size:80%"><b>Equipe</b></span>
+                <td width="{WIDTH_USERS}" style="font-size:80%"><b>Parieur</b></td>
+                <td width="{WIDTH_TEAMS}" style="font-size:80%"><b>Equipe</b></td>
                 <td width="65" style="font-size:80%;text-align:center;"><b>Points</b></td>
                 <td width="65" style="font-size:80%;text-align:center;"><b>Scores Exacts</b></td>
                 <td width="65" style="font-size:80%;text-align:center;"><b>R&eacute;sultats Justes</b></td>
@@ -90,10 +89,7 @@
                 <br/>
                 <form onsubmit="return saveTag('');">
                     <input type="text" id="tag" value="" size="18"/>
-                    <br/>
                     <span style="font-size:8px;">(Entrée pour envoyer)</span>
-                    <br/>
-                    <br/>
                 </form>
             </div>
             <div id="tags">
@@ -101,10 +97,7 @@
                 <div id="tag_{tags.ID}">
                     {tags.DEL_IMG}
                     <u>{tags.DATE}{TAG_SEPARATOR}<b>{tags.USER}</b></u>
-                    <br/>
                     {tags.TEXT}
-                    <br/>
-                    <br/>
                 </div>
                 <!-- END tags -->
             </div>
@@ -113,7 +106,6 @@
             </div>
         </div>
     </aside>
-    <div class="hr"></div>
 </div>
 <script type="text/javascript">
     getTags();

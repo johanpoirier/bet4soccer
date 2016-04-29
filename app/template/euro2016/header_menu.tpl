@@ -4,7 +4,7 @@
       <tr>
         <td>
           <div id="logo">
-            <a href="index.php"><img src="{TPL_WEB_PATH}images/euro2016.svg" alt="UEFA Euro 2016" border="0" /></a>
+            <a href="index.php"><img src="{TPL_WEB_PATH}images/euro2016.svg" alt="UEFA Euro 2016" border="0" width="50" /></a>
           </div>
 		</td>
 	    <td valign="middle">
@@ -44,24 +44,24 @@
 
   <nav>
     <!-- BEGIN admin_bar -->
-    <img src="{TPL_WEB_PATH}images/admin_bar.png" usemap="#testbar5" border="0" alt="" />
-    <map name="testbar5">
-      <area shape="rect" coords="12,4,115,30" href="/?act=view_ranking" target="" />
-      <area shape="rect" coords="117,4,220,30" href="/?act={FINALS}bets{MATCH_DISPLAY}" target="" />
-      <area shape="rect" coords="222,4,325,30" href="/?act=view_{FINALS}odds{MATCH_DISPLAY}" target="" />
-      <area shape="rect" coords="327,4,430,30" href="/?act=edit_users" target="" />
-      <area shape="rect" coords="432,4,535,30" href="/?act=edit_{FINALS}results" target="" />
-      <area shape="rect" coords="537,4,640,30" href="/?act=edit_matches" target="" />
-      <area shape="rect" coords="642,4,744,30" href="/?act=edit_teams" target="" />
-    </map>
+    <ul class="nav-group">
+      <li class="nav-group-item"><a href="/?act=view_ranking">Classement</a></li>
+      <li class="nav-group-item"><a href="/?act={FINALS}bets{MATCH_DISPLAY}">Mes pronostics</a></li>
+      <li class="nav-group-item"><a href="/?act=view_{FINALS}odds{MATCH_DISPLAY}">Résultats</a></li>
+    </ul>
+    <ul class="nav-group admin">
+      <li class="nav-group-item"><a href="/?act=edit_users">Joueurs</a></li>
+      <li class="nav-group-item"><a href="/?act=edit_{FINALS}results">Saisie Résultats</a></li>
+      <li class="nav-group-item"><a href="/?act=edit_matches">Saisie Matchs</a></li>
+      <li class="nav-group-item"><a href="/?act=edit_teams">Saisie Équipes</a></li>
+    </ul>
     <!-- END admin_bar -->
     <!-- BEGIN user_bar -->
-    <img src="{TPL_WEB_PATH}images/user_bar.png" usemap="#testbar5" border="0" alt="" />
-    <map name="testbar5">
-      <area shape="rect" coords="12,4,254,30" href="/?act=view_ranking" target="" />
-      <area shape="rect" coords="256,4,498,30" href="/?act={FINALS}bets{MATCH_DISPLAY}" target="" />
-      <area shape="rect" coords="500,4,742,30" href="/?act=view_{FINALS}odds{MATCH_DISPLAY}" target="" />
-   </map>
+    <ul class="nav-group">
+      <li class="nav-group-item"><a href="/?act=view_ranking">Classement</a></li>
+      <li class="nav-group-item"><a href="/?act={FINALS}bets{MATCH_DISPLAY}">Mes pronostics</a></li>
+      <li class="nav-group-item"><a href="/?act=view_{FINALS}odds{MATCH_DISPLAY}">Résultats</a></li>
+    </ul>
     <!-- END user_bar -->
     <!-- BEGIN logout_bar -->
     &nbsp;
