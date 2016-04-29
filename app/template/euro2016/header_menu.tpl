@@ -1,5 +1,5 @@
-<div id="mainn">
-  <div id="head1" style="height:110px">
+<main>
+  <header>
     <table cellspacing="0" cellpadding="0" width="100%">
       <tr>
         <td>
@@ -40,9 +40,9 @@
 		<td valign="middle"></td>
       </tr>
     </table>
-  </div>
+  </header>
 
-  <div id="nav_area">
+  <nav>
     <!-- BEGIN admin_bar -->
     <img src="{TPL_WEB_PATH}images/admin_bar.png" usemap="#testbar5" border="0" alt="" />
     <map name="testbar5">
@@ -66,4 +66,4 @@
     <!-- BEGIN logout_bar -->
     &nbsp;
     <!-- END logout_bar -->
-  </div>
+  </nav>

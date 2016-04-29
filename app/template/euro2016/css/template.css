@@ -1,9 +1,16 @@
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+html, body {
+	height: 100%;
+}
+
 body {
-    background: url(/template/euro2016/images/cover.jpg) #3a511d no-repeat center fixed;
-	-ms-behavior: url(/template/euro2016/css/backgroundsize.min.htc);
-    background-size: cover;
+	background-color: #1d425d;
 	font: normal small Verdana, Arial, sans-serif;
 	margin: 0;
+	min-height: 100%;
 	padding: 0;
 }
 
@@ -85,23 +92,28 @@ a:visited {
 	font-weight:normal;
 }
 
-#mainn {
-	background: #fff url(/template/euro2016/images/bg_container3.gif) repeat-y;
+main {
+	background-color: #ffffff;
+	border-left: 2px solid #447f98;
+	border-right: 2px solid #447f98;
 	font-size: 95%;
 	margin: 0 auto;
+	max-width: 1200px;
+	min-height: 100%;
+	min-width: 700px;
 	padding: 0 4px;
 	position: relative;
 	text-align: left;
-	width: 755px;
+	z-index: 2;
 }
 
-#head1{
+header {
 	background: #ffffff;
-	position: relative;
-	height: 40px;
-} 	
+	height: 4rem;
+	width: 100%;
+}
 
-#nav_area {
+nav {
 	height: 35px;
 	position: relative;
 	margin-bottom: 10px;
@@ -118,17 +130,17 @@ a:visited {
 #mainarea {
 	background-color: #fff;
 	color: #333;
-	float: left;
+	display: flex;
+	flex-flow: row nowrap;
 	margin: 0 0 20px 0;
-	padding: 10px;              
+	overflow: auto;
+	padding: 10px;
 }
-
 .maincontent {
 	background-color: #fff;
 	color: #333;
-	float: left;
+	flex-grow: 3;
 	padding: 0;
-	width: 535px;                
 }
 
 #rightcolumn {
@@ -139,18 +151,7 @@ a:visited {
 	width: 183px;
 }
 
-@media (max-width: 600px) {
-    #mainn {
-        border-right: 2px solid orange;
-        width: 551px;
-    }
-
-    #rightcolumn {
-        display: none;
-    }
-}
-
-#footer {
+footer {
 	border-top: 1px dashed #000000;
 	clear: both;
 	font-size: 90%;
@@ -212,13 +213,13 @@ a:visited {
   font: bold 11px/1em Arial, sans-serif;
 }
  
-#nav_area ul {
+nav ul {
 	float: left;
 	padding: 0;
 	margin: 0;
 	position: relative;
 }
-#nav_area ul li {
+nav ul li {
 	background: url("/template/euro2016/images/new_bg_nav2.gif") repeat-x;
 	border-right: 0px;
 	float: left;
@@ -228,7 +229,7 @@ a:visited {
 	width: 125px;
 
 } 
-#nav_area ul li a {
+nav ul li a {
 	border-left: 0px;
 	border-right: 0px;
 	border-bottom: 2px solid #156E8C;
@@ -253,26 +254,29 @@ a:visited {
 }
 
 .headline {
-  	background: url("/template/euro2016/images/bg_headline6.gif");
-	clear: both;
+	background: -moz-linear-gradient(left, #446fa9 0%, #bfe4f4 100%); /* FF3.6+ */
+	background: -webkit-linear-gradient(left, #446fa9 0%, #bfe4f4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, #446fa9 0%, #bfe4f4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left, #446fa9 0%, #bfe4f4 100%); /* IE10+ */
+	background: linear-gradient(to right, #446fa9 0%, #bfe4f4 100%); /* W3C */
+	border: 0px solid #ffffff;
+	display: flex;
+	flex-flow: row nowrap;
 	margin: 0;
-	border-style: solid;
-	border-color: #FFFFFF;
-	border-width: 0px 0 0px 0;
-	padding: 7px 12px 6px 15px;
+	padding: 7px 12px 5px 15px;
 }
 
-#headline {
-  	background: url("/template/euro2016/images/bg_headline6.gif");
-	clear: both;
-	margin: 0;
-	border-style: solid;
-	border-color: #FFFFFF;
-	border-width: 0px 0 0px 0;
-	padding: 7px 12px 6px 15px;
+.headline-title {
+	flex-grow: 2;
 }
 
-
+.headline-menu {
+	align-items: center;
+	display: flex;
+	flex-flow: row wrap;
+	flex-grow: 1;
+	justify-content: space-around;
+}
 
 
 .tag_cloud {
@@ -342,6 +346,29 @@ a:visited {
  *
  */
 
+aside {
+	flex-grow: 1;
+	font-size: 90%;
+	margin: 0 0 0 1rem;
+	min-width: 15rem;
+	max-width: 33%;
+	padding: 0;
+}
+
+aside .headline {
+
+	margin: 0 0 0.5rem;
+}
+
+aside .headline h2 {
+	color: #fff;
+	font-size: 1.3rem;
+	font-weight: normal;
+	letter-spacing: 0;
+	margin: 0;
+	padding: 0px;
+}
+
 .rightcolumn_box {
 	background: url("template/euro2016/images/new_bg_rc_ora.gif") bottom no-repeat;
 	color: #333;
@@ -349,21 +376,6 @@ a:visited {
 	padding: 0;
 	border: 0;
 	margin-bottom: 10px;
-}
-
-.rightcolumn_headline {
-	background: #FFCC66;
-	border-top: 2px solid #FFCC66;
-	border-bottom: 2px solid #FFCC66;
-}
-
-.rightcolumn_headline h1 {
-	color: #000000;
-	font: bold 100% Arial, sans-serif;
-	margin: 0;
-	padding: 0px 0px 0px 3px;
-	letter-spacing: 0;
-	text-decoration: underline;
 }
 
 .rightcolumn_boxcontent {
@@ -620,4 +632,38 @@ td.user_visual:hover {
 }
 span.user_visual {
 	margin-right: 8px;
+}
+
+/************* media queries ******************/
+@media (min-width: 1200px) {
+	body:before {
+		content: "";
+		background: url(../images/bg_pattern.png) top center #007cba;
+		background-size: cover;
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		min-height: 100%;
+		opacity: .2;
+		filter: alpha(opacity=20);
+		z-index: 1;
+	}
+
+	main {
+		box-shadow: 0 0 6rem #000000;
+	}
+}
+
+@media (max-width: 600px) {
+	main {
+		border-right: 2px solid orange;
+		width: 551px;
+	}
+
+	#rightcolumn {
+		display: none;
+	}
 }
