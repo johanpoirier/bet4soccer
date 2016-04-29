@@ -307,8 +307,9 @@ elseif (GET_HTTP_GROUPS) {
     exit();
 }
 elseif (SAVE_HTTP_GROUP) {
-    if ($debug)
+    if ($debug) {
         echo "SAVE_HTTP_GROUP<br />";
+    }
     echo $bet->groups->add($_GET['group_id'], $_GET['group_name']);
     exit();
 }

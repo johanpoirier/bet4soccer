@@ -172,7 +172,8 @@ class MySQL_DB
 
     // Insert returning
     function insert($req) {
-        return $this->exec_query($req);
+        $this->exec_query($req);
+        return $this->cnx->lastInsertId();
     }
 
     // Procédure d'erreur
