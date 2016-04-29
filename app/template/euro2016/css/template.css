@@ -113,12 +113,6 @@ header {
 	width: 100%;
 }
 
-nav {
-	height: 35px;
-	position: relative;
-	margin-bottom: 10px;
-}
-
 .maincontent_large {
 	background-color: #fff;
 	color: #333;
@@ -127,7 +121,7 @@ nav {
 	width: 735px;                
 }
 
-#mainarea {
+section#mainarea {
 	background-color: #fff;
 	color: #333;
 	display: flex;
@@ -136,6 +130,7 @@ nav {
 	overflow: auto;
 	padding: 10px;
 }
+
 .maincontent {
 	background-color: #fff;
 	color: #333;
@@ -143,12 +138,27 @@ nav {
 	padding: 0;
 }
 
-#rightcolumn {
-	float: right;
+aside {
+	flex-grow: 1;
 	font-size: 90%;
-	margin: 0 0 15px 2px;
+	margin: 0 0 0 1rem;
+	min-width: 15rem;
+	max-width: 33%;
 	padding: 0;
-	width: 183px;
+}
+
+aside .headline {
+
+	margin: 0 0 0.5rem;
+}
+
+aside .headline h2 {
+	color: #fff;
+	font-size: 1.3rem;
+	font-weight: normal;
+	letter-spacing: 0;
+	margin: 0;
+	padding: 0px;
 }
 
 footer {
@@ -160,12 +170,106 @@ footer {
 	padding: 8px 17px 20px 17px;
 }
 
- 
-
 #logo {
 	float: left;
-	padding-top: 7px;
-	padding-left: 10px;
+	padding-top: 3px;
+	padding-left: 3px;
+}
+
+#infos {
+	float: left;
+	padding-top: 3px;
+	padding-left: 30px;
+}
+
+.headline {
+	background: -moz-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* FF3.6+ */
+	background: -webkit-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* IE10+ */
+	background: linear-gradient(to right, #00A952 0%, #c0f4cd 100%); /* W3C */
+	border: 0px solid #ffffff;
+	display: flex;
+	flex-flow: row nowrap;
+	margin: 0;
+	padding: 7px 12px 5px 15px;
+}
+
+.headline-title {
+	flex-grow: 2;
+}
+
+.headline-menu {
+	align-items: center;
+	display: flex;
+	flex-flow: row wrap;
+	flex-grow: 1;
+	justify-content: space-around;
+}
+
+/************* CLASSES ***************/
+.maincontent {
+	background-color: #fff;
+	color: #333;
+	flex-grow: 3;
+	padding: 0;
+}
+
+.formfield {
+	margin: 5px;
+}
+
+.ppp {
+	margin: 10px;
+}
+
+.tag_cloud {
+	background-color: #EBFAF0;
+	border-top: 2px solid #00A952;
+	border-bottom: 2px solid #00A952;
+	border-right: 2px solid #00A952;
+	border-left: 2px solid #00A952;
+	margin: 0 0 1rem 0;
+	padding: 0.5rem;
+	text-align: left;
+}
+
+.tag_cloud span a {
+	line-height: 1.5em;
+	color: #00d561;
+}
+
+.tag_cloud span a:visited {
+	color: #00d561;
+}
+
+.tag_cloud span a:hover {
+	color: #00d561;
+}
+
+.tag_cloud span a:active {
+	color: #00d561;
+}
+
+.list_element > td {
+	border-bottom: 1px dashed black;
+	height: 2.5rem;
+}
+
+.highlight {
+	-webkit-animation-name: glow;
+	-moz-animation-name: glow;
+	-ms-animation-name: glow;
+	animation-name: glow;
+	-webkit-animation-duration: 1.2s;
+	-moz-animation-duration: 1.2s;
+	-ms-animation-duration: 1.2s;
+	animation-duration: 1.2s;
+	-webkit-animation-iteration-count: 3;
+	-moz-animation-iteration-count: 3;
+	-ms-animation-iteration-count: 3;
+	animation-iteration-count: 3;
+	background-color: #fffc89;
 }
 
 .button_admin {
@@ -361,98 +465,6 @@ nav a, nav a:visited {
 	height: 23px;
 	padding: 8px 0 0 0px;
 }
-
-
-/* 
- *
- * rightcoloumn **********************************************
- *
- */
-
-aside {
-	flex-grow: 1;
-	font-size: 90%;
-	margin: 0 0 0 1rem;
-	min-width: 15rem;
-	max-width: 33%;
-	padding: 0;
-}
-
-aside .headline {
-
-	margin: 0 0 0.5rem;
-}
-
-aside .headline h2 {
-	color: #fff;
-	font-size: 1.3rem;
-	font-weight: normal;
-	letter-spacing: 0;
-	margin: 0;
-	padding: 0px;
-}
-
-.rightcolumn_box {
-	background: url("template/euro2016/images/new_bg_rc_ora.gif") bottom no-repeat;
-	color: #333;
-	font-weight: normal;
-	padding: 0;
-	border: 0;
-	margin-bottom: 10px;
-}
-
-.rightcolumn_boxcontent {
-	padding: 10px 2px 2px 2px;
-}
-.rightcolumn_box ul {
-	line-height: 1.3em;
-	margin: 0 0 3px 0;
-	width: 163px;
-	list-style: none;
-	padding: 0;
-}
-.rightcolumn_box li {
-	
-	background-position: 0px 8px;
-	background-repeat: no-repeat;
-	margin: 0px;
-	width: 144px;
-	height: 15px;
-	padding: 2px 0 2px 10px;
-	clear: both;
-}
-
-
-.rightcolumn_box li a {
-	float: left;
-	color: #333;
-	display: block;
-}
-.rightcolumn_box li a:hover {
-	color: #000;
-}
-.rightcolumn_box li a:active {
-	color: #000;
-}
-.rightcolumn_box li a:visited {
-	color: #000;
-}
-
-.rightcolumn_boxcontent ol {
-	margin: 0;
-	padding: 0 0 0 13px;
-}
-
-.rightcolumn_boxcontent p {
-	border: 0;
-	margin: 0;
-	font-size: 100%;
-}
-
-
-
-
-
 
 
 .item_box, .feed_box, .subscriber_box, #info_box {

@@ -2,7 +2,7 @@
 <script type="text/javascript">
     var xmlhttp = getHTTPObject();
     var k = 0;
-    var queue = new Array();
+    var queue = [];
     var inProgress = false;
 
     function debug(str) {
@@ -59,7 +59,7 @@
             }
 
             if (queue.length > 0) {
-                request = queue.shift().split("|");
+                var request = queue.shift().split("|");
                 xmlhttp.open("GET", "/?act=save_HTTP_bet&userID={USERID}&matchID=" + request[1] + "&team=" + request[2] + "&score=" + request[0] + "&j=" + request[3], true);
                 xmlhttp.onreadystatechange = handleHttpResponse;
                 xmlhttp.send(null);
@@ -67,24 +67,25 @@
         }
     }
     function changePhase(action) {
-        window.location.href = "?act=" + action + "";
+        window.location.href = "?act=" + action;
     }
 </script>
 
 <div id="mainarea">
     <div class="maincontent">
-        <div id="headline" style="height:20px"><h1 style="float: left;">Pronostics de {CURRENT_USER}</h1>
-			<select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                <option selected="selected" value="bets">Poules</option>
-                <option value="finals_bets">Phase finale</option>
-            </select>
-		</div>
-        <div id="update_ranking" class="headline" style="color:red;text-align:right;">
-			<a href="/?act=bets&match_display=date">Classer par date</a>
-		</div>
-    </div>
+        <div cclass="headline" style="height:20px">
+            <div class="headline-title">
+                <h1>Pronostics de {CURRENT_USER}</h1>
+            </div>
+			<div class="headline-menu">
+                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
+                    <option selected="selected" value="bets">Poules</option>
+                    <option value="finals_bets">Phase finale</option>
+                </select>
+                <a href="/?act=bets&match_display=date">Classer par date</a>
+            </div>
+        </div>
 
-    <div class="maincontent">
 		<!-- BEGIN stats -->
 		<div style="text-align:center;width:50%;float:left;"><br/><strong>{stats.TYPE}</strong></div>
 		<!-- END stats -->
