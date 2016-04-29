@@ -189,7 +189,7 @@
 							<option name="{months.VALUE}" value="{months.VALUE}" {months.SELECTED}>{months.NAME}</option>
 							<!-- END months -->
 						</select> {YEAR}
-						<input type="text" size="2" name="hour" id="hour" value="13" />h<input type="text" size="2" name="minute" id="minute" value="00" />
+						<input type="text" size="2" name="hour" id="hour" value="21" />h<input type="text" size="2" name="minute" id="minute" value="00" />
 						</td>
 					</tr>
 					<tr>
