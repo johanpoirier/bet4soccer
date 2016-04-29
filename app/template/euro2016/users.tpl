@@ -229,10 +229,11 @@
             <table width="100%">
                 <tr>
                     <th width="30%">Nom</th>
-                    <th width="30%">Login</th>
+                    <th width="20%">Login</th>
                     <th width="20%">Groupe</th>
                     <th width="10%">Cnx</th>
                     <th width="10%">Vote</th>
+                    <th width="10%">Paris</th>
                 </tr>
                 <!-- BEGIN users -->
                 <tr id="user_{users.ID}" onclick="javascript:getUser({users.ID});">
@@ -242,6 +243,7 @@
                     <td>{users.user.GROUP_NAME}</td>
                     <td>{users.user.LAST_CONNECTION}</td>
                     <td>{users.user.LAST_BET}</td>
+                    <td>{users.user.BETS_COUNT}</td>
                     <!-- END user -->
                     <!-- BEGIN admin -->
                     <td><b>{users.admin.NAME}</b></td>
@@ -249,6 +251,7 @@
                     <td>{users.admin.GROUP_NAME}</td>
                     <td>{users.admin.LAST_CONNECTION}</td>
                     <td>{users.admin.LAST_BET}</td>
+                    <td>{users.admin.BETS_COUNT}</td>
                     <!-- END admin -->
                 </tr>
                 <!-- END users -->
@@ -319,10 +322,6 @@
                 <input type="file" name="csv_file" size="40"/>&nbsp;<input type="submit" name="submit" value="Ok"/>
             </form>
         </div>
-
-        <br/>
-        <br/>
-        <br/>
     </div>
 
     <div class="maincontent">
@@ -356,21 +355,6 @@
                     </tr>
                 </table>
             </form>
-        </div>
-
-        <br/>
-        <br/>
-        <br/>
-    </div>
-
-    <div class="maincontent">
-        <div id="headline"><h1>Losers</h1></div>
-    </div>
-    <div class="maincontent">
-        <div class="tag_cloud" id="list_losers">
-            <!-- BEGIN losers -->
-            <div id="loser{losers.ID}">{losers.NAME};{losers.EMAIL}</div>
-            <!-- END losers -->
         </div>
     </div>
 </div>

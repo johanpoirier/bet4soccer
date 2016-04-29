@@ -453,8 +453,7 @@ elseif (EDIT_MATCHES) {
         echo "EDIT_USERS<br />";
     $users = $bet->users->get();
     $groups = $bet->groups->get_with_users();
-    $losers = $bet->users->get_with_no_vote();
-    $bet->load_users($users, $groups, $losers);
+    $bet->load_users($users, $groups);
 }
 elseif (EDIT_BETS) {
     if ($debug)

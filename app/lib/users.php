@@ -171,12 +171,11 @@ class Users
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t2 ON (u.groupID2 = t2.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u.groupID3 = t3.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID)';
-        $req .= ' WHERE b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL';
         if ($nb_args > 0) {
             $req .= ' AND u.userID = ' . $userID . '';
         }
-        $req .= ' GROUP BY b.userID';
-        $req .= ' ORDER by u.name';
+        $req .= ' GROUP BY u.userID';
+        $req .= ' ORDER by nb_bets, u.name';
 
         // Execute Query
         $nb_users = 0;
@@ -191,24 +190,6 @@ class Users
         } else {
             return $users;
         }
-    }
-
-    function get_with_no_vote()
-    {
-        // Main Query
-        $req = 'SELECT userID, name, login, email from ' . $this->parent->config['db_prefix'] . 'users where userID not in';
-        $req .= ' (SELECT userID FROM ' . $this->parent->config['db_prefix'] . 'bets as b WHERE b.matchID IN';
-        $req .= ' (SELECT matchID FROM ' . $this->parent->config['db_prefix'] . 'matches WHERE DATEDIFF( DATE, CURRENT_DATE( ) ) = 0))';
-        $req .= ' ORDER BY name';
-
-        // Execute Query
-        $nb_users = 0;
-        $users = $this->parent->db->select_array($req, $nb_users);
-        if ($this->parent->debug) {
-            array_show($users);
-        }
-
-        return $users;
     }
 
     /*     * **************** */

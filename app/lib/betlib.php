@@ -498,7 +498,7 @@ class BetEngine {
 
     /*     * **************** */
 
-    function load_users($users, $users_groups, $losers) {
+    function load_users($users, $users_groups) {
         $this->template->set_filenames(array(
             'users' => 'users.tpl'
         ));
@@ -527,7 +527,8 @@ class BetEngine {
                     'GROUP_NAME2' => $user['groupName2'],
                     'GROUP_NAME3' => $user['groupName3'],
                     'LAST_CONNECTION' => $user['last_connection'],
-                    'LAST_BET' => $user['last_bet']
+                    'LAST_BET' => $user['last_bet'],
+                    'BETS_COUNT' => $user['nb_bets']
                 ));
             } else {
                 $this->template->assign_block_vars('users.user', array(
@@ -538,7 +539,8 @@ class BetEngine {
                     'GROUP_NAME2' => $user['groupName2'],
                     'GROUP_NAME3' => $user['groupName3'],
                     'LAST_CONNECTION' => $user['last_connection'],
-                    'LAST_BET' => $user['last_bet']
+                    'LAST_BET' => $user['last_bet'],
+                    'BETS_COUNT' => $user['nb_bets']
                 ));
             }
         }
@@ -550,15 +552,6 @@ class BetEngine {
                 'COUNT' => $groups['nb_users']
             ));
         }
-
-		foreach ($losers as $loser) {
-            $this->template->assign_block_vars('losers', array(
-                'ID' => $loser['userID'],
-                'LOGIN' => $loser['login'],
-                'NAME' => $loser['name'],
-                'EMAIL' => $loser['email']
-            ));
-		}
 		
         $this->blocks_loaded[] = 'users';
     }
