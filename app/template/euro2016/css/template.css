@@ -23,35 +23,37 @@ h1 {
 }
 
 h2 {
-	color: #BC9848;
+	color: #000000;
+	font: normal 165%/1em Arial, sans-serif;
+	letter-spacing: -1px;
+	margin: 0;
+	padding: 0;
+}
+
+h3 {
+	color: #fff;
+	font: normal 185%/1em Arial, sans-serif;
+	letter-spacing: -1px;
+	margin: 0;
+	padding: 0;
+}
+
+h5 {
+	color: #009148;
 	clear: both;
 	font: bold 120%/1em Arial, sans-serif;
 	letter-spacing: 0;
 	margin: 30px 0 15px 0;
-	padding: 0px;           
+	padding: 0px;
 }
 
-h5{
-	color: #0183AA;
-	clear: both;
-	font: bold 120%/1em Arial, sans-serif;
-	letter-spacing: 0;
-	margin: 30px 0 15px 0;
-	padding: 0px;           
-}
-
-h6{
+h6 {
 	color: #000000;
 	clear: both;
 	font: bold 100%/1em Arial, sans-serif;
 	letter-spacing: 0;
 	margin: 30px 0 15px 0;
-	padding: 0px;           
-}
-
-input[type='number'] {
-	text-align: center;
-	width: 36px;
+	padding: 0px;
 }
 
 p {
@@ -61,13 +63,12 @@ p {
 	font: normal 90%/1.4em Verdana, sans-serif;
 }
 
-
 a img {
 	border: 0;
 }
 
 a {
-	color: #0183aa;
+	color: #005d2e;
 	text-decoration: none;
 }
 
@@ -78,8 +79,13 @@ a:hover {
 a:active {
 	text-decoration: underline;
 }
+
 a:visited {
-	color: #50b1dd;
+	color: #005d2e;
+}
+
+table {
+	border-spacing: 0;
 }
 
 .compact {
@@ -170,6 +176,102 @@ footer {
 	padding: 8px 17px 20px 17px;
 }
 
+
+/************* FORM ***************/
+form {
+	align-items: left;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+}
+
+form.noflex {
+	display: block;
+}
+
+form.login {
+	align-items: center;
+}
+
+textarea {
+	color: #363842;
+	background: #F7FAFF;
+	border: 1px solid #363842;
+	font-size: 12px;
+	font-weight: normal;
+	text-align: left;
+}
+
+input {
+	padding: 0.2rem;
+}
+
+input.text {
+	color: #004410;
+	background: #DCFEE4;
+	border: 1px solid #006F20;
+	font-size: 1rem;
+	font-weight: normal;
+	padding: 0.2rem;
+	text-align: center;
+}
+
+input[type='number'] {
+	color: #004410;
+	border: 1px solid #006F20;
+	font-size: 0.8rem;
+	font-weight: normal;
+	padding: 0.2rem;
+	text-align: center;
+	width: 2.2rem;
+}
+
+input[type='submit'] {
+	background-color: #A4D153;
+	border: none;
+	border-radius: 0.5rem;
+	box-shadow: 2px 2px 2px #ccc;
+	color: white;
+	cursor: pointer;
+	font-size: 1.2rem;
+	font-weight: bold;
+	margin: 2rem 0.2rem 1rem;
+	padding: 0.4rem 0.6rem;
+	text-align: center;
+	text-transform: uppercase;
+	width: 9rem;
+}
+
+input[type='submit'].big {
+	width: 15rem;
+}
+
+input:disabled {
+	background: #d7d7d7;
+}
+
+input.submit {
+	color: #000000;
+	background: #FFFFFF;
+	border: 1px solid #363842;
+	font-size: 9px;
+	font-weight: bold;
+}
+
+input.invalid {
+	border-color: red;
+	background-color: #FBEDE9;
+}
+
+select {
+	color: #004410;
+	background: #DCFEE4;
+	border: 1px solid #006F20;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+
 #logo {
 	float: left;
 	padding-top: 3px;
@@ -225,10 +327,7 @@ footer {
 
 .tag_cloud {
 	background-color: #EBFAF0;
-	border-top: 2px solid #00A952;
-	border-bottom: 2px solid #00A952;
-	border-right: 2px solid #00A952;
-	border-left: 2px solid #00A952;
+	border: 2px solid #447f98;
 	margin: 0 0 1rem 0;
 	padding: 0.5rem;
 	text-align: left;
@@ -406,37 +505,6 @@ nav a, nav a:visited {
 }
 
 
-.tag_cloud {
-	margin: 5px 0 0 0;
-	padding: 5px;
-	border-top: 2px solid #FFCC66;
-	border-bottom: 2px solid #FFCC66;
-	border-right: 2px solid #FFCC66;
-	border-left: 2px solid #FFCC66;
-	background: #FFFCE4;
-	text-align: left;
-}
-
-.tag_cloud span a {
-	line-height: 1.5em;
-	color: #0183aa;
-}
-.tag_cloud span a:visited {
-	color: #0183aa;
-}
-.tag_cloud span a:hover {
-	color: #0183aa;
-}
-.tag_cloud span a:active {
-	color: #0183aa;
-}
-
-
-
-
-
-
-
 .main_left {
 	border: 2px solid #618FAD;
 	float: left;
@@ -587,11 +655,6 @@ font-size: 200%;
 	text-align:center;
 	margin:5px;
 	font-size:12px;
-}
-
-div.spacer
-{
-  clear: both;
 }
 
 a.nolink:link    {

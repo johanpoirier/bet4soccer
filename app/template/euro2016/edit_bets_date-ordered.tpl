@@ -251,7 +251,7 @@
     <aside>
         <!-- BEGIN pools -->
         <div class="tag_cloud">
-            <div class="rightcolumn_headline"><h1>Groupe {pools.POOL}</h1></div>
+            <div class="rightcolumn_headline"><h2>Groupe {pools.POOL}</h2></div>
             <div id="pool_{pools.POOL}_ranking">
                 <table style="font-size:9px;">
                     <tr>
