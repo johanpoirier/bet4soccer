@@ -24,8 +24,6 @@ $config['db_prefix'] = 'euro2016__';
 
 $config['auth'] = 'md5';
 
-$config['width_users'] = 130;
-$config['width_teams'] = 80;
 $config['min_ratio_played_matches_for_group'] = 0.65;
 $config['min_ratio_played_matches_for_rank'] = 0.60;
 $config['invitation_expiration'] = 30; /* in days */
