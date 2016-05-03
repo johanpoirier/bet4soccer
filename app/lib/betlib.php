@@ -262,12 +262,12 @@ class BetEngine {
         if ($this->islogin()) {
             $this->template->assign_block_vars('logged_in', array());
             if ($this->isadmin()) {
-                $this->template->assign_block_vars('admin_bar', array());
-                $this->template->assign_block_vars('user_nav', array());
-                $this->template->assign_block_vars('admin_nav', array());
+                $this->template->assign_block_vars('logged_in.admin_bar', array());
+                $this->template->assign_block_vars('logged_in.user_nav', array());
+                $this->template->assign_block_vars('logged_in.admin_nav', array());
             } else {
-                $this->template->assign_block_vars('user_bar', array());
-                $this->template->assign_block_vars('user_nav', array());
+                $this->template->assign_block_vars('logged_in.user_bar', array());
+                $this->template->assign_block_vars('logged_in.user_nav', array());
             }
         }
 
