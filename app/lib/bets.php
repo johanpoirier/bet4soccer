@@ -41,11 +41,11 @@ class Bets {
                 $req .= ' teamW = \'' . $final_teamW . '\'';
                 $req .= ' WHERE userID = ' . $userID . '';
                 $req .= ' AND matchID = ' . $matchID . '';
-                $ret = $this->parent->db->exec_query($req);
+                $this->parent->db->exec_query($req);
             } else {
                 $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,score' . $team . ',team' . $team . ',teamW)';
                 $req .= ' VALUES (' . $userID . ',' . $matchID . ',' . $score . ',' . $final_teamID . ',\'' . $final_teamW . '\');';
-                $ret = $this->parent->db->insert($req);
+                $this->parent->db->insert($req);
             }
             $match = $this->parent->matches->get($matchID);
             $bet = $this->get_by_match($matchID);
@@ -189,7 +189,7 @@ class Bets {
 
         // Main Query
         $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
-        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= 'DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = ' . $userID . ')';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
@@ -198,10 +198,12 @@ class Bets {
         $req .= ' AND tB.pool = \'' . $pool . '\'';
         $req .= ' ORDER BY date, teamAname;';
 
+        $nb_teams = 0;
         $bets = $this->parent->db->select_array($req, $nb_teams);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($bets);
+        }
 
         return $bets;
     }
@@ -338,7 +340,7 @@ class Bets {
 
         // Main Query
         $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool,';
-        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= 'DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' RIGHT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (b.teamA = tA.teamID)';
@@ -364,7 +366,7 @@ class Bets {
 
         // Main Query
         $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool,';
-        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= 'DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' RIGHT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (b.teamA = tA.teamID)';
@@ -386,7 +388,7 @@ class Bets {
         prepare_numeric_data(array(&$matchID, &$points));
         // Main Query
         $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool,';
-        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= 'DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str';
         if (($points == EXACT_SCORE) || ($points == GOOD_RESULT))
             $req .= ', u.name as username';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
@@ -416,7 +418,7 @@ class Bets {
         prepare_numeric_data(array(&$matchID));
         // Main Query
         $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool, u.name as username,';
-        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= 'DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' RIGHT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND ( b.scoreA IS NOT NULL OR b.scoreB IS NOT NULL ))';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u.userID = b.userID)';
@@ -463,7 +465,7 @@ class Bets {
 
         // Main Query
         $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
-        $req .= 'DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str';
+        $req .= 'DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = ' . $userID . ')';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
