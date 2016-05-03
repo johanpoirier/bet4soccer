@@ -110,10 +110,12 @@ class BetEngine {
             'head' => 'header.tpl'
         ));
 
-        if ($title)
+        if ($title) {
             $title = $this->config['blog_title'] . " - " . $title;
-        else
+        }
+        else {
             $title = $this->config['blog_title'];
+        }
 
         $this->template->assign_vars(array(
             'TITLE' => $title,
@@ -147,7 +149,7 @@ class BetEngine {
 
     /*     * **************** */
 
-    function load_header_menu($except = false) {
+    function load_header_menu() {
         $this->template->set_filenames(array(
             'header_menu' => 'header_menu.tpl'
         ));
@@ -162,32 +164,39 @@ class BetEngine {
             $delay = (isset($matches[0]['delay_sec'])) ? $matches[0]['delay_sec'] : 0;
             $delay_days = (isset($matches[0]['delay_days'])) ? $matches[0]['delay_days'] : 0;
 
-            if ($delay_days > 31)
+            if ($delay_days > 31) {
                 $delay = $delay_days * 60 * 60 * 24;
+            }
 
             if ($delay > 0) {
                 $delay_days = floor($delay / (60 * 60 * 24));
                 $delay = $delay - $delay_days * 24 * 60 * 60;
-                if ($delay_days > 0)
+                if ($delay_days > 0) {
                     $delay_str .= $delay_days . "j ";
+                }
 
                 $delay_hour = floor($delay / (60 * 60));
                 $delay = $delay - $delay_hour * 60 * 60;
-                if ($delay_hour > 0)
+                if ($delay_hour > 0) {
                     $delay_str .= $delay_hour . "h ";
+                }
 
                 $delay_min = floor($delay / (60));
-                if ($delay_min > 0)
+                if ($delay_min > 0) {
                     $delay_str .= $delay_min . "m";
+                }
                 $match_str = "-> Prochain match <u>" . $matches[0]['date_str'] . "</u> (<i>dans " . $delay_str . "</i>) :";
             } else {
                 $delay = abs($delay);
-                if ($delay > 0 && $delay < (45 * 60))
+                if ($delay > 0 && $delay < (45 * 60)) {
                     $delay_str = "depuis " . floor($delay / 60) . "m";
-                elseif ($delay > (60 * 45) && $delay < (60 * 60))
+                }
+                elseif ($delay > (60 * 45) && $delay < (60 * 60)) {
                     $delay_str = "Mi-Temps";
-                else
+                }
+                else {
                     $delay_str = "depuis " . ( ( floor($delay / 60) ) - 15 ) . "m";
+                }
                 $match_str = "-> Match en cours (<i>" . $delay_str . "</i>):";
             }
         }
@@ -242,22 +251,24 @@ class BetEngine {
             'USERID' => (isset($_SESSION['userID'])) ? $_SESSION['userID'] : "",
             'HEADER_GROUP_NAME' => $group_name,
             'FINALS' => ((isset($last_pool_match['delay_sec'])) && ($last_pool_match['delay_sec'] > 0)) ? "" : "finals_",
-            'MATCH_DISPLAY' => "&match_display=" . (isset($_SESSION['match_display']) ? $_SESSION['match_display'] : $this->config['match_display_default'])
+            'MATCH_DISPLAY' => "&match_display=" . (isset($_SESSION['match_display']) ? $_SESSION['match_display'] : $this->config['match_display_default']),
+            'LOGGED_IN' => $this->islogin()
         ));
 
         if ($this->islogin() && $this->config['auth'] != 'LDAP') {
             $this->template->assign_block_vars('account', array());
         }
 
-        if (!$this->islogin()) {
-            $this->template->assign_block_vars('logout_bar', array());
-        } elseif ($this->isadmin()) {
-            $this->template->assign_block_vars('admin_bar', array());
-            $this->template->assign_block_vars('user_nav', array());
-            $this->template->assign_block_vars('admin_nav', array());
-        } else {
-            $this->template->assign_block_vars('user_bar', array());
-            $this->template->assign_block_vars('user_nav', array());
+        if ($this->islogin()) {
+            $this->template->assign_block_vars('logged_in', array());
+            if ($this->isadmin()) {
+                $this->template->assign_block_vars('admin_bar', array());
+                $this->template->assign_block_vars('user_nav', array());
+                $this->template->assign_block_vars('admin_nav', array());
+            } else {
+                $this->template->assign_block_vars('user_bar', array());
+                $this->template->assign_block_vars('user_nav', array());
+            }
         }
 
 
