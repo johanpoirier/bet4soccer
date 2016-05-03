@@ -457,8 +457,9 @@ elseif (EDIT_MATCHES) {
     $bet->load_users($users, $groups);
 }
 elseif (EDIT_BETS) {
-    if ($debug)
+    if ($debug) {
         echo "EDIT_BETS<br />";
+    }
 
 	$userID = false;
 	if (isset($_GET['user'])) {
@@ -486,8 +487,9 @@ elseif (EDIT_BETS) {
     $bet->load_finals_bets(true, $userID);
 }
 elseif (VIEW_BETS_OF_USER) {
-    if ($debug)
+    if ($debug) {
         echo "VIEW_BETS_OF_USER<br />";
+    }
     $bet->load_bets(false, $_GET['user']);
 }
 elseif (VIEW_FINALS_BETS_OF_USER) {

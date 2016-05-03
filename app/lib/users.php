@@ -172,7 +172,7 @@ class Users
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u.groupID3 = t3.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID)';
         if ($nb_args > 0) {
-            $req .= ' AND u.userID = ' . $userID . '';
+            $req .= " WHERE u.userID = $userID";
         }
         $req .= ' GROUP BY u.userID';
         $req .= ' ORDER by nb_bets, u.name';
