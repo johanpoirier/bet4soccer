@@ -4,8 +4,9 @@ function saveTag(groupID) {
 	XHR.resetData();
 	XHR.setRefreshArea("tags");
 	XHR.appendData("act", "save_HTTP_tag");
-	if (!groupID)
+	if (!groupID) {
 		groupID = '';
+	}
 	XHR.appendData("groupID", groupID);
 	XHR.appendData("text", tag);
 	XHR.sendAndLoad("/", "POST");
@@ -21,8 +22,9 @@ function delTag(tagID, groupID) {
 		XHR.setRefreshArea("tags");
 		XHR.appendData("act", "del_HTTP_tag");
 		XHR.appendData("tagID", tagID);
-		if (!groupID)
+		if (!groupID) {
 			groupID = '';
+		}
 		XHR.appendData("groupID", groupID);
 		XHR.sendAndLoad("/", "POST");
 	}

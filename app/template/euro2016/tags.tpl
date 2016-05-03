@@ -4,7 +4,7 @@
         {tags.DEL_IMG}
         <span class="tagboard-tag-user">{tags.USER}</span> le {tags.DATE} :
     </span>
-    <span>{tags.TEXT}</span>
+    <span class="tagboard-tag-text">{tags.TEXT}</spantagboard-tag-user>
 </div>
 <!-- END tags -->
 <div id="navig" class="tagboard-nav">

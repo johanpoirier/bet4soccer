@@ -60,7 +60,7 @@
             <div id="tag_0" class="tagboard-form">
                 <form onsubmit="return saveTag('');">
                     <input type="text" id="tag" value="" size="18"></textarea>
-                    <span style="font-size:8px;">(Entrée pour envoyer)</span>
+                    <span>(Entrée pour envoyer)</span>
                 </form>
             </div>
             <div id="tags"></div>
