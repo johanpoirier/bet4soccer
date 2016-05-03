@@ -73,7 +73,7 @@
 
 <section id="mainarea">
     <div class="maincontent">
-        <div class="headline" style="height:20px">
+        <div class="headline">
             <div class="headline-title">
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
@@ -86,65 +86,65 @@
             </div>
         </div>
 
-        <div class="tag_cloud uniq">
+        <div class="tag_cloud user-infos">
             <!-- BEGIN stats -->
-            <div style="text-align:center;width:50%;"><br/><strong>{stats.TYPE}</strong></div>
-            <!-- END stats -->
-            <!-- BEGIN stats -->
-            <div class="stats" id="stats_{stats.ID}" style="height: 120px;width:50%;"></div>
-            <script type="text/javascript">
-                var data = {stats.DATA};
-                $.plot("#stats_{stats.ID}", data,
-                {
-                    colors: [ "{stats.COLOR}" ],
-                    xaxis: {
-                        ticks: {stats.XSERIE}
-                    },
-                    yaxis: {
-                        min: {stats.YMIN},
-                        max: {stats.YMAX},
-                        {stats.INVERSE}
-                        ticks: {stats.YTICKS},
-                        tickDecimals: 0
-                    },
-                    grid: {
-                        backgroundColor: "#ffffff",
-                        hoverable: true
-                    }
-                });
-
-                function showTooltip(x, y, contents) {
-                    $("<div id='tooltip'>" + contents + "</div>").css({
-                        position: "absolute",
-                        display: "none",
-                        top: y - 30,
-                        left: x - 10,
-                        border: "1px solid #fdd",
-                        padding: "2px",
-                        "background-color": "#fee",
-                        opacity: 0.80
-                    }).appendTo("body").fadeIn(200);
-                }
-
-                var previousPoint = null;
-                $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
-                    if (item) {
-                        if (previousPoint != item.dataIndex) {
-
-                            previousPoint = item.dataIndex;
-
-                            $("#tooltip").remove();
-                            var x = item.datapoint[0].toFixed(2),
-                                    y = item.datapoint[1].toFixed(2);
-
-                            showTooltip(item.pageX, item.pageY, parseInt(y));
+            <div class="user-infos-block">
+                <strong>{stats.TYPE}</strong>
+                <div class="stats" id="stats_{stats.ID}"></div>
+                <script type="text/javascript">
+                    var data = {stats.DATA};
+                    $.plot("#stats_{stats.ID}", data,
+                    {
+                        colors: [ "{stats.COLOR}" ],
+                        xaxis: {
+                            ticks: {stats.XSERIE}
+                        },
+                        yaxis: {
+                            min: {stats.YMIN},
+                            max: {stats.YMAX},
+                            {stats.INVERSE}
+                            ticks: {stats.YTICKS},
+                            tickDecimals: 0
+                        },
+                        grid: {
+                            backgroundColor: "#ffffff",
+                            hoverable: true
                         }
-                    } else {
-                        $("#tooltip").remove();
-                        previousPoint = null;
+                    });
+
+                    function showTooltip(x, y, contents) {
+                        $("<div id='tooltip'>" + contents + "</div>").css({
+                            position: "absolute",
+                            display: "none",
+                            top: y - 30,
+                            left: x - 10,
+                            border: "1px solid #fdd",
+                            padding: "2px",
+                            "background-color": "#fee",
+                            opacity: 0.80
+                        }).appendTo("body").fadeIn(200);
                     }
-                });
-            </script>
+
+                    var previousPoint = null;
+                    $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
+                        if (item) {
+                            if (previousPoint != item.dataIndex) {
+
+                                previousPoint = item.dataIndex;
+
+                                $("#tooltip").remove();
+                                var x = item.datapoint[0].toFixed(2),
+                                        y = item.datapoint[1].toFixed(2);
+
+                                showTooltip(item.pageX, item.pageY, parseInt(y));
+                            }
+                        } else {
+                            $("#tooltip").remove();
+                            previousPoint = null;
+                        }
+                    });
+                </script>
+            </div>
             <!-- END stats -->
         </div>
 
@@ -247,16 +247,18 @@
             </div>
             <!-- END pools -->
 
-            <p><input type="image" name="submit" {SUBMIT_STATE} src="{TPL_WEB_PATH}/images/submit.gif"/></p>
+            <div class="form-submit-zone">
+                <input type="submit" value="Valider" />
+            </div>
         </form>
     </div>
 
     <aside>
         <!-- BEGIN pools -->
         <div class="tag_cloud">
-            <div class="rightcolumn_headline"><h2>Groupe {pools.POOL}</h2></div>
+            <div><h3>Groupe {pools.POOL}</h3></div>
             <div id="pool_{pools.POOL}_ranking">
-                <table style="font-size:9px;">
+                <table class="ranking-pool">
                     <tr>
                         <td width="80%"><b>Nations</b></td>
                         <td width="10%"><b>Pts</b></td>

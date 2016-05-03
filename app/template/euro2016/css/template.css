@@ -33,11 +33,11 @@ h2 {
 }
 
 h3 {
-    color: #fff;
+    color: #000000;
     font: normal 185%/1em Arial, sans-serif;
     letter-spacing: -1px;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0.3rem 0;
 }
 
 h5 {
@@ -287,6 +287,11 @@ select {
     font-weight: normal;
 }
 
+.form-submit-zone {
+    text-align: center;
+    width: 100%;
+}
+
 .headline {
     background: -moz-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* FF3.6+ */
     background: -webkit-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* Chrome10+,Safari5.1+ */
@@ -357,6 +362,7 @@ select {
     margin: 0 0 1rem 0;
     padding: 0.5rem;
     text-align: left;
+    width: 100%;
 }
 
 .tag_cloud span a {
@@ -854,6 +860,18 @@ span.user_visual {
 
 .tagboard-form input {
     width: 100%;
+}
+
+
+/************* user infos ******************/
+.user-infos {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-infos-block {
+    display: flex;
+    flex-direction: column;
 }
 
 
