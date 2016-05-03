@@ -18,6 +18,7 @@
             <!-- END list -->
             <!-- END matches -->
         </div>
+        <!-- BEGIN logged_in -->
         <div class="block">
             <!-- BEGIN account -->
             <a href="/?act=account" class="account-link">
@@ -27,6 +28,7 @@
             <!-- END account -->
             <i>{HEADER_GROUP_NAME}</i>
         </div>
+        <!-- END logged_in -->
     </header>
 
     <!-- BEGIN logged_in -->

@@ -255,12 +255,9 @@ class BetEngine {
             'LOGGED_IN' => $this->islogin()
         ));
 
-        if ($this->islogin() && $this->config['auth'] != 'LDAP') {
-            $this->template->assign_block_vars('account', array());
-        }
-
         if ($this->islogin()) {
             $this->template->assign_block_vars('logged_in', array());
+            $this->template->assign_block_vars('logged_in.account', array());
             if ($this->isadmin()) {
                 $this->template->assign_block_vars('logged_in.admin_bar', array());
                 $this->template->assign_block_vars('logged_in.user_nav', array());

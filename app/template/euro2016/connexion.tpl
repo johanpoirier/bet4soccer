@@ -13,10 +13,10 @@
                 <input type="hidden" name="code" value="{CODE}"/>
 
                 <div class="formfield"><b>{LABEL_LOGIN}</b></div>
-                <input type="text" name="login" value="" class="textinput" maxlength="100" autofocus required/>
+                <input type="text" name="login" value="" maxlength="100" autofocus required/>
 
                 <div class="formfield"><b>Mot de passe</b></div>
-                <input type="password" name="pass" class="textinput" maxlength="20" required />
+                <input type="password" name="pass" maxlength="20" required />
 
                 <span class="error">{WARNING}</span>
 
