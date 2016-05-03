@@ -317,6 +317,27 @@ select {
     padding: 0;
 }
 
+.maincontent.login {
+    padding: 0 20%;
+}
+
+.login-content {
+    align-items: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+.login-content > h2 {
+    align-items: center;
+    flex-grow: 1;
+    width: auto;
+}
+
+.login-form-button {
+    margin-top: 2rem;
+}
+
 .formfield {
     margin: 5px;
 }
@@ -463,6 +484,10 @@ nav {
 
 nav a, nav a:visited {
     color: #ffffff;
+}
+
+nav:empty {
+    background-color: transparent;
 }
 
 .nav-group {

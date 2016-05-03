@@ -46,6 +46,7 @@
         </table>
     </header>
 
+    <!-- BEGIN logged_in -->
     <nav>
         <!-- BEGIN admin_bar -->
         <ul class="nav-group">
@@ -67,7 +68,5 @@
             <li class="nav-group-item"><a href="/?act=view_{FINALS}odds{MATCH_DISPLAY}">Résultats</a></li>
         </ul>
         <!-- END user_bar -->
-        <!-- BEGIN logout_bar -->
-        &nbsp;
-        <!-- END logout_bar -->
     </nav>
+    <!-- END logged_in -->
