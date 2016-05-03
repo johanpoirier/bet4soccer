@@ -54,27 +54,15 @@
     </div>
 
     <aside>
-        <div class="tag_cloud">
-            <div class="rightcolumn_headline"><h2>Team TagBoard</h2></div>
-            <div id="tag_0" style="text-align:center;">
-                <br/>
+        <div class="tag_cloud tagboard">
+            <div class="headline"><h2>TagBoard</h2></div>
+            <div id="tag_0" class="tagboard-form">
                 <form onsubmit="return saveTag({GROUP_ID});">
-                    <input type="text" id="tag" value="" size="18"/>
-                    <span style="font-size:8px;">(Entrée pour envoyer)</span>
+                    <input type="text" id="tag" value="" size="18" />
+                    <span>(Entrée pour envoyer)</span>
                 </form>
             </div>
-            <div id="tags">
-                <!-- BEGIN tags -->
-                <div id="tag_{tags.ID}">
-                    {tags.DEL_IMG}
-                    <u>{tags.DATE}{TAG_SEPARATOR}<b>{tags.USER}</b></u>
-                    {tags.TEXT}
-                </div>
-                <!-- END tags -->
-                <div id="navig" style="font-size:10px;text-align:center;">
-                    {NAVIG}
-                </div>
-            </div>
+            <div id="tags"></div>
         </div>
     </aside>
 </section>

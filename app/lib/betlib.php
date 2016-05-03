@@ -1120,20 +1120,26 @@ class BetEngine {
         $prev = ($page - 2) * 10;
         $next = $page * 10;
 
-        if ($max <= 1)
+        if ($max <= 1) {
             $navig = "";
-        elseif ($page == 1)
-            $navig = "<strong><a href=\"#\" onclick=\"getTags(" . $groupID . ", " . $next . ");\">>></a></strong>";
-        elseif (($page > 1) && ($page < $max))
-            $navig = "<strong><a href=\"#\" onclick=\"getTags(" . $groupID . ", " . $prev . ");\"><<</a> <a href=\"#\" onclick=\"getTags(" . $groupID . ", " . $next . ");\">>></a></strong>";
-        elseif ($page == $max)
-            $navig = "<strong><a href=\"#\" onclick=\"getTags(" . $groupID . ", " . $prev . ");\"><<</a></strong>";
+        }
+        elseif ($page == 1) {
+            $navig = "<strong><a href=\"#\" onclick=\"getTags($groupID, $next);\">>></a></strong>";
+        }
+        elseif (($page > 1) && ($page < $max)) {
+            $navig = "<strong><a href=\"#\" onclick=\"getTags($groupID, $prev);\"><<</a> <a href=\"#\" onclick=\"getTags($groupID , $next);\">>></a></strong>";
+        }
+        elseif ($page == $max) {
+            $navig = "<strong><a href=\"#\" onclick=\"getTags($groupID, $prev);\"><<</a></strong>";
+        }
 
         foreach ($tags as $tag) {
-            if ($tag['userID'] == $_SESSION['userID'] || $this->isadmin())
+            if ($tag['userID'] == $_SESSION['userID'] || $this->isadmin()) {
                 $del_img = "<a href=\"#\"><img src=\"" . $this->template_web_location . "images/del.png\" onclick=\"delTag(" . $tag['tagID'] . ", '" . $groupID . "');\" border=\"0\"/></a>";
-            else
+            }
+            else {
                 $del_img = "";
+            }
 
             $tag_str = stripslashes($tag['tag']);
 

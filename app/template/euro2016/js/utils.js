@@ -29,7 +29,6 @@ function delTag(tagID, groupID) {
 }
 
 function getTags(groupID, startTag) {
-	var text = document.getElementById('tag').value;
 	var XHR = new XHRConnection();
 	XHR.resetData();
 	XHR.setRefreshArea("tags");

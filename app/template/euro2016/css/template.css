@@ -1,5 +1,7 @@
-*, *:before, *:after {
-    box-sizing: inherit;
+*,:after,:before {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box
 }
 
 html, body {
@@ -102,6 +104,8 @@ main {
     background-color: #ffffff;
     border-left: 2px solid #447f98;
     border-right: 2px solid #447f98;
+    display: flex;
+    flex-direction: column;
     font-size: 95%;
     margin: 0 auto;
     max-width: 1200px;
@@ -114,9 +118,23 @@ main {
 }
 
 header {
+    align-items: center;
     background: #ffffff;
-    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    min-height: 4rem;
     width: 100%;
+}
+
+header .block {
+    min-width: 10rem;
+    padding: 0.3rem;
+}
+
+header .account-link {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .maincontent_large {
@@ -169,11 +187,10 @@ aside .headline h2 {
 
 footer {
     border-top: 1px dashed #000000;
-    clear: both;
-    font-size: 90%;
+    font-size: 0.7rem;
     line-height: 1.6em;
-    margin: 0;
-    padding: 8px 17px 20px 17px;
+    margin: auto 0 0 0;
+    padding: 0.6rem;
 }
 
 /************* FORM ***************/
@@ -270,18 +287,6 @@ select {
     font-weight: normal;
 }
 
-#logo {
-    float: left;
-    padding-top: 3px;
-    padding-left: 3px;
-}
-
-#infos {
-    float: left;
-    padding-top: 3px;
-    padding-left: 30px;
-}
-
 .headline {
     background: -moz-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* FF3.6+ */
     background: -webkit-linear-gradient(left, #00A952 0%, #c0f4cd 100%); /* Chrome10+,Safari5.1+ */
@@ -347,7 +352,7 @@ select {
 }
 
 .tag_cloud {
-    background-color: #EBFAF0;
+    background-color: #EBF4FA;
     border: 2px solid #447f98;
     margin: 0 0 1rem 0;
     padding: 0.5rem;
@@ -823,6 +828,29 @@ td.user_visual:hover {
 span.user_visual {
     margin-right: 8px;
 }
+
+
+/************* tag board ******************/
+.tagboard {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
+}
+
+.tagboard-tag {
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem 0 0.2rem 0;
+}
+
+.tagboard-tag-user {
+    font-weight: bold;
+}
+
+.tagboard-form input {
+    width: 100%;
+}
+
 
 /************* media queries ******************/
 @media (min-width: 1200px) {
