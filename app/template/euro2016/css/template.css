@@ -898,13 +898,94 @@ span.user_visual {
     }
 }
 
-@media (max-width: 600px) {
-    main {
-        border-right: 2px solid orange;
-        width: 551px;
+@media (max-width: 700px) {
+    header {
+        display: none;
     }
 
-    #rightcolumn {
+    main {
+        border: 0;
+        min-width: inherit;
+        padding: 0;
+    }
+
+    nav {
+        font-size: 0.7rem;
+        margin-top: inherit;
+    }
+
+    .nav-group:first-child, .nav-group:last-child {
+        padding: 0;
+    }
+
+    .nav-group-item {
+        min-width: inherit;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    section#mainarea {
+        flex-flow: row wrap;
+        padding: 0;
+    }
+
+    aside {
+        border-left: none;
+        border-right: none;
+        display: flex;
+        flex-flow: row wrap;
+        margin: 1rem 0;
+        max-width: none;
+    }
+
+    aside .headline {
+        margin: 0.5rem;
+        width: 100%;
+    }
+
+    .tag_cloud {
+        border: none;
+        flex-grow: 1;
+        margin: 0.5rem;
+    }
+
+    .tag_cloud.uniq {
+        margin: 0.5rem 0;
+    }
+
+    td.result-teamA .tLogoSmall {
+        margin-left: 5px;
+    }
+
+    td.result-teamB .tLogoSmall {
+        margin-right: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+    table.ranking th:last-child, table.ranking td:last-child {
         display: none;
+    }
+
+    .headline {
+        padding: 0.5rem 0.2rem;
+    }
+
+    .headline-title {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .headline-title > span {
+        display: none;
+    }
+
+    .headline-menu {
+        flex-flow: column nowrap;
+    }
+
+    .maincontent.login {
+        padding: 0;
     }
 }
