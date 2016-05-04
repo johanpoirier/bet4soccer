@@ -1,59 +1,71 @@
+function arrayToDataQuery(data) {
+	return Object.keys(data).map(function(key) {
+		return key + "=" + encodeURIComponent(data[key]);
+	}).join('&');
+}
+
 function saveTag(groupID) {
-	var tag = document.getElementById('tag').value;
-	var XHR = new XHRConnection();
-	XHR.resetData();
-	XHR.setRefreshArea("tags");
-	XHR.appendData("act", "save_HTTP_tag");
-	if (!groupID) {
-		groupID = '';
-	}
-	XHR.appendData("groupID", groupID);
-	XHR.appendData("text", tag);
-	XHR.sendAndLoad("/", "POST");
-	document.getElementById('tag').value = "";
+	var data = {
+		'act': 'save_HTTP_tag',
+		'text': document.getElementById('tag').value,
+		'groupID': groupID || ''
+	};
+	$.ajax({
+		type: 'POST',
+		url: '/',
+		data: arrayToDataQuery(data),
+		success: function() {
+			getTags(groupID);
+			$('#tag').val('');
+		}
+	});
 
 	return false;
 }
 
 function delTag(tagID, groupID) {
 	if (confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
-		var XHR = new XHRConnection();
-		XHR.resetData();
-		XHR.setRefreshArea("tags");
-		XHR.appendData("act", "del_HTTP_tag");
-		XHR.appendData("tagID", tagID);
-		if (!groupID) {
-			groupID = '';
-		}
-		XHR.appendData("groupID", groupID);
-		XHR.sendAndLoad("/", "POST");
+		var data = {
+			'act': 'del_HTTP_tag',
+			'tagID': tagID,
+			'groupID': groupID || ''
+		};
+		$.ajax({
+			type: 'POST',
+			url: '/',
+			data: arrayToDataQuery(data),
+			success: function() {
+				getTags(groupID);
+			}
+		});
 	}
 }
 
 function getTags(groupID, startTag) {
-	var XHR = new XHRConnection();
-	XHR.resetData();
-	XHR.setRefreshArea("tags");
-	XHR.appendData("act", "get_HTTP_tags");
-	if (!startTag) {
-		startTag = 0;
-	}
-	XHR.appendData("start", startTag);
-	if (!groupID) {
+	if (typeof groupID === 'function') {
 		groupID = '';
 	}
-	XHR.appendData("groupID", groupID);
-	XHR.sendAndLoad("/", "POST");
-
-	return false;
+	var data = {
+		'act': 'get_HTTP_tags',
+		'startTag': startTag || 0,
+		'groupID': groupID || ''
+	};
+	$.ajax({
+		type: 'GET',
+		url: '/',
+		data: arrayToDataQuery(data),
+		success: function(data) {
+			$('#tags').html(data);
+		}
+	});
 }
 
 function selectListValue(id_liste, value) {
-	$("#"+id_liste+" option[value='"+value+"']").attr('selected', 'selected');
+	$('#' + id_liste + " option[value='"+value+"']").attr('selected', 'selected');
 }
 
 function updateRanking(forced) {
-	$('#update_ranking').html("En cours...");
+	$('#update_ranking').html('En cours...');
 	$.ajax({
 		type: "GET",
 		url: "/",

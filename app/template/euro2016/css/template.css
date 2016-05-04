@@ -40,22 +40,12 @@ h3 {
     padding: 0 0 0.3rem 0;
 }
 
-h5 {
-    color: #009148;
-    clear: both;
-    font: bold 120%/1em Arial, sans-serif;
-    letter-spacing: 0;
-    margin: 30px 0 15px 0;
-    padding: 0px;
-}
-
-h6 {
+h4 {
     color: #000000;
-    clear: both;
-    font: bold 100%/1em Arial, sans-serif;
-    letter-spacing: 0;
-    margin: 30px 0 15px 0;
-    padding: 0px;
+    font: normal 120%/1em Arial, sans-serif;
+    letter-spacing: -1px;
+    margin: 0;
+    padding: 0 0 0.1rem 0;
 }
 
 p {
@@ -229,7 +219,6 @@ input[type='text'], input[type='password'] {
     font-size: 1rem;
     font-weight: normal;
     padding: 0.2rem;
-    text-align: center;
 }
 
 input[type='number'] {
@@ -278,6 +267,10 @@ input.submit {
 input.invalid {
     border-color: red;
     background-color: #FBEDE9;
+}
+
+form.login input {
+    text-align: center;
 }
 
 select {
@@ -726,7 +719,7 @@ ul.rules > li {
 }
 
 .focus_name {
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .focus_points, .focus_evol {

@@ -26,7 +26,7 @@
         <div class="focus">
             <!-- BEGIN mine -->
             <div class="focus_mine">
-                <h3>Votre classement</h3>
+                <h4>Votre classement</h4>
                 <div>
                     <b>{mine.RANK}</b><sup>e</sup>
                     <span class="focus_points">{mine.POINTS} pts</span>
@@ -94,5 +94,5 @@
     </aside>
 </section>
 <script type="text/javascript">
-    getTags();
+    $(document).ready(getTags);
 </script>

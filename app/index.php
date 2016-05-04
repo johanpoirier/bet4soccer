@@ -67,7 +67,7 @@ define('SAVE_HTTP_FINAL_BET', ( isset($_GET['act']) && ( $_GET['act'] ) == "save
 
 define('SAVE_HTTP_TAG', ( isset($_POST['act']) && ( $_POST['act'] ) == "save_HTTP_tag"));
 define('DEL_HTTP_TAG', ( isset($_POST['act']) && ( $_POST['act'] ) == "del_HTTP_tag"));
-define('GET_HTTP_TAGS', ( isset($_POST['act']) && ( $_POST['act'] ) == "get_HTTP_tags"));
+define('GET_HTTP_TAGS', ( isset($_GET['act']) && ( $_GET['act'] ) == "get_HTTP_tags"));
 
 define('REGISTER', ( isset($_GET['act']) && ( $_GET['act'] ) == "register"));
 define('ACCOUNT', ( isset($_GET['act']) && ( $_GET['act'] ) == "account"));
