@@ -2,7 +2,7 @@
 
     var xmlhttp = getHTTPObject();
     var k = 0;
-    var queue = new Array();
+    var queue = [];
     var inProgress = false;
 
     function debug(str) {
@@ -77,7 +77,7 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Resultats</h1>
+                <h1>Résultats</h1>
             </div>
             <div class="headline-menu">
                 <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">

@@ -97,7 +97,7 @@ INSERT INTO `euro2016__settings` (`name`, `value`, `date`, `status`) VALUES
   ('LAST_GENERATE', NULL, '2014-07-13 23:36:35', 0),
   ('LAST_RESULT', NULL, '2014-06-27 11:43:55', 0),
   ('MONEY', '2', NULL, 0),
-  ('NB_MATCHES_GENERATED', '64', NULL, 0),
+  ('NB_MATCHES_GENERATED', '0', NULL, 0),
   ('RANK_GROUPS_UPDATE', NULL, '2014-07-13 23:36:35', 0),
   ('RANK_UPDATE', NULL, '2014-07-13 23:36:34', 0);
 

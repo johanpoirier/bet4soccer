@@ -61,7 +61,7 @@ function getTags(groupID, startTag) {
 }
 
 function selectListValue(id_liste, value) {
-	$('#' + id_liste + " option[value='"+value+"']").attr('selected', 'selected');
+	$('#' + id_liste).val(value);
 }
 
 function updateRanking(forced) {

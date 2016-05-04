@@ -245,7 +245,7 @@ input[type='submit'] {
     padding: 0.4rem 0.6rem;
     text-align: center;
     text-transform: uppercase;
-    width: 9rem;
+    min-width: 9rem;
 }
 
 input[type='submit'].big {
