@@ -121,6 +121,11 @@ header .block {
     padding: 0.3rem;
 }
 
+header .block.logo {
+    background-image: url('../images/logo.jpg');
+    height: 4rem;
+}
+
 header .account-link {
     align-items: center;
     display: flex;
@@ -869,6 +874,11 @@ span.user_visual {
 }
 
 
+/*************** odds *****************/
+.odds-help {
+    text-align: center;
+}
+
 /************* media queries ******************/
 @media (min-width: 1200px) {
     body:before {
@@ -960,6 +970,16 @@ span.user_visual {
     table.ranking th:last-child, table.ranking td:last-child {
         display: none;
     }
+    header {
+        min-height: 3rem;
+    }
+    header .block.logo {
+        background-image: url('../images/logo-oneline.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 2rem;
+        width: 100%;
+    }
 
     .headline {
         padding: 0.5rem 0.2rem;
@@ -981,5 +1001,9 @@ span.user_visual {
 
     .maincontent.login {
         padding: 0;
+    }
+
+    .focus, .user-infos, .odds-help {
+        display: none;
     }
 }

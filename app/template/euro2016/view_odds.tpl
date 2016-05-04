@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="tag_cloud" style="text-align:center;">
+        <div class="tag_cloud odds-help">
             <i>Vous trouverez sur cette page, les scores moyens et les cotes des diff&eacute;rents r&eacute;sultats
                 (&Eacute;quipe A gagnante, nul, &eacute;quipe B gagnante). Pour rappel, une cote de 5/1 se lit "5
                 contre 1" et signifie que dans un syst&egrave;me de paris financiers (ce qui n'est pas le cas ici),

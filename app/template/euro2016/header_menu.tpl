@@ -1,9 +1,6 @@
 <main>
     <header>
-        <div class="block">
-            <a href="index.php">
-                <img src="{TPL_WEB_PATH}images/logo.jpg" alt="UEFA Euro 2016" border="0" height="66"/>
-            </a>
+        <div class="block logo">
         </div>
         <div class="block">
             <!-- BEGIN matches -->
