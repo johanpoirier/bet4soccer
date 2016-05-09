@@ -2950,13 +2950,13 @@ class BetEngine {
                 $subject = $current_user['name'] . " vous invite à venir pronostiquer avec lui sur les matches de la coupe du monde !";
                 $content = "Bonjour,\n\n";
                 $content .= $current_user['name'] . " a pensé que vous seriez intéressé pour venir pronostiquer avec lui sur les matches de la coupe du monde.\n";
-                $content .= "Pour cela, inscrivez-vous sur CdM2014 en cliquant sur le lien suivant :\n\n";
+                $content .= "Pour cela, inscrivez-vous sur Euro2016 en cliquant sur le lien suivant :\n\n";
                 if (isset($code))
                     $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?c=" . $code . "\n\n";
                 else
                     $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?act=register\n\n";
                 $content .= "Cordialement,\n";
-                $content .= "L'équipe de CdM2014\n";
+                $content .= "L'équipe de Euro2016\n";
                 $ret = utf8_mail($email, $subject, $content, $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             }
         } elseif ($type == 'IN') {
@@ -2970,7 +2970,7 @@ class BetEngine {
                 $content .= "Pour accepter cette invitation, cliquez sur le lien suivant :\n\n";
                 $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?c=" . $code . "\n\n";
                 $content .= "Cordialement,\n";
-                $content .= "L'équipe de CdM2014\n";
+                $content .= "L'équipe de Euro2016\n";
                 $ret = utf8_mail($email, $subject, $content, $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             }
         }
@@ -2984,9 +2984,9 @@ class BetEngine {
         $user = $this->users->get_by_email($email);
 
         if ($user)
-            return utf8_mail($user['email'], "CdM2014 - Oubli de votre login", "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe CdM2014\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            return utf8_mail($user['email'], "Euro2016 - Oubli de votre login", "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         else {
-            utf8_mail($this->config['email'], "CdM2014 - Utilisateur '" . $email . "' inconnu", "L'utilisateur avec l'email '" . $email . "' a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            utf8_mail($this->config['email'], "Euro2016 - Utilisateur '" . $email . "' inconnu", "L'utilisateur avec l'email '" . $email . "' a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
         }
     }
@@ -2996,9 +2996,9 @@ class BetEngine {
         $new_pass = $this->users->set_new_password($user['userID']);
 
         if ($user)
-            return utf8_mail($user['email'], "CdM2014 - Oubli de mot de passe", "Bonjour,\n\nVotre nouveau mot de passe est : " . $new_pass . "\n\nCordialement,\nL'équipe CdM2014\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            return utf8_mail($user['email'], "Euro2016 - Oubli de mot de passe", "Bonjour,\n\nVotre nouveau mot de passe est : " . $new_pass . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         else {
-            utf8_mail($this->config['email'], "CdM2014 - Utilisateur " . $login . " inconnu", "L'utilisateur " . $login . " a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            utf8_mail($this->config['email'], "Euro2016 - Utilisateur " . $login . " inconnu", "L'utilisateur " . $login . " a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
         }
     }
