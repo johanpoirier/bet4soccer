@@ -41,7 +41,7 @@
         <p>
         <span class="rule_subtitle">B. Points "score exact"</span> :
         <ul class="rules">
-        <li>Les points de score sont attribués si le pronostiqueur à trouvé le nombre de buts final de chacune des équipes.
+        <li>Les points de score sont attribués si le pronostiqueur a trouvé le nombre de buts final de chacune des équipes.
         </li>
         <br /><br />
         <table class="rules">
