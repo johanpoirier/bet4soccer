@@ -269,7 +269,7 @@ input {
     padding: 0.2rem;
 }
 
-input[type='text'], input[type='password'] {
+input[type='text'], input[type='password'], input[type='email'] {
     color: #232a44;
     background-color: #fff;
     border: 1px solid #2b476f;
