@@ -3,23 +3,23 @@
         <div class="headline">
             <div class="headline-title">
                 <h1>Classement général après {NB_MATCHES}</h1>
-                <span>
-                    {NB_ACTIVE_USERS} parieurs
-                    <!-- BEGIN g1 -->
-                        <a href="/?act=view_users_ranking_by_group&groupID={g1.GROUP_ID}">{g1.GROUP_NAME}</a><br/>
-                    <!-- END g1 -->
-                    <!-- BEGIN g2 -->
-                        <a href="/?act=view_users_ranking_by_group&groupID={g2.GROUP_ID2}">{g2.GROUP_NAME2}</a><br/>
-                    <!-- END g2 -->
-                    <!-- BEGIN g3 -->
-                        <a href="/?act=view_users_ranking_by_group&groupID={g3.GROUP_ID3}">{g3.GROUP_NAME3}</a><br/>
-                    <!-- END g3 -->
-                </span>
+                <span>{NB_ACTIVE_USERS} parieurs</span>
             </div>
             <div class="headline-menu">
                 <a href="/?act=view_users_ranking"><strong>Général</strong></a>
                 <a href="/?act=view_users_visual_ranking">Relief</a>
                 <a href="/?act=view_groups_ranking">{LABEL_TEAMS_RANKING}</a>
+                <span>
+                    <!-- BEGIN g1 -->
+                    <a href="/?act=view_users_ranking_by_group&groupID={g1.GROUP_ID}">{g1.GROUP_NAME}</a><br/>
+                    <!-- END g1 -->
+                    <!-- BEGIN g2 -->
+                    <a href="/?act=view_users_ranking_by_group&groupID={g2.GROUP_ID2}">{g2.GROUP_NAME2}</a><br/>
+                    <!-- END g2 -->
+                    <!-- BEGIN g3 -->
+                    <a href="/?act=view_users_ranking_by_group&groupID={g3.GROUP_ID3}">{g3.GROUP_NAME3}</a><br/>
+                    <!-- END g3 -->
+                </span>
             </div>
         </div>
 

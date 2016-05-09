@@ -1,10 +1,12 @@
-<div id="mainarea">
-
-	<div id="headline">
-		<h1>Mon compte</h1>
-	</div>
+<section id="mainarea">
 
 	<div class="maincontent">
+		<div class="headline">
+			<div class="headline-title">
+				<h1>Mon compte</h1>
+			</div>
+		</div>
+
 		<div class="ppp">
 			<center><span style="color: red;"><b>{WARNING}</b></span></center>
 			<ul>
@@ -44,4 +46,4 @@
 			</ul>			
 		</div>
 	</div>
-</div>
+</section>

@@ -23,7 +23,6 @@
                 <span>Mon compte</span>
             </a>
             <!-- END account -->
-            <i>{HEADER_GROUP_NAME}</i>
         </div>
         <!-- END logged_in -->
     </header>

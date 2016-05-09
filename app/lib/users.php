@@ -342,7 +342,8 @@ class Users
         }
         $req .= ' ORDER BY u.name ASC';
 
-        $users = $this->parent->db->select_array($req, null);
+        $nb_users = 0;
+        $users = $this->parent->db->select_array($req, $nb_users);
         if ($this->parent->debug) {
             array_show($users);
         }
@@ -607,40 +608,18 @@ class Users
 
     function is_authentificate($login, $pass, &$user)
     {
-        if ($this->parent->config['auth'] == 'LDAP') {
-            if ($pass == "" || $pass == null || !isset($pass))
-                return false;
-            $login = strtolower($login);
-            $ldap_ret = $this->parent->ldap->connect($login, $pass);
-            if ($ldap_ret <= 0)
-                return $ldap_ret;
-            if ($userID = $this->is_exist($login)) {
-                $user = $this->get($userID);
-                return true;
-            }
-            $ldap_user = $this->parent->ldap->get_user($login);
-            if (!$ldap_user)
-                return false;
-            if ($ldap_user['site'] != 'Lyon')
-                return AWL_NOT_GOOD_SITE;
-            $group = $this->parent->groups->get_by_name($ldap_user['group_name']);
-            $userID = $this->add($ldap_user['login'], 0, $ldap_user['name'], $ldap_user['email'], $group['groupID'], 0);
-            $user = $this->get($userID);
-            return ($this->is_exist($login));
-        } else {
-            // Main Query
-            $req = 'SELECT *';
-            $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
-            $req .= ' WHERE lower(login) = \'' . strtolower($login) . '\'';
-            $req .= ' AND password = \'' . md5($pass) . '\'';
+        // Main Query
+        $req = 'SELECT *';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
+        $req .= ' WHERE lower(login) = \'' . strtolower($login) . '\'';
+        $req .= ' AND password = \'' . md5($pass) . '\'';
 
 	    $nb_user = 0;
-            $user = $this->parent->db->select_line($req, $nb_user);
-            if ($nb_user == 1) {
-                return true;
-            } else {
-                return INCORRECT_PASSWORD;
-            }
+        $user = $this->parent->db->select_line($req, $nb_user);
+        if ($nb_user == 1) {
+            return true;
+        } else {
+            return INCORRECT_PASSWORD;
         }
     }
 
