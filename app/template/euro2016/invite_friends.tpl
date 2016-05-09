@@ -10,11 +10,14 @@
             <center><span style="color:red;"><b>{WARNING}</b></span></center>
             <!-- BEGIN is_send -->
             <h2>Historique de vos invitations à des groupes</h2>
+            <br/>
             <!-- BEGIN send_invitations -->
             {is_send.send_invitations.NAME} ({is_send.send_invitations.GROUP_NAME}) : {is_send.send_invitations.STATUS}
             <br/>
             <!-- END send_invitations -->
             <!-- END is_send -->
+            <br/>
+            <br/>
             <!-- BEGIN is_group -->
             <h2>Inviter des inscrits à rejoindre vos groupes</h2>
             <form method="post" name="IN" action="/?act=invite_friends">
@@ -41,6 +44,8 @@
                 <!-- END invit_in -->
                 <input type="submit" value="Inviter"/>
             </form>
+            <br/>
+            <br/>
             <!-- END is_group -->
 
             <h2>Inviter des amis</h2>

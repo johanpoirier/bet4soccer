@@ -492,7 +492,7 @@ class Bets {
         $req .= ' WHERE userID = ' . $userID . '';
         $req .= ' AND matchID = ' . $matchID . '';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function get_points($bet) {

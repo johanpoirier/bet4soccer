@@ -25,7 +25,7 @@ class Settings
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'settings';
         $req .= ' WHERE name = \'RANK_GROUPS_UPDATE\'';
 
-        $rank_update = $this->parent->db->select_one($req, null);
+        $rank_update = $this->parent->db->select_one($req);
 
         if ($this->parent->debug) {
             echo $rank_update;
@@ -40,7 +40,7 @@ class Settings
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'settings';
         $req .= ' WHERE name = \'RANK_UPDATE\'';
 
-        $rank_update = $this->parent->db->select_one($req, null);
+        $rank_update = $this->parent->db->select_one($req);
 
         if ($rank_update == "") {
             $this->set_last_rank_update();
@@ -81,7 +81,7 @@ class Settings
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'settings';
         $req .= ' WHERE name = \'' . $setting . '\'';
 
-        $date = $this->parent->db->select_one($req, null);
+        $date = $this->parent->db->select_one($req);
 
         if ($this->parent->debug) echo $date;
 
@@ -96,7 +96,7 @@ class Settings
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'settings';
         $req .= ' WHERE name = \'' . $setting . '\'';
 
-        $value = $this->parent->db->select_one($req, null);
+        $value = $this->parent->db->select_one($req);
 
         if ($this->parent->debug) echo $value;
 
@@ -111,7 +111,7 @@ class Settings
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'settings';
         $req .= ' WHERE name = \'' . $setting . '\'';
 
-        $value = $this->parent->db->select_one($req, null);
+        $value = $this->parent->db->select_one($req);
 
         if ($this->parent->debug) echo $value;
 
@@ -145,14 +145,14 @@ class Settings
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'settings';
         $req .= " WHERE name = 'LAST_GENERATE'";
         $req .= " AND DATE_FORMAT(date, '%m%e%H') <> DATE_FORMAT(NOW(), '%m%e%H')";
-        $isLastGenerate = $this->parent->db->select_one($req, null);
+        $isLastGenerate = $this->parent->db->select_one($req);
 
         if ($isLastGenerate == 1) {
             $req = 'SELECT count(matchID) as nbMatchs';
             $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches';
             $req .= " WHERE DATE_FORMAT(date, '%m%e') = DATE_FORMAT(NOW(), '%m%e')";
             $req .= ' AND scoreA IS NULL AND scoreB IS NULL';
-            $nbMatchs = $this->parent->db->select_one($req, null);
+            $nbMatchs = $this->parent->db->select_one($req);
 
             return ($nbMatchs === 0);
         } else {

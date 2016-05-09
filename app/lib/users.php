@@ -281,7 +281,8 @@ class Users
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' WHERE login = \'' . $login . '\'';
 
-        $user = $this->parent->db->select_line($req, null);
+        $nb_users = 0;
+        $user = $this->parent->db->select_line($req, $nb_users);
 
         if ($this->parent->debug) {
             array_show($user);

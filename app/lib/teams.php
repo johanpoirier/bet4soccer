@@ -127,7 +127,7 @@ class Teams
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'teams t ';
         $req .= ' WHERE name = \'' . addslashes($team) . '\'';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
 
     }
 

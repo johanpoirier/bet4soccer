@@ -510,7 +510,7 @@ class Matches
         $req .= ' WHERE round = ' . $round . '';
         $req .= ' AND rank = ' . $rank . '';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function is_exist()
@@ -529,7 +529,7 @@ class Matches
             $req = 'SELECT matchID';
             $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
             $req .= ' WHERE m.matchID = ' . $matchID . '';
-            return $this->parent->db->select_one($req, null);
+            return $this->parent->db->select_one($req);
         } elseif ($nb_args == 2) {
             $teamA = $args[0];
             $teamB = $args[1];
@@ -538,7 +538,7 @@ class Matches
             $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
             $req .= ' WHERE m.teamA = ' . $teamA . '';
             $req .= ' AND m.teamB = ' . $teamB . '';
-            return $this->parent->db->select_one($req, null);
+            return $this->parent->db->select_one($req);
         } else
             return false;
     }
