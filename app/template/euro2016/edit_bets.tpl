@@ -40,7 +40,7 @@
         HTML_ranking += "<td width=\"80%\"><b>Nations</b></td><td width=\"10%\"><b>Pts</b></td><td width=\"10%\"><b>Diff</b></td>";
         HTML_ranking += "</tr>";
 
-        for (var i = 3; i < results.length - 1; i++) {
+        for (var i = 2; i < results.length - 1; i++) {
             var result = results[i].split(";");
 
             HTML_ranking += "<tr>";
