@@ -133,7 +133,7 @@ class Bets {
         }
     }
 
-    function add_HTTP_final($userID, $matchID, $team, $score, $final_teamID, $final_teamW, $num) {
+    function add_HTTP_final($userID, $matchID, $team, $score, $final_teamID, $final_teamW) {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
         if ($final_teamW == "" || $final_teamW == NULL)
@@ -142,25 +142,27 @@ class Bets {
             $match = $this->parent->matches->get($matchID);
             $round = $match['round'];
             $rank = $match['rank'];
-            echo $matchID . "|" . $round . "|" . $rank . "|" . $final_teamW . "|" . $num . "|";
-        } else
+            echo $matchID . "|" . $round . "|" . $rank . "|" . $final_teamW . "|";
+        } else {
             echo $ret;
+        }
         return $ret;
     }
 
-    function add_HTTP($userID, $matchID, $team, $score, $num) {
+    function add_HTTP($userID, $matchID, $team, $score) {
         if ($ret = $this->add($userID, $matchID, $team, $score)) {
             $pool = $this->parent->matches->get_pool($matchID);
             $bets = $this->get_by_pool($pool);
             $teams = $this->parent->teams->get_by_pool($pool);
             $array_teams = $this->parent->teams->get_ranking($teams, $bets, 'scoreBet');
 
-            echo $matchID . "|" . $pool . "|" . $num . "|";
+            echo $matchID . "|" . $pool . "|";
             foreach ($array_teams as $team) {
                 echo $team['teamID'] . ";" . $team['name'] . ";" . rawurlencode($team['name']) . ";" . $team['points'] . ";" . (($team['diff'] > 0) ? "+" : "") . $team['diff'] . "|";
             }
-        } else
+        } else {
             echo $ret;
+        }
         return $ret;
     }
 

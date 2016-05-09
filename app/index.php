@@ -62,8 +62,8 @@ define('VIEW_BETS_OF_USER', ( isset($_GET['act']) && ( $_GET['act'] ) == "view_b
 define('VIEW_FINALS_BETS_OF_USER', ( isset($_GET['act']) && ( $_GET['act'] ) == "view_finals_bets" && isset($_GET['user'])));
 
 define('GET_HTTP_TEAMS', ( isset($_GET['act']) && ( $_GET['act'] ) == "get_HTTP_teams"));
-define('SAVE_HTTP_BET', ( isset($_GET['act']) && ( $_GET['act'] ) == "save_HTTP_bet"));
-define('SAVE_HTTP_FINAL_BET', ( isset($_GET['act']) && ( $_GET['act'] ) == "save_HTTP_final_bet"));
+define('SAVE_HTTP_BET', ( isset($_POST['act']) && ( $_POST['act'] ) == "save_HTTP_bet"));
+define('SAVE_HTTP_FINAL_BET', ( isset($_POST['act']) && ( $_POST['act'] ) == "save_HTTP_final_bet"));
 
 define('SAVE_HTTP_TAG', ( isset($_POST['act']) && ( $_POST['act'] ) == "save_HTTP_tag"));
 define('DEL_HTTP_TAG', ( isset($_POST['act']) && ( $_POST['act'] ) == "del_HTTP_tag"));
@@ -350,28 +350,32 @@ elseif (DEL_HTTP_TAG) {
     exit();
 }
 elseif (SAVE_HTTP_TAG) {
-    if ($debug)
+    if ($debug) {
         echo "SAVE_HTTP_TEAM_TAG<br />";
+    }
     $bet->tags->add(utf8_encode($_POST['text']), $_POST['groupID']);
     $bet->load_tags($_POST['groupID']);
     $bet->display();
     exit();
 }
 elseif (SAVE_HTTP_FINAL_BET) {
-    if ($debug)
+    if ($debug) {
         echo "SAVE_HTTP_FINAL_BET<br />";
+    }
     $bet->bets->add_HTTP_final($_GET['userID'], $_GET['matchID'], $_GET['team'], $_GET['score'], $_GET['teamID'], $_GET['teamW'], $_GET['j']);
     exit();
 }
 elseif (SAVE_HTTP_BET) {
-    if ($debug)
+    if ($debug) {
         echo "SAVE_HTTP_BET<br />";
-    $bet->bets->add_HTTP($_GET['userID'], $_GET['matchID'], $_GET['team'], $_GET['score'], $_GET['j']);
+    }
+    $bet->bets->add_HTTP($_POST['userID'], $_POST['matchID'], $_POST['team'], $_POST['score']);
     exit();
 }
 elseif (SAVE_BETS) {
-    if ($debug)
+    if ($debug) {
         echo "SAVE_BETS<br />";
+    }
     $user_bets = $_POST;
     $userId = $_SESSION['userID'];
     $bet->bets->add_array($userId, $user_bets);
