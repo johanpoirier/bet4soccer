@@ -943,15 +943,15 @@ td.loose {
     background-color: transparent;
 }
 
-table.first {
+.first {
     background-color: #FEECA5;
 }
 
-table.last, tr.last {
+.last {
     background-color: #ffaeae;
 }
 
-table.me {
+.me {
     background-color: #FBD670;
 }
 

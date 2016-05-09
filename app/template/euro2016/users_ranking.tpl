@@ -65,7 +65,7 @@
             </tr>
 
             <!-- BEGIN users -->
-            <tr class="list_element" style="background-color:{users.COLOR};" id="user{users.ID}">
+            <tr class="{users.CLASS} list_element" id="user{users.ID}">
                 <td><b>{users.RANK}</b> {users.LAST_RANK}</td>
                 <td class="aligned">
                     <b>{users.VIEW_BETS}{users.NAME}</a></b> {users.NB_MISS_BETS}

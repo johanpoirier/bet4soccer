@@ -29,7 +29,7 @@ class Users
             return FIELDS_EMPTY;
         }
 
-        $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,"groupID",status)';
+        $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,groupID,status)';
         $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . md5($pass) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
 
         return $this->parent->db->insert($req);
@@ -81,8 +81,7 @@ class Users
         $this->parent->update_session();
         if ($ret) {
             return CHANGE_ACCOUNT_OK;
-        }
-        else {
+        } else {
             return UNKNOWN_ERROR;
         }
     }
@@ -102,8 +101,7 @@ class Users
         $this->parent->update_session();
         if ($ret) {
             return CHANGE_ACCOUNT_OK;
-        }
-        else {
+        } else {
             return UNKNOWN_ERROR;
         }
     }
@@ -140,9 +138,11 @@ class Users
         $req .= ' ORDER by name';
 
         // Execute Query
+        $nb_users = 0;
         $users = $this->parent->db->select_array($req, $nb_users);
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($users);
+        }
 
         // Return results
         if ($nb_args > 0 && $nb_users > 0) {
@@ -298,7 +298,8 @@ class Users
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' WHERE email = \'' . $email . '\'';
 
-        $user = $this->parent->db->select_line($req, null);
+        $nb_users = 0;
+        $user = $this->parent->db->select_line($req, $nb_users);
 
         if ($this->parent->debug) {
             array_show($user);
@@ -358,7 +359,7 @@ class Users
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE login = \'' . $login . '\'';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function get_max_points()
@@ -367,7 +368,7 @@ class Users
         $req = 'SELECT max(points)';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function is_exist_by_email($email)
@@ -377,7 +378,7 @@ class Users
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE email = \'' . $email . '\'';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function is_name_exist($name)
@@ -387,7 +388,7 @@ class Users
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users ';
         $req .= ' WHERE name = \'' . $name . '\'';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
     }
 
     function is_admin($userID)
@@ -416,7 +417,7 @@ class Users
         }
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' SET "groupID' . $pos . '" = NULL';
+        $req .= ' SET groupID' . $pos . ' = NULL';
         $req .= ' WHERE userID = ' . $userID . '';
         $ret = $this->parent->db->exec_query($req);
         $this->parent->update_session();
@@ -506,14 +507,13 @@ class Users
         }
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' SET "groupID' . $pos . '" = ' . $groupID . '';
+        $req .= ' SET groupID' . $pos . ' = ' . $groupID . '';
         $req .= ' WHERE userID = ' . $userID . '';
         $ret = $this->parent->db->exec_query($req);
         $this->parent->update_session();
         if ($ret) {
             return JOIN_GROUP_OK;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -614,7 +614,7 @@ class Users
         $req .= ' WHERE lower(login) = \'' . strtolower($login) . '\'';
         $req .= ' AND password = \'' . md5($pass) . '\'';
 
-	    $nb_user = 0;
+        $nb_user = 0;
         $user = $this->parent->db->select_line($req, $nb_user);
         if ($nb_user == 1) {
             return true;

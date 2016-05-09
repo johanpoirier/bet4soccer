@@ -101,16 +101,22 @@ class Groups
         // Main Query
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'groups';
-        if ($nb_args > 0) $req .= ' WHERE groupID = ' . $groupID . '';
+        if ($nb_args > 0) {
+            $req .= ' WHERE groupID = ' . $groupID . '';
+        }
         $req .= ' ORDER BY name ASC';
 
         // Execute Query
+        $nb_groups = 0;
         $groups = $this->parent->db->select_array($req, $nb_groups);
         if ($this->parent->debug) array_show($groups);
 
         // Return results
-        if ($nb_args > 0 && $nb_groups > 0) return $groups[0];
-        else return $groups;
+        if ($nb_args > 0 && $nb_groups > 0) {
+            return $groups[0];
+        } else {
+            return $groups;
+        }
     }
 
     function get_by_name($groupName)
@@ -199,7 +205,9 @@ class Groups
 
         $nb_active_group = $this->parent->db->select_one($req);
 
-        if ($this->parent->debug) array_show($nb_active_group);
+        if ($this->parent->debug) {
+            array_show($nb_active_group);
+        }
 
         return $nb_active_group;
     }
@@ -218,8 +226,12 @@ class Groups
         $req .= ' WHERE code = \'' . addslashes($code) . '\'';
         $req .= ' AND expiration >= NOW()';
         $req .= ' AND status > 0';
-        $invitation = $this->parent->db->select_line($req, $null);
-        if ($this->parent->debug) array_show($invitation);
+
+        $nb_invitations = 0;
+        $invitation = $this->parent->db->select_line($req, $nb_invitations);
+        if ($this->parent->debug) {
+            array_show($invitation);
+        }
         return $invitation;
     }
 
@@ -231,8 +243,12 @@ class Groups
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'invitations i';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups g ON (i.groupID = g.groupID)';
         $req .= ' WHERE code = \'' . $code . '\'';
-        $invitation = $this->parent->db->select_line($req, $null);
-        if ($this->parent->debug) array_show($invitation);
+
+        $nb_invitations = 0;
+        $invitation = $this->parent->db->select_line($req, $nb_invitations);
+        if ($this->parent->debug) {
+            array_show($invitation);
+        }
         return $invitation;
     }
 
@@ -244,7 +260,9 @@ class Groups
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'invitations i';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups g ON (i.groupID = g.groupID)';
         $req .= ' WHERE senderID = ' . $senderID . '';
-        $invitations = $this->parent->db->select_array($req, $null);
+
+        $nb_invitations = 0;
+        $invitations = $this->parent->db->select_array($req, $nb_invitations);
         if ($this->parent->debug) array_show($invitations);
         return $invitations;
     }
@@ -257,8 +275,12 @@ class Groups
         $req .= ' WHERE email = \'' . addslashes($email) . '\'';
         $req .= ' AND expiration >= NOW()';
         $req .= ' AND status > 0';
-        $invitation = $this->parent->db->select_line($req, $null);
-        if ($this->parent->debug) array_show($invitation);
+
+        $nb_invitations = 0;
+        $invitation = $this->parent->db->select_line($req, $nb_invitations);
+        if ($this->parent->debug)  {
+            array_show($invitation);
+        }
         return $invitation;
     }
 
@@ -295,8 +317,7 @@ class Groups
         $req .= 'DATE_ADD(NOW(), INTERVAL ' . $this->parent->config['invitation_expiration'] . ' DAY)';
         if ($type == 'IN') {
             $req .= ',2)';
-        }
-        else {
+        } else {
             $req .= ',1)';
         }
         $this->parent->db->insert($req);
@@ -329,8 +350,12 @@ class Groups
         $req .= ' AND groupID = ' . $groupID . '';
         $req .= ' AND expiration >= NOW()';
         $req .= ' AND status > 0';
-        $invitation = $this->parent->db->select_line($req, $null);
-        if ($this->parent->debug) array_show($group);
+
+        $nb_invitations = 0;
+        $invitation = $this->parent->db->select_line($req, $nb_invitations);
+        if ($this->parent->debug) {
+            array_show($invitation);
+        }
         return $invitation;
     }
 
@@ -357,7 +382,7 @@ class Groups
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'groups ';
         $req .= ' WHERE groupID = ' . $group_id . '';
 
-        return $this->parent->db->select_one($req, null);
+        return $this->parent->db->select_one($req);
 
     }
 
@@ -368,11 +393,15 @@ class Groups
         if (($is_generating > 0) && ($is_generating != $cur_user)) {
             echo "IN_PROGRESS";
             return false;
-        } else $this->parent->settings->set('IS_GROUP_RANKING_GENERATING', $cur_user, 'NULL');
+        } else {
+            $this->parent->settings->set('IS_GROUP_RANKING_GENERATING', $cur_user, 'NULL');
+        }
         $groups = $this->get();
-        $groupsView = array();
+        $groupsView = [];
         $nbMatchesPlayed = $this->parent->matches->count_played();
-        if ($nbMatchesPlayed == 0) return false;
+        if ($nbMatchesPlayed == 0) {
+            return false;
+        }
 
         foreach ($groups as $group) {
             $group['avgPoints'] = 0;

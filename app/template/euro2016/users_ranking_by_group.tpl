@@ -3,8 +3,13 @@
         <div class="headline">
             <div class="headline-title">
                 <h1>{GROUP_NAME} : classement après {NB_MATCHES}</h1>
+                <span>{NB_ACTIVE_USERS}/{NB_USERS} parieurs</span>
+            </div>
+            <div class="headline-menu">
+                <a href="/?act=view_users_ranking">Général</a>
+                <a href="/?act=view_users_visual_ranking">Relief</a>
+                <a href="/?act=view_groups_ranking">{LABEL_TEAMS_RANKING}</a>
                 <span>
-                    {NB_ACTIVE_USERS}/{NB_USERS} parieurs
                     <!-- BEGIN g1 -->
                     <a href="/?act=view_users_ranking_by_group&groupID={g1.GROUP_ID}">{g1.GROUP_NAME}</a><br/>
                     <!-- END g1 -->
@@ -15,11 +20,6 @@
                     <a href="/?act=view_users_ranking_by_group&groupID={g3.GROUP_ID3}">{g3.GROUP_NAME3}</a><br/>
                     <!-- END g3 -->
                 </span>
-            </div>
-            <div class="headline-menu">
-                <a href="/?act=view_users_ranking">Général</a>
-                <a href="/?act=view_users_visual_ranking">Relief</a>
-                <a href="/?act=view_groups_ranking">{LABEL_TEAMS_RANKING}</a>
             </div>
         </div>
 

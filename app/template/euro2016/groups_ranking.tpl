@@ -3,24 +3,23 @@
         <div class="headline">
             <div class="headline-title">
                 <h1>Classement par groupe après {NB_MATCHES}</h1>
-                <span>
-                    {NB_ACTIVE_GROUPS}/{NB_GROUPS} groupes
-                    <!-- BEGIN g1 -->
-                        <a href="/?act=view_users_ranking_by_group&groupID={g1.GROUP_ID}">{g1.GROUP_NAME}</a><br/>
-                    <!-- END g1 -->
-                    <!-- BEGIN g2 -->
-                        <a href="/?act=view_users_ranking_by_group&groupID={g2.GROUP_ID2}">{g2.GROUP_NAME2}</a><br/>
-                    <!-- END g2 -->
-                    <!-- BEGIN g3 -->
-                        <a href="/?act=view_users_ranking_by_group&groupID={g3.GROUP_ID3}">{g3.GROUP_NAME3}</a><br/>
-                    <!-- END g3 -->
-                    </td>
-                </span>
+                <span>{NB_ACTIVE_GROUPS}/{NB_GROUPS} groupes</span>
             </div>
             <div class="headline-menu">
                 <a href="/?act=view_users_ranking">Général</a>
                 <a href="/?act=view_users_visual_ranking">Relief</a>
                 <a href="/?act=view_groups_ranking"><strong>{LABEL_TEAMS_RANKING}</strong></a>
+                <span>
+                    <!-- BEGIN g1 -->
+                    <a href="/?act=view_users_ranking_by_group&groupID={g1.GROUP_ID}">{g1.GROUP_NAME}</a><br/>
+                    <!-- END g1 -->
+                    <!-- BEGIN g2 -->
+                    <a href="/?act=view_users_ranking_by_group&groupID={g2.GROUP_ID2}">{g2.GROUP_NAME2}</a><br/>
+                    <!-- END g2 -->
+                    <!-- BEGIN g3 -->
+                    <a href="/?act=view_users_ranking_by_group&groupID={g3.GROUP_ID3}">{g3.GROUP_NAME3}</a><br/>
+                    <!-- END g3 -->
+                </span>
             </div>
         </div>
 
@@ -44,13 +43,15 @@
             <!-- BEGIN teams -->
             <tr class="list_element" style="background-color:{teams.COLOR};">
                 <td><strong>{teams.RANK}</strong> {teams.LAST_RANK}</td>
-                <td class="aligned"><strong><a href="/?act=view_users_ranking_by_group&groupID={teams.GROUP_ID}">{teams.NAME}</a></strong></td>
+                <td class="aligned"><strong><a
+                                href="/?act=view_users_ranking_by_group&groupID={teams.GROUP_ID}">{teams.NAME}</a></strong>
+                </td>
                 <td>{teams.NB_ACTIFS} / {teams.NB_TOTAL}</td>
                 <td><strong>{teams.AVG_POINTS}</strong></td>
                 <td>{teams.MAX_POINTS}</td>
                 <td>{teams.TOTAL_POINTS}</td>
             </tr>
-        <!-- END teams -->
+            <!-- END teams -->
         </table>
     </div>
 

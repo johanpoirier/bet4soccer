@@ -573,10 +573,12 @@ class BetEngine {
 
         $users = $this->users->get_full_ranking();
         $nb_bets = $this->bets->count_by_users();
-        $nb_played_bets = $this->bets->count_played_by_users();
+        $nb_played_bets = $this->bets->count_played_by_users();;
+        $nb_active_users = $this->users->count_active();
         $nb_matches = $this->settings->get_value('NB_MATCHES_GENERATED');
-        if ($nb_matches == "")
+        if ($nb_matches == "") {
             $nb_matches = 0;
+        }
         $last_pool_match = $this->matches->get_last_pool();
 
         $this->template->assign_vars(array(
@@ -699,6 +701,15 @@ class BetEngine {
                 }
             }
 
+            $class = "";
+            if ($_SESSION['userID'] == $user['userID']) {
+                $class = "me";
+            } elseif ($user['rank'] <= 3) {
+                $class = "first";
+            } elseif ($user['rank'] > ($nb_active_users - 1)) {
+                $class = "last";
+            }
+
             $this->template->assign_block_vars('users', array(
                 'EVOLUTION' => ($img) ? "($evol)" : "",
                 'RANK_CLASS' => ($img) ? $rank_class : "",
@@ -715,7 +726,7 @@ class BetEngine {
                 'NBSCORES' => $user['nbscores'],
                 'DIFF' => $user['diff'],
                 'STATUS' => $user['status'],
-                'COLOR' => ($_SESSION['userID'] == $user['userID']) ? "#FFDA9A" : (($user['points'] == "") ? "#E6E6E6" : "")
+                'CLASS' => $class
             ));
         }
 
@@ -863,8 +874,9 @@ class BetEngine {
         $groupsView = array();
         $nbMatchesPlayed = $this->matches->count_played();
         $nb_matches = $this->settings->get_value('NB_MATCHES_GENERATED');
-        if ($nb_matches == "")
+        if ($nb_matches == "") {
             $nb_matches = 0;
+        }
         $this->template->assign_vars(array(
             'LABEL_TEAMS_RANKING' => $this->lang['LABEL_TEAMS_RANKING'],
             'NB_MATCHES' => ($nb_matches > 1) ? $nb_matches . " matches" : $nb_matches . " match",
@@ -913,10 +925,12 @@ class BetEngine {
                     $group['nbUsersActifs']++;
                 }
             }
-            if (!$this->config['display_empty_group'] && count($users) < 1)
+            if (!$this->config['display_empty_group'] && count($users) < 3) {
                 continue;
-            if (!$this->config['display_unactive_group'] && $group['nbUsersActifs'] < 1)
+            }
+            if (!$this->config['display_unactive_group'] && $group['nbUsersActifs'] < 3) {
                 continue;
+            }
             $group['nbUsersTotal'] = $this->users->count_by_group($group['groupID']);
             $groupsView[] = $group;
         }
@@ -947,8 +961,9 @@ class BetEngine {
                 $img = "arrow_down1.png";
                 $rank_class = "drop";
             }
-            if ($evol > 0)
+            if ($evol > 0) {
                 $evol = "+" . $evol;
+            }
 
             $this->template->assign_block_vars('teams', array(
                 'RANK' => $rank,
