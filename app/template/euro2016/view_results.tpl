@@ -1,15 +1,13 @@
-<script language="JavaScript" type="text/javascript">
-
+<script type="text/javascript">
     function changePhase(action) {
-        window.location.href = "?act=" + action + "";
+        window.location.assign('/?act=' + action);
     }
-
 </script>
 <section id="mainarea">
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Resultats</h1>
+                <h1>Résultats</h1>
             </div>
             <div class="headline-menu">
                 <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
@@ -53,7 +51,6 @@
             </table>
         </div>
         <!-- END pools -->
-
     </div>
 
     <aside>
@@ -61,7 +58,7 @@
         <div class="tag_cloud">
             <div class="rightcolumn_headline"><h1>Groupe {pools.POOL}</h1></div>
             <div id="pool_{pools.POOL}_ranking">
-                <table style="font-size:9px;">
+                <table class="ranking-pool">
                     <tr>
                         <td width="80%"><b>Nations</b></td>
                         <td width="10%"><b>Pts</b></td>
@@ -81,7 +78,5 @@
 
         </div>
         <!-- END pools -->
-
     </aside>
-
 </section>

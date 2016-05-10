@@ -14,9 +14,10 @@ class Stats
     function get_user_stats($userID)
     {
         // Main Query
-        $req = 'SELECT *, label FROM ' . $this->parent->config['db_prefix'] . "stats_user";
-        $req .= ' WHERE "userID" = ' . $userID;
+        $req = 'SELECT *, label FROM ' . $this->parent->config['db_prefix'] . 'stats_user';
+        $req .= " WHERE userID = $userID";
 
+        $nb_stats = 0;
         $stats = $this->parent->db->select_array($req, $nb_stats);
 
         return $stats;

@@ -2361,6 +2361,7 @@ class BetEngine {
 		// Stats
 		$types = array(1 => "Evolution au classement", 2 => "Nb de points par jour");
         $userStats = $this->stats->get_user_stats($userID);
+        var_dump($userStats);
         foreach ($types as $id => $type) {
             if($id == 1) {
                 $xSerie = "[";
@@ -2645,11 +2646,6 @@ class BetEngine {
             $user = $this->users->get($_SESSION['userID']);
         }
 
-        $groupName = "";
-        if (isset($user['groupName'])) {
-            $groupName = "(" . $user['groupName'] . ")";
-        }
-
         $this->template->assign_vars(array(
             'CURRENT_USER' => $user['name'],
             'MAX_POINTS' => $this->users->get_max_points(),
@@ -2663,7 +2659,6 @@ class BetEngine {
             ));
             $datas = $this->stats->get_user_stats_by_type($userID, $id);
             $days = array_keys($datas);
-            $count_days = count($days);
             $i = 0;
             foreach ($days as $day) {
                 $this->template->assign_block_vars('stats.days', array(

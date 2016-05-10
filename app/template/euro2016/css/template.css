@@ -158,14 +158,6 @@ header .account-link {
             flex-direction: column;
 }
 
-.maincontent_large {
-    background-color: #fff;
-    color: #333;
-    float: left;
-    padding: 0;
-    width: 735px;
-}
-
 section#mainarea {
     background-color: #fff;
     color: #333;
@@ -1011,7 +1003,7 @@ span.user_visual {
             justify-content: space-between;
 }
 
-.user-infos-block {
+.user-infos-block, .user-stats {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -1023,6 +1015,18 @@ span.user_visual {
             flex-direction: column;
 }
 
+.user-stats {
+    width: 50%;
+}
+
+.user-stats-title {
+    font-weight: bold;
+    text-align: center;
+}
+
+.user-stats-chart {
+    min-height: 7rem;
+}
 
 /*************** odds *****************/
 .odds-help {

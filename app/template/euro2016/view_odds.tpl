@@ -50,18 +50,18 @@
                     <td colspan="5" style="text-align:center;"><i>{pools.matches.DATE}</i></td>
                 </tr>
                 <tr>
-                    <td id="{pools.matches.ID}_team_A" width="35%"
-                        style="text-align:right;background-color:{pools.matches.TEAM_COLOR_A};"
-                        rowspan="3">{pools.matches.TEAM_NAME_A} <img
-                                src="{TPL_WEB_PATH}images/flag/{pools.matches.TEAM_NAME_A_URL}.png"/></td>
+                    <td id="{pools.matches.ID}_team_A" width="35%" style="text-align:right;background-color:{pools.matches.TEAM_COLOR_A};" rowspan="3">
+                        {pools.matches.TEAM_NAME_A}
+                        <img src="{TPL_WEB_PATH}images/flag/{pools.matches.TEAM_NAME_A_URL}.png"/>
+                    </td>
                     <td width="10%"
                         style="text-align:center;font-weight:600;font-size:15px;">{pools.matches.SCORE_A}</td>
                     <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">&nbsp;</td>
                     <td width="10%"
                         style="text-align:center;font-weight:600;font-size:15px;">{pools.matches.SCORE_B}</td>
-                    <td id="{pools.matches.ID}_team_B" width="35%"
-                        style="text-align:left;background-color:{pools.matches.TEAM_COLOR_B};" rowspan="3"><img
-                                src="{TPL_WEB_PATH}images/flag/{pools.matches.TEAM_NAME_B_URL}.png"/> {pools.matches.TEAM_NAME_B}
+                    <td id="{pools.matches.ID}_team_B" width="35%" style="text-align:left;background-color:{pools.matches.TEAM_COLOR_B};" rowspan="3">
+                        <img src="{TPL_WEB_PATH}images/flag/{pools.matches.TEAM_NAME_B_URL}.png"/>
+                        {pools.matches.TEAM_NAME_B}
                     </td>
                 </tr>
                 <tr>
@@ -76,8 +76,9 @@
                 </tr>
                 <tr>
                     <td colspan="5" style="text-align:center;color:red;font-weight:300;font-size:9px;">
-                        <a href="javascript:toggle_exact_bets({pools.matches.ID});"><span
-                                    style="color:red;">{pools.matches.EXACT_BETS}</span></a>
+                        <a href="#" onclick="toggle_exact_bets({pools.matches.ID})">
+                            <span style="color:red;">{pools.matches.EXACT_BETS}</span>
+                        </a>
                         <div id="exact_bets_{pools.matches.ID}" style="display:none;">
                             <!-- BEGIN exact_bets -->
                             <br/><a href="?act=view_bets&user={pools.matches.exact_bets.USERID}"><b>{pools.matches.exact_bets.NAME}</b></a>
@@ -87,8 +88,9 @@
                 </tr>
                 <tr>
                     <td colspan="5" style="text-align:center;color:red;font-weight:300;font-size:9px;">
-                        <a href="javascript:toggle_good_bets({pools.matches.ID});"><span
-                                    style="color:red;">{pools.matches.GOOD_BETS}</span></a>
+                        <a href="#" onclick="toggle_good_bets({pools.matches.ID})">
+                            <span style="color:red;">{pools.matches.GOOD_BETS}</span>
+                        </a>
                         <div id="good_bets_{pools.matches.ID}" style="display:none;">
                             <!-- BEGIN good_bets -->
                             <br/><a href="?act=view_bets&user={pools.matches.good_bets.USERID}">{pools.matches.good_bets.NAME}</a>
@@ -105,16 +107,14 @@
             </table>
         </div>
         <!-- END pools -->
-
     </div>
-
 
     <aside>
         <!-- BEGIN pools -->
         <div class="tag_cloud">
             <div class="rightcolumn_headline"><h2>Groupe {pools.POOL}</h2></div>
             <div id="pool_{pools.POOL}_ranking">
-                <table style="font-size:9px;">
+                <table class="ranking-pool">
                     <tr>
                         <td width="80%"><b>Nations</b></td>
                         <td width="10%"><b>Pts</b></td>
@@ -122,8 +122,9 @@
                     </tr>
                     <!-- BEGIN teams -->
                     <tr>
-                        <td id="{pools.teams.ID}_team"><img width="15px"
-                                                            src="{TPL_WEB_PATH}/images/flag/{pools.teams.NAME_URL}.png"/> {pools.teams.NAME}
+                        <td id="{pools.teams.ID}_team">
+                            <img width="15px" src="{TPL_WEB_PATH}/images/flag/{pools.teams.NAME_URL}.png"/>
+                            {pools.teams.NAME}
                         </td>
                         <td>{pools.teams.POINTS}</td>
                         <td>{pools.teams.DIFF}</td>
@@ -134,5 +135,4 @@
         </div>
         <!-- END pools -->
     </aside>
-
 </section>

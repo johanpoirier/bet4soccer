@@ -1,10 +1,5 @@
 <script type="text/javascript" src="{TPL_WEB_PATH}js/jquery.flot.min.js"></script>
 <script type="text/javascript">
-    var xmlhttp = getHTTPObject();
-    var k = 0;
-    var queue = new Array();
-    var inProgress = false;
-
     function reloadMatch(matchID, team, round, rank) {
         var teamReal = document.getElementById(round + 'TH_' + rank + '_TEAM_' + team + '_TEAM_REAL').value;
         var prev_round = round * 2;
@@ -110,14 +105,22 @@
         // les perdants pour le match de la 3ème place
         if (round == 2) {
             var next_team = '';
-            if (rank % 2 == 1) next_team = 'A';
-            else next_team = 'B';
+            if (rank % 2 == 1) {
+                next_team = 'A';
+            }
+            else {
+                next_team = 'B';
+            }
 
             var lost_team = ''
-            if (teamW == 'A') lost_team = 'B';
-            else lost_team = 'A';
+            if (teamW == 'A') {
+                lost_team = 'B';
+            }
+            else {
+                lost_team = 'A';
+            }
 
-            team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + lost_team + '_NAME');
+            document.getElementById(round + 'TH_' + rank + '_TEAM_' + lost_team + '_NAME');
         }
     }
 
@@ -142,13 +145,13 @@
 
         <div class="tag_cloud user-infos">
             <!-- BEGIN stats -->
-            <div style="text-align:center;width:50%;float:left;"><br/><strong>{stats.TYPE}</strong></div>
-            <!-- END stats -->
-            <!-- BEGIN stats -->
-            <div class="stats" id="stats_{stats.ID}" style="height: 120px;width:50%;float:left;"></div>
+            <div class="user-stats">
+                <h4 class="user-stats-title">{stats.TYPE}</h4>
+                <div class="user-stats-chart" id="stats_{stats.ID}"></div>
+            </div>
             <script type="text/javascript">
-                var data = {stats.DATA};
-                $.plot("#stats_{stats.ID}", data,
+                $(document).ready(function() {
+                    $.plot("#stats_{stats.ID}", {stats.DATA},
                         {
                             colors: ["{stats.COLOR}"],
                             xaxis: {
@@ -165,51 +168,38 @@
                                 backgroundColor: "#ffffff",
                                 hoverable: true
                             }
-                        });
-
-                function showTooltip(x, y, contents) {
-                    $("<div id='tooltip'>" + contents + "</div>").css({
-                        position: "absolute",
-                        display: "none",
-                        top: y - 30,
-                        left: x - 10,
-                        border: "1px solid #fdd",
-                        padding: "2px",
-                        "background-color": "#fee",
-                        opacity: 0.80
-                    }).appendTo("body").fadeIn(200);
-                }
-
-                var previousPoint = null;
-                $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
-                    if (item) {
-                        if (previousPoint != item.dataIndex) {
-
-                            previousPoint = item.dataIndex;
-
-                            $("#tooltip").remove();
-                            var x = item.datapoint[0].toFixed(2),
-                                    y = item.datapoint[1].toFixed(2);
-
-                            showTooltip(item.pageX, item.pageY, parseInt(y));
                         }
-                    } else {
-                        $("#tooltip").remove();
-                        previousPoint = null;
-                    }
+                    );
+
+                    var previousPoint = null;
+                    $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
+                        if (item) {
+                            if (previousPoint != item.dataIndex) {
+
+                                previousPoint = item.dataIndex;
+
+                                $("#tooltip").remove();
+                                var x = item.datapoint[0].toFixed(2),
+                                        y = item.datapoint[1].toFixed(2);
+
+                                showTooltip(item.pageX, item.pageY, parseInt(y));
+                            }
+                        } else {
+                            $("#tooltip").remove();
+                            previousPoint = null;
+                        }
+                    });
                 });
             </script>
             <!-- END stats -->
         </div>
 
-        <form name="save_finals_bets" action="/?act=save_finals_bets" method="post">
-        <div class="maincontent_large">
-            <div class="tag_cloud" style="text-align:center;">
-                <b>Les scores de la phase finale sont ceux à l'issue des éventuelles prolongations. En cas de tirs au
-                    but, cliquez sur le nom de l'équipe pour la qualifier pour le tour suivant.</b>
-            </div>
+        <div class="tag_cloud" style="text-align:center;">
+            <strong>Les scores de la phase finale sont ceux à l'issue des éventuelles prolongations. En cas de tirs au
+                but, cliquez sur le nom de l'équipe pour la qualifier pour le tour suivant.</strong>
         </div>
-        <div class="maincontent_large">
+
+        <form name="save_finals_bets" action="/?act=save_finals_bets" method="post">
             <div class="tag_cloud">
                 <!-- BEGIN finals -->
                 <table border="0" cellpadding="0" cellspacing="0"
@@ -316,11 +306,10 @@
                 </table>
                 <!-- END finals -->
             </div>
-        </div>
 
-        <div class="form-submit-zone">
-            <input type="submit" {SUBMIT_STATE} value="Valider" />
-        </div>
-    </form>
+            <div class="form-submit-zone">
+                <input type="submit" {SUBMIT_STATE} value="Valider" />
+            </div>
+        </form>
     </div>
 </section>
