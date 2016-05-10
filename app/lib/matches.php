@@ -585,7 +585,7 @@ class Matches
         $req .= ')';
         $req .= ' AND m1.round IS NULL';
 
-	$nb_pools = 0;
+        $nb_pools = 0;
         $match = $this->parent->db->select_line($req, $nb_pools);
 
         if ($this->parent->debug)
@@ -607,16 +607,18 @@ class Matches
 
     /*     * **************** */
 
-    function add_HTTP_final_result($matchID, $team, $score, $teamID, $teamW, $num)
+    function add_HTTP_final_result($matchID, $team, $score, $teamID, $teamW)
     {
         $match = $this->get($matchID);
-        if (!$match)
+        if (!$match) {
             return false;
+        }
         $round = $match['round'];
         $rank = $match['rank'];
 
-        if ($score == "")
+        if ($score == "") {
             $score = 'NULL';
+        }
         if ($this->is_final_exist($round, $rank)) {
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches';
             $req .= ' SET score' . $team . ' = ' . $score . ', team' . $team . ' = ' . $teamID . ', teamW = \'' . addslashes($teamW) . '\'';
@@ -648,14 +650,14 @@ class Matches
                 }
             }
         }
-        echo $matchID . "|" . $round . "|" . $rank . "|" . $teamW . "|" . $num . "|";
+        echo $matchID . "|" . $round . "|" . $rank . "|" . $teamW . "|";
 
         return $ret;
     }
 
     /*     * **************** */
 
-    function add_HTTP_result($matchID, $team, $score, $num)
+    function add_HTTP_result($matchID, $team, $score)
     {
         if ($score == "") {
             $score = 'NULL';
@@ -671,7 +673,7 @@ class Matches
 
         $array_teams = $this->parent->teams->get_ranking($teams, $matches, 'score');
 
-        echo $matchID . "|" . $pool . "|" . $num . "|";
+        echo $matchID . "|" . $pool . "|";
         foreach ($array_teams as $team) {
             echo $team['teamID'] . ";" . $team['name'] . ";" . rawurlencode(utf8_encode($team['name'])) . ";" . $team['points'] . ";" . (($team['diff'] > 0) ? "+" : "") . $team['diff'] . "|";
         }

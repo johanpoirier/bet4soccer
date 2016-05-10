@@ -23,8 +23,8 @@ define('GET_HTTP_GROUP', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['
 define('DEL_HTTP_GROUP', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "del_HTTP_group"));
 define('GET_HTTP_GROUPS', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "get_HTTP_groups"));
 define('SAVE_HTTP_GROUP', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "save_HTTP_group"));
-define('SAVE_HTTP_RESULT', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "save_HTTP_result"));
-define('SAVE_HTTP_FINAL_RESULT', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "save_HTTP_final_result"));
+define('SAVE_HTTP_RESULT', ( ($bet->isadmin()) && isset($_POST['act']) && ( $_POST['act'] ) == "save_HTTP_result"));
+define('SAVE_HTTP_FINAL_RESULT', ( ($bet->isadmin()) && isset($_POST['act']) && ( $_POST['act'] ) == "save_HTTP_final_result"));
 define('EDIT_TEAMS', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "edit_teams"));
 define('ADD_TEAM', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "add_team"));
 define('DEL_TEAM', ( ($bet->isadmin()) && isset($_GET['act']) && ( $_GET['act'] ) == "del_team"));
@@ -322,13 +322,14 @@ elseif (DEL_HTTP_GROUP) {
 elseif (SAVE_HTTP_FINAL_RESULT) {
     if ($debug)
         echo "SAVE_HTTP_FINAL_RESULT<br />";
-    $bet->matches->add_HTTP_final_result($_GET['matchID'], $_GET['team'], $_GET['score'], $_GET['teamID'], $_GET['teamW'], $_GET['j']);
+    $bet->matches->add_HTTP_final_result($_POST['matchID'], $_POST['team'], $_POST['score'], $_POST['teamID'], $_POST['teamW']);
     exit();
 }
 elseif (SAVE_HTTP_RESULT) {
-    if ($debug)
+    if ($debug) {
         echo "SAVE_HTTP_RESULT<br />";
-    $bet->matches->add_HTTP_result($_GET['matchID'], $_GET['team'], $_GET['score'], $_GET['j']);
+    }
+    $bet->matches->add_HTTP_result($_POST['matchID'], $_POST['team'], $_POST['score']);
     exit();
 }
 elseif (GET_HTTP_TAGS) {
