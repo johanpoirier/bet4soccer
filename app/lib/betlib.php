@@ -620,8 +620,8 @@ class BetEngine {
             ));
         }
 
-        $max_evol = array('userID' => 0, 'evol' => 0);
-        $min_evol = array('userID' => 0, 'evol' => 0);
+        $max_evol = ['userID' => 0, 'evol' => 0];
+        $min_evol = ['userID' => 0, 'evol' => 0];
 
         foreach ($users as $user) {
             if ($nb_bets[$user['userID']] == 0)
@@ -689,25 +689,27 @@ class BetEngine {
                 }
             } elseif($this->users->is_admin($_SESSION['userID'])) {
                 if ($last_pool_match['delay_sec'] > 0) {
-                    $user_url = "<a href=\"/?act=bets&user=" . $user['userID'] . "\">";
+                    $user_url = '<a href="/?act=bets&user=' . $user['userID'] . '">';
                 } else {
-                    $user_url = "<a href=\"/?act=finals_bets&user=" . $user['userID'] . "\">";
+                    $user_url = '<a href="/?act=finals_bets&user=' . $user['userID'] . '">';
                 }
             } else {
                 if ($last_pool_match['delay_sec'] > 0) {
-                    $user_url = "<a href=\"/?act=view_bets&user=" . $user['userID'] . "\">";
+                    $user_url = '<a href="/?act=view_bets&user=' . $user['userID'] . '">';
                 } else {
-                    $user_url = "<a href=\"/?act=view_finals_bets&user=" . $user['userID'] . "\">";
+                    $user_url = '<a href="/?act=view_finals_bets&user=' . $user['userID'] . '">';
                 }
             }
 
             $class = "";
             if ($_SESSION['userID'] == $user['userID']) {
                 $class = "me";
-            } elseif ($user['rank'] <= 3) {
-                $class = "first";
-            } elseif ($user['rank'] > ($nb_active_users - 1)) {
-                $class = "last";
+            } elseif ($nb_active_users > 10) {
+                if ($user['rank'] <= 3) {
+                    $class = "first";
+                } elseif ($user['rank'] > ($nb_active_users - 1)) {
+                    $class = "last";
+                }
             }
 
             $this->template->assign_block_vars('users', array(
