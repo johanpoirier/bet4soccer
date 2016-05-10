@@ -647,37 +647,44 @@ class Users
     {
         $users = $this->get();
         $nb_bets = $this->parent->bets->count_by_users();
-        $ranks = array();
+        $ranks = [];
         usort($users, "compare_users");
         $i = 1;
         $j = 0;
         $max_val = 0;
         $min_val = 0;
+
         if (sizeof($users) > 0) {
             $last_user = $users[0];
             foreach ($users as $ID => $user) {
                 $ranks[$user['userID']] = $user;
-                if (compare_users($user, $last_user) != 0)
+                if (compare_users($user, $last_user) != 0) {
                     $i = $j + 1;
+                }
+
                 if ($nb_bets[$user['userID']] == 0) {
                     $ranks[$user['userID']]['rank'] = null;
                     $ranks[$user['userID']]['evol'] = 0;
                     continue;
                 }
+
                 if (!($user['last_rank'] > 0)) {
                     $ranks[$user['userID']]['rank'] = $i;
                     $ranks[$user['userID']]['evol'] = 0;
                     continue;
                 }
+
                 $ranks[$user['userID']]['rank'] = $i;
                 $evol = $user['last_rank'] - $i;
                 $ranks[$user['userID']]['evol'] = $evol;
+
                 if ($evol > $max_val) {
                     $max_val = $evol;
                 }
                 if ($evol < $min_val) {
                     $min_val = $evol;
                 }
+
                 $j++;
                 $last_user = $user;
             }

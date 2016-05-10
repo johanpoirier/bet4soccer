@@ -254,13 +254,16 @@ elseif (DEL_TEAM) {
     exit();
 }
 elseif (UPDATE_HTTP_RANKING) {
-    if ($debug)
+    if ($debug) {
         echo "UPDATE_HTTP_RANKING<br />";
+    }
     $rank_to_update = $bet->settings->is_rank_to_update();
-    if (!$bet->users->update_HTTP_ranking($rank_to_update))
+    if (!$bet->users->update_HTTP_ranking($rank_to_update)) {
         exit();
-    if (!$bet->groups->update_HTTP_ranking($rank_to_update))
+    }
+    if (!$bet->groups->update_HTTP_ranking($rank_to_update)) {
         exit();
+    }
     $bet->settings->set("LAST_GENERATE", "NULL", "NOW()");
     exit();
 }
