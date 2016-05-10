@@ -37,16 +37,16 @@
             <!-- END mine -->
             <!-- BEGIN max -->
             <div class="focus_most">
-                <h3>+ forte hausse</h3>
-                <div><img src="{TPL_WEB_PATH}images/hausse.png" width="30px"/></div>
+                <h4>+ forte hausse</h4>
+                <div><img src="{TPL_WEB_PATH}images/hausse.png" width="20px"/></div>
                 <span class="focus_name"><a href="#user{max.ID}">{max.NAME}</a></span>
                 <span class="focus_evol">{max.EVOL}</span>
             </div>
             <!-- END max -->
             <!-- BEGIN min -->
             <div class="focus_most">
-                <h3>+ forte baisse</h3>
-                <div><img src="{TPL_WEB_PATH}images/baisse.png" width="30px"/></div>
+                <h4>+ forte baisse</h4>
+                <div><img src="{TPL_WEB_PATH}images/baisse.png" width="20px"/></div>
                 <span class="focus_name"><a href="#user{min.ID}">{min.NAME}</a></span>
                 <span class="focus_evol">{min.EVOL}</span>
             </div>
