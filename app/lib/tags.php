@@ -146,7 +146,7 @@ class Tags
         $req .= 'DATE_FORMAT(date,\'%d/%m à %kh%i\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'tags t ';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u.userID = t.userID)';
-        $req .= ' WHERE t.groupID ' . (($groupID != '') ? ' = \'' . addslashes($groupID) . '\'' : ' IS NULL') . '';
+        $req .= ' WHERE t.groupID ' . (($groupID != '') ? " = $groupID" : ' IS NULL');
         $req .= ' ORDER BY date DESC';
         if ($limit != false) {
             $req .= ' LIMIT ' . $limit . ' OFFSET ' . $start . '';

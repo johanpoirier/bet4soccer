@@ -322,9 +322,10 @@ if (GET_HTTP_MATCH) {
     $bet->matches->add_HTTP_result($_POST['matchID'], $_POST['team'], $_POST['score']);
     exit();
 } elseif (GET_HTTP_TAGS) {
-    if ($debug)
+    if ($debug) {
         echo "GET_HTTP_TAGS<br />";
-    $bet->load_tags(((isset($_POST['groupID']) && ($_POST['groupID'] != '')) ? $_POST['groupID'] : 0), ((isset($_POST['start']) && ($_POST['start'] != '')) ? $_POST['start'] : 0));
+    }
+    $bet->load_tags(((isset($_GET['groupID']) && ($_GET['groupID'] != '')) ? $_GET['groupID'] : 0), ((isset($_GET['start']) && ($_GET['start'] != '')) ? $_GET['start'] : 0));
     $bet->display();
     exit();
 } elseif (DEL_HTTP_TAG) {
@@ -483,15 +484,18 @@ if (EDIT_RESULTS) {
     $groups = $bet->groups->get();
     $bet->load_groups_ranking($groups);
 } elseif (VIEW_USERS_RANKING_BY_GROUP) {
-    if ($debug)
+    if ($debug) {
         echo "VIEW_USERS_RANKING_BY_GROUP<br />";
+    }
     $userId = $_SESSION['userID'];
-    if (isset($_REQUEST['user']))
+    if (isset($_REQUEST['user'])) {
         $userId = $_REQUEST['user'];
+    }
     $currentUser = $bet->users->get($userId);
     $groupId = $currentUser['groupID'];
-    if (isset($_GET['groupID']))
+    if (isset($_GET['groupID'])) {
         $groupId = $_GET['groupID'];
+    }
     $bet->load_users_ranking_by_group($groupId);
 } elseif (VIEW_STATS) {
     if ($debug)

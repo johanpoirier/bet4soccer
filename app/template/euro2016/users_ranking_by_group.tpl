@@ -54,8 +54,12 @@
     </div>
 
     <aside>
+        <div class="headline">
+            <div class="headline-title">
+                <h2>TagBoard : {GROUP_NAME}</h2>
+            </div>
+        </div>
         <div class="tag_cloud tagboard">
-            <div class="headline"><h2>TagBoard</h2></div>
             <div id="tag_0" class="tagboard-form">
                 <form onsubmit="return saveTag({GROUP_ID});">
                     <input type="text" id="tag" value="" size="18" />

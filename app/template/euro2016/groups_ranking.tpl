@@ -43,8 +43,8 @@
             <!-- BEGIN teams -->
             <tr class="list_element" style="background-color:{teams.COLOR};">
                 <td><strong>{teams.RANK}</strong> {teams.LAST_RANK}</td>
-                <td class="aligned"><strong><a
-                                href="/?act=view_users_ranking_by_group&groupID={teams.GROUP_ID}">{teams.NAME}</a></strong>
+                <td class="aligned">
+                    <a href="/?act=view_users_ranking_by_group&groupID={teams.GROUP_ID}"><strong>{teams.NAME}</strong></a>
                 </td>
                 <td>{teams.NB_ACTIFS} / {teams.NB_TOTAL}</td>
                 <td><strong>{teams.AVG_POINTS}</strong></td>
@@ -56,10 +56,14 @@
     </div>
 
     <aside>
+        <div class="headline">
+            <div class="headline-title">
+                <h2>TagBoard</h2>
+            </div>
+        </div>
         <div class="tag_cloud tagboard">
-            <div class="headline"><h2>TagBoard</h2></div>
             <div id="tag_0" class="tagboard-form">
-                <form onsubmit="return saveTag('');">
+                <form onsubmit="return saveTag();">
                     <input type="text" id="tag" value="" size="18"></textarea>
                     <span>(Entrée pour envoyer)</span>
                 </form>

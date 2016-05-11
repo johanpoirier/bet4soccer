@@ -106,6 +106,11 @@
     </div>
 
     <aside>
+        <div class="headline">
+            <div class="headline-title">
+                <h2>Classements</h2>
+            </div>
+        </div>
         <!-- BEGIN pools -->
         <div class="tag_cloud">
             <div class="rightcolumn_headline"><h2>Groupe {pools.POOL}</h2></div>

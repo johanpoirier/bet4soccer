@@ -66,7 +66,7 @@
                     <option selected="selected" value="bets">Poules</option>
                     <option value="finals_bets">Phase finale</option>
                 </select>
-                <a href="/?act=bets&match_display=pool">Classer par poule</a>
+                <a href="/?act=bets&match_display=pool">Trier par poule</a>
             </div>
         </div>
 
@@ -223,6 +223,11 @@
     </div>
 
     <aside>
+        <div class="headline">
+            <div class="headline-title">
+                <h2>Classements virtuels</h2>
+            </div>
+        </div>
         <!-- BEGIN pools -->
         <div class="tag_cloud">
             <div><h3>Groupe {pools.POOL}</h3></div>
