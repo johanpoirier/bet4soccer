@@ -177,7 +177,7 @@
                     <!-- END view -->
                     <!-- BEGIN edit -->
                     <tr>
-                        <td colspan="6" style="text-align:center;"><i>{pools.bets.edit.DATE}</i></td>
+                        <td colspan="6" class="game-date">{pools.bets.edit.DATE}</td>
                     </tr>
                     <tr>
                         <td id="{pools.bets.edit.ID}_team_A" width="35%"

@@ -172,7 +172,8 @@
                     <!-- END view -->
                     <!-- BEGIN edit -->
                     <tr>
-                        <td colspan="7" style="text-align:center;"><i>{bets.edit.DATE}</i></td>
+                        <td></td>
+                        <td colspan="6" class="game-date">{bets.edit.DATE}</td>
                     </tr>
                     <tr>
                         <td><i>({bets.edit.POOL})</i></td>

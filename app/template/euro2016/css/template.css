@@ -966,6 +966,14 @@ span.user_visual {
 }
 
 
+/***************** bets *******************/
+td.game-date {
+    font-style: italic;
+    padding-top: 0.7rem;
+    text-align: center;
+}
+
+
 /************* tag board ******************/
 .tagboard {
     display: -webkit-box;
