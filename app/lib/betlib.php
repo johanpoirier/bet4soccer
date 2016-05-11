@@ -804,10 +804,12 @@ class BetEngine {
                 $class = "";
                 if ($userID == $user['userID']) {
                     $class = "me";
-                } elseif ($i <= 3) {
-                    $class = "first";
-                } elseif ($i > ($nb_active_users - 1)) {
-                    $class = "last";
+                } elseif ($nb_active_users > 10) {
+                    if ($i <= 3) {
+                        $class = "first";
+                    } elseif ($i > ($nb_active_users - 1)) {
+                        $class = "last";
+                    }
                 }
 
                 $users_view[$k++] = array(
