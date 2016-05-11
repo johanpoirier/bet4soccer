@@ -366,7 +366,7 @@ elseif (SAVE_HTTP_FINAL_BET) {
     if ($debug) {
         echo "SAVE_HTTP_FINAL_BET<br />";
     }
-    $bet->bets->add_HTTP_final($_GET['userID'], $_GET['matchID'], $_GET['team'], $_GET['score'], $_GET['teamID'], $_GET['teamW'], $_GET['j']);
+    $bet->bets->add_HTTP_final($_POST['userID'], $_POST['matchID'], $_POST['team'], $_POST['score'], $_POST['teamID'], $_POST['teamW']);
     exit();
 }
 elseif (SAVE_HTTP_BET) {

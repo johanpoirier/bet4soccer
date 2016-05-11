@@ -136,8 +136,9 @@ class Bets {
     function add_HTTP_final($userID, $matchID, $team, $score, $final_teamID, $final_teamW) {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
-        if ($final_teamW == "" || $final_teamW == NULL)
+        if ($final_teamW == "" || $final_teamW == NULL) {
             $final_teamW = 'A';
+        }
         if ($ret = $this->add($userID, $matchID, $team, $score, true, $final_teamID, $final_teamW)) {
             $match = $this->parent->matches->get($matchID);
             $round = $match['round'];
