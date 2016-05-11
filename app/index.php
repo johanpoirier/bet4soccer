@@ -357,7 +357,7 @@ elseif (SAVE_HTTP_TAG) {
     if ($debug) {
         echo "SAVE_HTTP_TEAM_TAG<br />";
     }
-    $bet->tags->add(utf8_encode($_POST['text']), $_POST['groupID']);
+    $bet->tags->add($_POST['text'], $_POST['groupID']);
     $bet->load_tags($_POST['groupID']);
     $bet->display();
     exit();
