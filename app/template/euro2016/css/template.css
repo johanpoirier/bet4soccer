@@ -217,6 +217,22 @@ footer {
     padding: 0.6rem;
 }
 
+button.link {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+button.link.red {
+    color: #F00;
+}
+
+button.link.blue {
+    color: #282952;
+}
+
 /************* FORM ***************/
 form {
     -webkit-box-align: left;

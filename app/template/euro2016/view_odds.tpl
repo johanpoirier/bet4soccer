@@ -76,24 +76,20 @@
                 </tr>
                 <tr>
                     <td colspan="5" style="text-align:center;color:red;font-weight:300;font-size:9px;">
-                        <a href="#" onclick="toggle_exact_bets({pools.matches.ID})">
-                            <span style="color:red;">{pools.matches.EXACT_BETS}</span>
-                        </a>
+                        <button onclick="toggle_exact_bets({pools.matches.ID})" class="link red">{pools.matches.EXACT_BETS}</button>
                         <div id="exact_bets_{pools.matches.ID}" style="display:none;">
                             <!-- BEGIN exact_bets -->
-                            <br/><a href="?act=view_bets&user={pools.matches.exact_bets.USERID}"><b>{pools.matches.exact_bets.NAME}</b></a>
+                            <br/><a href="/?act=view_bets&user={pools.matches.exact_bets.USERID}"><b>{pools.matches.exact_bets.NAME}</b></a>
                             <!-- END exact_bets -->
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="5" style="text-align:center;color:red;font-weight:300;font-size:9px;">
-                        <a href="#" onclick="toggle_good_bets({pools.matches.ID})">
-                            <span style="color:red;">{pools.matches.GOOD_BETS}</span>
-                        </a>
+                        <button onclick="toggle_good_bets({pools.matches.ID})" class="link red">{pools.matches.GOOD_BETS}</button>
                         <div id="good_bets_{pools.matches.ID}" style="display:none;">
                             <!-- BEGIN good_bets -->
-                            <br/><a href="?act=view_bets&user={pools.matches.good_bets.USERID}">{pools.matches.good_bets.NAME}</a>
+                            <br/><a href="/?act=view_bets&user={pools.matches.good_bets.USERID}">{pools.matches.good_bets.NAME}</a>
                             <!-- END good_bets -->
                         </div>
                     </td>
