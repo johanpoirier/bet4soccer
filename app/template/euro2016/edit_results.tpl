@@ -50,7 +50,7 @@
 
         var team_ranking = document.getElementById("pool_" + pool + "_ranking");
         team_ranking.innerHTML = HTML_ranking;
-        document.getElementById('update_ranking').innerHTML = '<a href="#" onClick="updateRanking(0)"><strong>Classement obsoléte.</strong></a>';
+        document.getElementById('update_ranking').innerHTML = '<a href="#" onclick="updateRanking(0)"><strong>Classement obsoléte.</strong></a>';
     }
 
     function changePhase(action) {
