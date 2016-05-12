@@ -139,6 +139,7 @@ header .block {
 
 header .block.logo {
     background-image: url('../images/logo.jpg');
+    cursor: pointer;
     height: 4rem;
 }
 
@@ -220,6 +221,7 @@ footer {
 button.link {
     background: none;
     border: none;
+    cursor: pointer;
     margin: 0;
     padding: 0;
     outline: 0;

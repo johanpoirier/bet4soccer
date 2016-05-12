@@ -121,3 +121,9 @@ function showTooltip(x, y, contents) {
 		opacity: 0.80
 	}).appendTo("body").fadeIn(200);
 }
+
+function globalInit() {
+	$('.logo').click(function () {
+		window.location.assign('/');
+	});
+}

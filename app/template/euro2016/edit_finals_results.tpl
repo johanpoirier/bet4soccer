@@ -35,75 +35,74 @@
     }
 
     function handleHttpFinalResponse(data) {
-                var results = data.split("|");
-                var matchID = results[0];
-                var round = results[1];
-                var rank = results[2];
-                var teamW = results[3];
+        var results = data.split("|");
+        var matchID = results[0];
+        var round = results[1];
+        var rank = results[2];
+        var teamW = results[3];
 
-                // stocke l'équipe gagnante
-                document.getElementById(round + 'TH_' + rank + '_TEAM_W').value = teamW;
+        // stocke l'équipe gagnante
+        document.getElementById(round + 'TH_' + rank + '_TEAM_W').value = teamW;
 
-                // récupére les scores
-                var scoreA = document.getElementById(round + 'TH_' + rank + '_TEAM_A_SCORE').value;
-                var scoreB = document.getElementById(round + 'TH_' + rank + '_TEAM_B_SCORE').value;
+        // récupére les scores
+        var scoreA = document.getElementById(round + 'TH_' + rank + '_TEAM_A_SCORE').value;
+        var scoreB = document.getElementById(round + 'TH_' + rank + '_TEAM_B_SCORE').value;
 
-                // récupére les lignes des équipes
-                var teamA = document.getElementById(round + 'TH_' + rank + '_TEAM_A_NAME');
-                var teamB = document.getElementById(round + 'TH_' + rank + '_TEAM_B_NAME');
+        // récupére les lignes des équipes
+        var teamA = document.getElementById(round + 'TH_' + rank + '_TEAM_A_NAME');
+        var teamB = document.getElementById(round + 'TH_' + rank + '_TEAM_B_NAME');
 
-                // récupére la ligne de l'équipe gagnante
-                var team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + teamW + '_NAME');
-                var winner = team.innerHTML;
+        // récupére la ligne de l'équipe gagnante
+        var team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + teamW + '_NAME');
+        var winner = team.innerHTML;
 
-                // couleurs de base
-                teamA.style.backgroundColor = '#F9F9F9';
-                teamB.style.backgroundColor = '#F9F9F9';
+        // couleurs de base
+        teamA.style.backgroundColor = '#F9F9F9';
+        teamB.style.backgroundColor = '#F9F9F9';
 
-                // equipe gagnante en vert
-                team.style.backgroundColor = '#99FF99';
+        // equipe gagnante en vert
+        team.style.backgroundColor = '#99FF99';
 
-                // qualifie l'equipe gagnante pour la phase suivante (sauf pour la finale et le match de la 3ème place)
-                if (round != 3 && round != 1) {
-                    var next_rank = Math.ceil(rank / 2);
-                    var next_round = Math.ceil(round / 2);
-                    var next_team = '';
-                    if (rank % 2 == 1) next_team = 'A';
-                    else next_team = 'B';
+        // qualifie l'equipe gagnante pour la phase suivante (sauf pour la finale et le match de la 3ème place)
+        if (round != 3 && round != 1) {
+            var next_rank = Math.ceil(rank / 2);
+            var next_round = Math.ceil(round / 2);
+            var next_team = '';
+            if (rank % 2 == 1) next_team = 'A';
+            else next_team = 'B';
 
-                    var next_match = document.getElementById(next_round + 'TH_' + next_rank + '_TEAM_' + next_team + '_NAME');
-                    if(next_match) {
-                        next_match.innerHTML = winner;
-                        next_match.style.backgroundColor = '#F9F9F9';
-                    }
+            var next_match = document.getElementById(next_round + 'TH_' + next_rank + '_TEAM_' + next_team + '_NAME');
+            if (next_match) {
+                next_match.innerHTML = winner;
+                next_match.style.backgroundColor = '#F9F9F9';
+            }
 
-                    // stocke l'ID de l'equipe qualifiee
-                    var nextRoundEl = document.getElementById(next_round + 'TH_' + next_rank + '_TEAM_' + next_team + '_ID');
-                    if (nextRoundEl) {
-                        nextRoundEl.value = document.getElementById(round + 'TH_' + rank + '_TEAM_' + teamW + '_ID').value;
-                    }
-                }
+            // stocke l'ID de l'equipe qualifiee
+            var nextRoundEl = document.getElementById(next_round + 'TH_' + next_rank + '_TEAM_' + next_team + '_ID');
+            if (nextRoundEl) {
+                nextRoundEl.value = document.getElementById(round + 'TH_' + rank + '_TEAM_' + teamW + '_ID').value;
+            }
+        }
 
-                // les perdants pour le match de la 3ème place
-                if (round == 2) {
-                    var next_team = '';
-                    if (rank % 2 == 1) next_team = 'A';
-                    else next_team = 'B';
+        // les perdants pour le match de la 3ème place
+        if (round == 2) {
+            var next_team = '';
+            if (rank % 2 == 1) next_team = 'A';
+            else next_team = 'B';
 
-                    var lost_team = ''
-                    if (teamW == 'A') lost_team = 'B';
-                    else lost_team = 'A';
+            var lost_team = ''
+            if (teamW == 'A') lost_team = 'B';
+            else lost_team = 'A';
 
-                    team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + lost_team + '_NAME');
-                }
+            team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + lost_team + '_NAME');
+        }
 
-                document.getElementById('update_ranking').innerHTML = "<b><a href='#' onClick='javascript:updateRanking();'>Classement obsoléte.</a><b>";
+        document.getElementById('update_ranking').innerHTML = "<a href='#' onclick='updateRanking();'></strong>Classement obsoléte.</strong></a>";
     }
 
     function changePhase(action) {
         window.location.assign('/?act=' + action);
     }
-
 </script>
 <section id="mainarea">
     <div class="maincontent">
