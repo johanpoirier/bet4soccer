@@ -35,27 +35,23 @@ $config['money_group_name'] = 'Cagnotte';
 
 $config['pools'] = array('A', 'B', 'C', 'D', 'E', 'F');
 
-$config['rounds'] = array('8', '4', '2', '3', '1');
+$config['rounds'] = array('8', '4', '2', '1');
 
-$config['points_pool_good_result'] = 1;
-$config['points_pool_exact_score'] = 1;
+$config['points_pool_good_result'] = 10;
+$config['points_pool_exact_score'] = 4;
 
-$config['points_8_good_result'] = 1;
-$config['points_8_exact_score'] = 1;
-$config['points_8_qualify'] = 1;
+$config['points_8_good_result'] = 12;
+$config['points_8_exact_score'] = 5;
+$config['points_8_qualify'] = 2;
 
-$config['points_4_good_result'] = 1;
-$config['points_4_exact_score'] = 1;
-$config['points_4_qualify'] = 1;
+$config['points_4_good_result'] = 14;
+$config['points_4_exact_score'] = 6;
+$config['points_4_qualify'] = 3;
 
-$config['points_2_good_result'] = 2;
-$config['points_2_exact_score'] = 2;
-$config['points_2_qualify'] = 2;
+$config['points_2_good_result'] = 16;
+$config['points_2_exact_score'] = 7;
+$config['points_2_qualify'] = 4;
 
-$config['points_3_good_result'] = 2;
-$config['points_3_exact_score'] = 2;
-$config['points_3_qualify'] = 2;
-
-$config['points_1_good_result'] = 3;
-$config['points_1_exact_score'] = 3;
-$config['points_1_qualify'] = 3;
+$config['points_1_good_result'] = 20;
+$config['points_1_exact_score'] = 9;
+$config['points_1_qualify'] = 6;
