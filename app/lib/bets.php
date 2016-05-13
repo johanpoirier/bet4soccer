@@ -185,8 +185,9 @@ class Bets {
     }
 
     function get_by_pool($pool, $userID = false) {
-        if (!$userID)
+        if (!$userID) {
             $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
+        }
         prepare_numeric_data(array(&$userID));
         prepare_alphanumeric_data(array(&$pool));
 
@@ -199,6 +200,7 @@ class Bets {
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         $req .= ' WHERE tA.pool = \'' . $pool . '\'';
         $req .= ' AND tB.pool = \'' . $pool . '\'';
+        $req .= ' AND m.round IS NULL';
         $req .= ' ORDER BY date, teamAname;';
 
         $nb_teams = 0;

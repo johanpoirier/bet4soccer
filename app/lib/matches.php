@@ -409,6 +409,7 @@ class Matches
         $req .= ' WHERE m.teamA = ' . $teamA . '';
         $req .= ' AND m.teamB = ' . $teamB . '';
 
+        $nb_teams = 0;
         $matches = $this->parent->db->select_line($req, $nb_teams);
 
         if ($this->parent->debug)
