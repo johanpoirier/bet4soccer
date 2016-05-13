@@ -19,7 +19,9 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1 style="float: left;">Résultats & Cotes</h1>
+                <h1>Résultats & Cotes</h1>
+            </div>
+            <div class="headline-menu">
                 <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
                     <option value="view_odds">Poules</option>
                     <option selected="selected" value="view_finals_odds">Phase finale</option>
@@ -33,13 +35,12 @@
 
         <div class="tag_cloud">
             <!-- BEGIN finals -->
-            <table border="0" cellpadding="0" cellspacing="0"
-                   style="font-size: 90%; margin-left: 20px; margin-right: 20px; width: 100%;">
+            <table border="0" cellpadding="0" cellspacing="0" style="font-size: 90%; margin-left: 20px; margin-right: 20px; width: 100%;">
                 <tr>
                     <!-- BEGIN rounds -->
                     <td>
                         <!-- BEGIN merge_top -->
-                        <table border="0" cellpadding="0" cellspacing="0" style="font-size: 90%; margin:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" style="font-size: 90%; margin:0; width: 100%;">
                             <!-- END merge_top -->
                             <tr height="25px">
                                 <td align="center" colspan="2" style="border:1px solid #999999;"

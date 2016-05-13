@@ -64,7 +64,7 @@ class BetEngine {
             $this->template_web_location = WEB_PATH . 'template/' . $config['template_default'] . "/";
         }
         $this->template = new Template($this->template_location);
-        $this->blocks_loaded = array();
+        $this->blocks_loaded = [];
 
         $this->settings = new Settings($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->matches = new Matches($this, $this->db, $this->config, $this->lang, $this->debug);
@@ -256,15 +256,15 @@ class BetEngine {
         ));
 
         if ($this->islogin()) {
-            $this->template->assign_block_vars('logged_in', array());
-            $this->template->assign_block_vars('logged_in.account', array());
+            $this->template->assign_block_vars('logged_in', []);
+            $this->template->assign_block_vars('logged_in.account', []);
             if ($this->isadmin()) {
-                $this->template->assign_block_vars('logged_in.admin_bar', array());
-                $this->template->assign_block_vars('logged_in.user_nav', array());
-                $this->template->assign_block_vars('logged_in.admin_nav', array());
+                $this->template->assign_block_vars('logged_in.admin_bar', []);
+                $this->template->assign_block_vars('logged_in.user_nav', []);
+                $this->template->assign_block_vars('logged_in.admin_nav', []);
             } else {
-                $this->template->assign_block_vars('logged_in.user_bar', array());
-                $this->template->assign_block_vars('logged_in.user_nav', array());
+                $this->template->assign_block_vars('logged_in.user_bar', []);
+                $this->template->assign_block_vars('logged_in.user_nav', []);
             }
         }
 
@@ -293,9 +293,9 @@ class BetEngine {
         ));
 
         if ($this->config['auth'] != 'LDAP')
-            $this->template->assign_block_vars('menu_with_account', array());
+            $this->template->assign_block_vars('menu_with_account', []);
         else
-            $this->template->assign_block_vars('menu_without_account', array());
+            $this->template->assign_block_vars('menu_without_account', []);
 
         if ($this->page_views) {
             $this->template->assign_block_vars('post_view', array(
@@ -317,7 +317,7 @@ class BetEngine {
 
         $pools = $this->config['pools'];
 
-        $points = array();
+        $points = [];
         $total = 0;
         $total_pool = 0;
         $total_finals = 0;
@@ -393,7 +393,7 @@ class BetEngine {
             'teams' => 'teams.tpl'
         ));
 
-        $pools_teams = array();
+        $pools_teams = [];
 
         foreach ($teams as $team) {
             $p = $team['pool'];
@@ -406,7 +406,7 @@ class BetEngine {
             );
 
             if (!isset($pools_teams[$p]))
-                $pools_teams[$p] = array();
+                $pools_teams[$p] = [];
             array_push($pools_teams[$p], $t);
         }
 
@@ -419,7 +419,7 @@ class BetEngine {
             if (isset($pools_teams[$pool]))
                 $teams = $pools_teams[$pool];
             else
-                $teams = array();
+                $teams = [];
             foreach ($teams as $team) {
                 $this->template->assign_block_vars('pools.teams', $team);
             }
@@ -881,7 +881,7 @@ class BetEngine {
             'groups_ranking' => 'groups_ranking.tpl'
         ));
 
-        $groupsView = array();
+        $groupsView = [];
         $nbMatchesPlayed = $this->matches->count_played();
         $nb_matches = $this->settings->get_value('NB_MATCHES_GENERATED');
         if ($nb_matches == "") {
@@ -1188,8 +1188,8 @@ class BetEngine {
             'matches' => 'matches.tpl'
         ));
 
-        $pools_matches = array();
-        $rounds_matches = array();
+        $pools_matches = [];
+        $rounds_matches = [];
 
         foreach ($matches as $match) {
             if ($match['round'] != NULL) {
@@ -1202,7 +1202,7 @@ class BetEngine {
                     'RANK' => $match['rank']
                 );
                 if (!isset($rounds_matches[$r]))
-                    $rounds_matches[$r] = array();
+                    $rounds_matches[$r] = [];
                 array_push($rounds_matches[$r], $m);
             } else {
                 $p = $match['teamPool'];
@@ -1214,7 +1214,7 @@ class BetEngine {
                     'POOL' => $match['teamPool']
                 );
                 if (!isset($pools_matches[$p]))
-                    $pools_matches[$p] = array();
+                    $pools_matches[$p] = [];
                 array_push($pools_matches[$p], $m);
             }
         }
@@ -1265,7 +1265,7 @@ class BetEngine {
             if (isset($pools_matches[$pool])) {
                 $matches = $pools_matches[$pool];
             } else {
-                $matches = array();
+                $matches = [];
             }
             foreach ($matches as $match) {
                 $this->template->assign_block_vars('pools.matches', $match);
@@ -1282,7 +1282,7 @@ class BetEngine {
             if (isset($rounds_matches[$round]))
                 $matches = $rounds_matches[$round];
             else
-                $matches = array();
+                $matches = [];
             foreach ($matches as $match) {
                 $this->template->assign_block_vars('rounds.matches', $match);
             }
@@ -1304,12 +1304,12 @@ class BetEngine {
             ));
         }
 
-        $array_template = array();
+        $array_template = [];
         $rounds = $this->config['rounds'];
         $teams = array('A', 'B');
 
-        $array_template_extra = array();
-        $this->template->assign_block_vars('finals', array());
+        $array_template_extra = [];
+        $this->template->assign_block_vars('finals', []);
 
         $this->template->assign_vars(array(
             'UPDATE_RANK_LINK' => ($this->users->is_ranking_ok()) ? "<b><a href=\"#\" onclick=\"updateRanking(0)\">Classement obsoléte.</a><b>" : "<b>Classement à jour.</b>"
@@ -1332,10 +1332,10 @@ class BetEngine {
                 $j = $round;
 
             if (($round != 3) || (!in_array(3, $rounds))) {
-                $this->template->assign_block_vars('finals.rounds.merge_top', array());
+                $this->template->assign_block_vars('finals.rounds.merge_top', []);
             }
             if (($round != 1) || (!in_array(3, $rounds))) {
-                $this->template->assign_block_vars('finals.rounds.merge_bottom', array());
+                $this->template->assign_block_vars('finals.rounds.merge_bottom', []);
             }
 
 
@@ -1385,7 +1385,7 @@ class BetEngine {
                     $match['scoreA'] = NULL;
                 if (!isset($match['scoreB']))
                     $match['scoreB'] = NULL;
-                $color = array();
+                $color = [];
                 $color['A'] = (isset($match['teamW']) && $match['teamW'] == 'A') ? "#99FF99" : "#F9F9F9";
                 $color['B'] = (isset($match['teamW']) && $match['teamW'] == 'B') ? "#99FF99" : "#F9F9F9";
 
@@ -1402,9 +1402,9 @@ class BetEngine {
 
                     if ($team == 'B' && $round != 1 && $round != 3) {
                         if ($i % 2 == 1)
-                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', []);
                         else
-                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', []);
                     }
                 }
             }
@@ -1523,40 +1523,41 @@ class BetEngine {
             'view_finals_odds' => 'view_finals_odds.tpl'
         ));
 
-        $array_template = array();
+        $array_template = [];
         $rounds = $this->config['rounds'];
         $teams = array('A', 'B');
 
-        $array_template_extra = array();
-        $this->template->assign_block_vars('finals', array());
+        $array_template_extra = [];
+        $this->template->assign_block_vars('finals', []);
 
-        $odds_teams = array();
+        $odds_teams = [];
 
         /* ROUND */
         foreach ($rounds as $round) {
-
             $round_name = $this->lang['LABEL_' . $round . '_FINAL'];
 
-            $this->template->assign_block_vars('finals.rounds', array(
+            $this->template->assign_block_vars('finals.rounds', [
                 'ROUND' => $round,
                 'NAME' => $round_name
-            ));
+            ]);
 
-            if ($round == 3)
+            if ($round == 3) {
                 $j = 1;
-            else
+            }
+            else {
                 $j = $round;
+            }
 
-            if (($round != 3) || (!in_array(3, $rounds)))
-                $this->template->assign_block_vars('finals.rounds.merge_top', array());
-            if (($round != 1) || (!in_array(3, $rounds)))
-                $this->template->assign_block_vars('finals.rounds.merge_bottom', array());
+            if (($round != 3) || (!in_array(3, $rounds))) {
+                $this->template->assign_block_vars('finals.rounds.merge_top', []);
+            }
+            if (($round != 1) || (!in_array(3, $rounds))) {
+                $this->template->assign_block_vars('finals.rounds.merge_bottom', []);
+            }
 
 
             /* RANK */
-
             for ($rank = 1; $rank <= $j; $rank++) {
-
                 $match = $this->matches->get_final($round, $rank);
                 if (!$match)
                     continue;
@@ -1583,10 +1584,12 @@ class BetEngine {
                 }
 
                 $bets = $this->bets->get_by_match($match['matchID']);
-                if (isset($odds_teams[$round][$rank]['A']) && isset($odds_teams[$round][$rank]['B']))
+                if (isset($odds_teams[$round][$rank]['A']) && isset($odds_teams[$round][$rank]['B'])) {
                     $odds = $this->bets->get_odds_by_match($match['matchID'], $odds_teams[$round][$rank]['A'], $odds_teams[$round][$rank]['B']);
-                else
+                }
+                else {
                     $odds = $this->bets->get_odds_by_match($match['matchID']);
+                }
 
                 /* Resultats du match, si joué */
                 $match_result = "";
@@ -1616,20 +1619,24 @@ class BetEngine {
                     $next_round = ceil($round / 2);
                     $next_rank = ceil($rank / 2);
                     $next_team = (is_float($rank / 2)) ? "A" : "B";
-                    if (( isset($odds_teams[$round][$rank][$bets_result]) ) && ( ( ($match['scoreA'] == NULL) && ($match['scoreB'] == NULL) ) || ( ($match['scoreA'] == "") && ($match['scoreB'] == "") ) ))
+                    if (( isset($odds_teams[$round][$rank][$bets_result]) ) && ( ( ($match['scoreA'] == NULL) && ($match['scoreB'] == NULL) ) || ( ($match['scoreA'] == "") && ($match['scoreB'] == "") ) )) {
                         $next_teamID = $odds_teams[$round][$rank][$bets_result];
-                    else
+                    }
+                    else {
                         $next_teamID = $match["team" . $match_result];
+                    }
                     $odds_teams[$next_round][$next_rank][$next_team] = $next_teamID;
                 }
 
                 if ($round == 2) {
                     $bets_looser = ($bets_result == 'B') ? 'A' : 'B';
                     $next_team = (is_float($rank / 2)) ? "A" : "B";
-                    if (isset($odds_teams[$round][$rank][$bets_looser]))
+                    if (isset($odds_teams[$round][$rank][$bets_looser])) {
                         $next_teamID = $odds_teams[$round][$rank][$bets_looser];
-                    else
+                    }
+                    else {
                         $next_teamID = $match["team" . $bets_looser];
+                    }
                     $odds_teams[3][1][$next_team] = $next_teamID;
                 }
 
@@ -1657,12 +1664,12 @@ class BetEngine {
 
                 $this->template->assign_block_vars('finals.rounds.ranks', array(
                     'RANK' => $rank,
-                    'DATE' => "<i>" . $match['date_str'] . "</i>",
+                    'DATE' => "<em>" . $match['date_str'] . "</em>",
                     'MATCH_ID' => $match['matchID'],
                     'TEAM_W' => (isset($bet['teamW'])) ? $bet['teamW'] : "",
                     'HEIGHT_TOP' => $height_top,
                     'HEIGHT_BOTTOM' => $height_bottom,
-                    'EXACT_BETS' => "<b>" . $str_exact_bets . "</b>",
+                    'EXACT_BETS' => "<strong>$str_exact_bets</strong>",
                     'GOOD_BETS' => $str_good_bets
                 ));
 
@@ -1680,15 +1687,18 @@ class BetEngine {
                     ));
                 }
 
-                $color = array();
-                $color['A'] = ($bets_result == 'A') ? "#99FF99" : "#F9F9F9";
-                $color['B'] = ($bets_result == 'B') ? "#99FF99" : "#F9F9F9";
+                $color = [];
+                $result = $match_result == '' ? $bets_result : $match_result;
+                $color['A'] = ($result == 'A') ? "#99FF99" : "#F9F9F9";
+                $color['B'] = ($result == 'B') ? "#99FF99" : "#F9F9F9";
 
                 foreach ($teams as $team) {
-                    if (isset($odds_teams[$round][$rank][$team]) && ( ( ($match['scoreA'] == "") && ($match['scoreB'] == "") ) || ( ( $match['scoreA'] == NULL) && ($match['scoreB'] == NULL) ) ) && ($round < 4))
+                    if (isset($odds_teams[$round][$rank][$team]) && ( ( ($match['scoreA'] == "") && ($match['scoreB'] == "") ) || ( ( $match['scoreA'] == NULL) && ($match['scoreB'] == NULL) ) ) && ($round < 4)) {
                         $bets_team = $this->teams->get($odds_teams[$round][$rank][$team]);
-                    else
+                    }
+                    else {
                         $bets_team = $this->teams->get($match['team' . $team]);
+                    }
 
                     $this->template->assign_block_vars('finals.rounds.ranks.teams', array(
                         'TEAM' => $team,
@@ -1703,9 +1713,9 @@ class BetEngine {
 
                     if ($team == 'B' && $round != 1 && $round != 3) {
                         if ($rank % 2 == 1)
-                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', []);
                         else
-                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', []);
                     }
                 }
             }
@@ -1963,12 +1973,12 @@ class BetEngine {
 			'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
         ));
 
-        $array_template = array();
+        $array_template = [];
         $rounds = $this->config['rounds'];
         $teams = array('A', 'B');
 
-        $array_template_extra = array();
-        $this->template->assign_block_vars('finals', array());
+        $array_template_extra = [];
+        $this->template->assign_block_vars('finals', []);
 
         /* ROUND */
 
@@ -2011,9 +2021,9 @@ class BetEngine {
             }
 
             if (($round != 3) || (!in_array(3, $rounds)))
-                $this->template->assign_block_vars('finals.rounds.merge_top', array());
+                $this->template->assign_block_vars('finals.rounds.merge_top', []);
             if (($round != 1) || (!in_array(3, $rounds)))
-                $this->template->assign_block_vars('finals.rounds.merge_bottom', array());
+                $this->template->assign_block_vars('finals.rounds.merge_bottom', []);
 
             /* RANK */
 
@@ -2103,7 +2113,7 @@ class BetEngine {
                     $bet['scoreBetA'] = NULL;
                 if (!isset($bet['scoreBetB']))
                     $bet['scoreBetB'] = NULL;
-                $color = array();
+                $color = [];
                 $color['A'] = (isset($bet['teamW']) && $bet['teamW'] == 'A') ? "#99FF99" : "#F9F9F9";
                 $color['B'] = (isset($bet['teamW']) && $bet['teamW'] == 'B') ? "#99FF99" : "#F9F9F9";
 
@@ -2137,7 +2147,7 @@ class BetEngine {
                         ));
 
                         if (((($team == 'A') && ($i % 2 == 1)) || (($team == 'B') && ($i % 2 == 0)) ) && ($match['scoreB'] != NULL) && ($match['scoreA'] != NULL)) {
-                            $this->template->assign_block_vars('finals.rounds.ranks.teams.points', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.teams.points', []);
                         }
                     } else {
                         $this->template->assign_block_vars('finals.rounds.ranks.teams', array(
@@ -2152,12 +2162,12 @@ class BetEngine {
                         ));
                     }
 
-                    $this->template->assign_block_vars('finals.rounds.ranks.teams.' . $mode, array());
+                    $this->template->assign_block_vars('finals.rounds.ranks.teams.' . $mode, []);
                     if ($team == 'B' && $round != 1 && $round != 3) {
                         if ($i % 2 == 1)
-                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', []);
                         else
-                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', array());
+                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', []);
                     }
                 }
             }
@@ -2770,7 +2780,7 @@ class BetEngine {
             ));
         }
         if ($this->users->count_groups() < 3) {
-            $this->template->assign_block_vars('join_group', array());
+            $this->template->assign_block_vars('join_group', []);
         }
 
         $this->blocks_loaded[] = 'account';
@@ -2857,7 +2867,7 @@ class BetEngine {
         $send_invitations = $this->groups->get_invitations_by_sender($user['userID']);
 
         if (count($send_invitations) > 0) {
-            $this->template->assign_block_vars('is_send', array());
+            $this->template->assign_block_vars('is_send', []);
             foreach ($send_invitations as $send_invitation) {
                 if ($send_invitation['status'] == 2 || $send_invitation['status'] == -2) {
                     $user_invited = $this->users->get_by_email($send_invitation['email']);
@@ -2877,7 +2887,7 @@ class BetEngine {
         $groups = $this->groups->get();
 
         if ($this->users->count_groups($user['userID']) > 0) {
-            $this->template->assign_block_vars('is_group', array());
+            $this->template->assign_block_vars('is_group', []);
             $users = $this->users->get();
 
             for ($i = 1; $i <= $nb_invitations; $i++) {
