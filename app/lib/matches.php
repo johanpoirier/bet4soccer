@@ -436,6 +436,7 @@ class Matches
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         $req .= ' WHERE tA.pool = \'' . $pool . '\'';
         $req .= ' AND tB.pool = \'' . $pool . '\'';
+        $req .= ' AND m.round IS NULL';
         $req .= ' ORDER BY date, teamAname';
 
         $nb_teams = 0;

@@ -328,15 +328,19 @@ class BetEngine {
                 foreach ($pools as $pool) {
                     $nbmatches += count($this->matches->get_by_pool($pool));
                 }
-            } elseif ($round != 3)
+            } elseif ($round != 3) {
                 $nbmatches = $round;
-            else
+            }
+            else {
                 $nbmatches = 1;
+            }
 
-            if ($round == 'pool')
+            if ($round == 'pool') {
                 $total_round = $nbmatches * ($this->config['points_' . $round . '_good_result'] + $this->config['points_' . $round . '_exact_score']);
-            else
+            }
+            else {
                 $total_round = $nbmatches * ($this->config['points_' . $round . '_good_result'] + $this->config['points_' . $round . '_qualify'] + $this->config['points_' . $round . '_exact_score']);
+            }
 
             $this->template->assign_block_vars('rounds', array(
                 'NAME' => ($round == 'pool') ? $this->lang['LABEL_POOL'] : $this->lang['LABEL_' . $round . '_FINAL'],
@@ -349,10 +353,12 @@ class BetEngine {
             ));
 
             $total += $total_round;
-            if ($round == 'pool')
+            if ($round == 'pool') {
                 $total_pool += $total_round;
-            else
+            }
+            else {
                 $total_finals += $total_round;
+            }
         }
 
         $this->template->assign_vars(array(
