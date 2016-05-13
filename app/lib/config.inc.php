@@ -55,3 +55,4 @@ $config['points_2_qualify'] = 4;
 $config['points_1_good_result'] = 20;
 $config['points_1_exact_score'] = 9;
 $config['points_1_qualify'] = 6;
+
