@@ -3082,6 +3082,7 @@ class BetEngine
             "UPDATE " . $this->config['db_prefix'] . "groups SET avgPoints=0, totalPoints=0, maxPoints=0, lastRank=1;",
             "UPDATE " . $this->config['db_prefix'] . "users SET points=0, nbresults=0, nbscores=0, diff=0, last_rank=1, last_connection=NULL, last_bet=NULL;",
             "UPDATE " . $this->config['db_prefix'] . "settings SET value=0 WHERE name = 'NB_MATCHES_GENERATED';",
+            "UPDATE " . $this->config['db_prefix'] . "matches SET scoreA=NULL, scoreB=null, teamW=NULL;",
             "DELETE FROM " . $this->config['db_prefix'] . "bets;",
             "DELETE FROM " . $this->config['db_prefix'] . "matches WHERE round IS NOT NULL;",
             "DELETE FROM " . $this->config['db_prefix'] . "tags;",
