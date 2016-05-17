@@ -112,9 +112,7 @@ class BetEngine
 
     function load_header($title = false)
     {
-        $this->template->set_filenames(array(
-            'head' => 'header.tpl'
-        ));
+        $this->template->set_filenames([ 'head' => 'header.tpl' ]);
 
         if ($title) {
             $title = $this->config['blog_title'] . " - " . $title;
@@ -2826,6 +2824,15 @@ class BetEngine
         $this->blocks_loaded[] = 'account';
     }
 
+    function load_admin()
+    {
+        $this->template->set_filenames([ 'admin' => 'admin.tpl' ]);
+
+        $this->template->assign_vars([ 'TPL_WEB_PATH' => $this->template_web_location ]);
+
+        $this->blocks_loaded[] = 'admin';
+    }
+
     function load_join_group($warning = "", $code = false)
     {
         $this->template->set_filenames(array(
@@ -3044,8 +3051,9 @@ class BetEngine
     {
         $user = $this->users->get_by_email($email);
 
-        if ($user)
+        if ($user) {
             return utf8_mail($user['email'], "Euro2016 - Oubli de votre login", "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+        }
         else {
             utf8_mail($this->config['email'], "Euro2016 - Utilisateur '" . $email . "' inconnu", "L'utilisateur avec l'email '" . $email . "' a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
@@ -3057,11 +3065,32 @@ class BetEngine
         $user = $this->users->get_by_login($login);
         $new_pass = $this->users->set_new_password($user['userID']);
 
-        if ($user)
+        if ($user) {
             return utf8_mail($user['email'], "Euro2016 - Oubli de mot de passe", "Bonjour,\n\nVotre nouveau mot de passe est : " . $new_pass . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+        }
         else {
             utf8_mail($this->config['email'], "Euro2016 - Utilisateur " . $login . " inconnu", "L'utilisateur " . $login . " a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
+        }
+    }
+
+    /*     * **************** */
+
+    function reset()
+    {
+        $requests = [
+            "UPDATE " . $this->config['db_prefix'] . "groups set avgPoints=0, totalPoints=0, maxPoints=0, lastRank=1",
+            "UPDATE " . $this->config['db_prefix'] . "users set points=0, nbresults=0, nbscores=0, diff=0, last_rank=1, last_connection=NULL, last_bet=NULL;",
+            "DELETE * FROM " . $this->config['db_prefix'] . "bets;",
+            "DELETE * FROM " . $this->config['db_prefix'] . "matches WHERE round IS NOT NULL;",
+            "DELETE * FROM " . $this->config['db_prefix'] . "tags;",
+            "DELETE * FROM " . $this->config['db_prefix'] . "invitations;",
+            "DELETE * FROM " . $this->config['db_prefix'] . "stats_user;",
+            "UPDATE " . $this->config['db_prefix'] . "settings SET value=0 WHERE name = 'NB_MATCHES_GENERATED';"
+         ];
+
+        foreach ($requests as $req) {
+            $this->db->exec_query($req);
         }
     }
 

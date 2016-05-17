@@ -40,6 +40,7 @@
             <li class="nav-group-item"><a href="/?act=edit_{FINALS}results">Saisie Résultats</a></li>
             <li class="nav-group-item"><a href="/?act=edit_matches">Saisie Matchs</a></li>
             <li class="nav-group-item"><a href="/?act=edit_teams">Saisie Équipes</a></li>
+            <li class="nav-group-item"><a href="/?act=admin">Admin</a></li>
         </ul>
         <!-- END admin_bar -->
         <!-- BEGIN user_bar -->

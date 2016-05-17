@@ -86,6 +86,9 @@ define('CREATE_GROUP', (isset($_GET['act']) && ($_GET['act']) == "create_group")
 define('INVITE_FRIENDS', (isset($_GET['act']) && ($_GET['act']) == "invite_friends"));
 define('MONEY', (isset($_GET['act']) && ($_GET['act']) == "money"));
 
+define('ADMIN', (isset($_GET['act']) && ($_GET['act']) == "admin") && ($bet->isadmin()));
+define('RESET', (isset($_GET['act']) && ($_GET['act']) == "reset") && ($bet->isadmin()));
+
 define('CODE', (isset($_GET['c']) && !isset($_GET['act'])));
 
 define('AUTHENTIFICATION', (!isset($_SESSION['userID']) && !LOGIN && !CODE));
@@ -390,6 +393,12 @@ if (GET_HTTP_MATCH) {
     $bet->load_match_stats($_GET['matchID']);
     $bet->display();
     exit();
+} elseif (RESET) {
+    if ($debug) {
+        echo "RESET<br />";
+    }
+    $bet->reset();
+    redirect("/?act=admin");
 }
 
 $bet->load_header();
@@ -640,6 +649,14 @@ if (EDIT_RESULTS) {
     if ($debug)
         echo "MONEY<br />";
     $bet->load_money();
+} elseif (ADMIN) {
+    if ($debug) {
+        echo "ADMIN<br />";
+    }
+    $bet->load_header();
+    $bet->load_admin();
+    $bet->display();
+    exit();
 } else {
     if ($debug) {
         echo "VIEW_USERS_RANKING<br />";
