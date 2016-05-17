@@ -3079,14 +3079,14 @@ class BetEngine
     function reset()
     {
         $requests = [
-            "UPDATE " . $this->config['db_prefix'] . "groups set avgPoints=0, totalPoints=0, maxPoints=0, lastRank=1",
-            "UPDATE " . $this->config['db_prefix'] . "users set points=0, nbresults=0, nbscores=0, diff=0, last_rank=1, last_connection=NULL, last_bet=NULL;",
-            "DELETE * FROM " . $this->config['db_prefix'] . "bets;",
-            "DELETE * FROM " . $this->config['db_prefix'] . "matches WHERE round IS NOT NULL;",
-            "DELETE * FROM " . $this->config['db_prefix'] . "tags;",
-            "DELETE * FROM " . $this->config['db_prefix'] . "invitations;",
-            "DELETE * FROM " . $this->config['db_prefix'] . "stats_user;",
-            "UPDATE " . $this->config['db_prefix'] . "settings SET value=0 WHERE name = 'NB_MATCHES_GENERATED';"
+            "UPDATE " . $this->config['db_prefix'] . "groups SET avgPoints=0, totalPoints=0, maxPoints=0, lastRank=1;",
+            "UPDATE " . $this->config['db_prefix'] . "users SET points=0, nbresults=0, nbscores=0, diff=0, last_rank=1, last_connection=NULL, last_bet=NULL;",
+            "UPDATE " . $this->config['db_prefix'] . "settings SET value=0 WHERE name = 'NB_MATCHES_GENERATED';",
+            "DELETE FROM " . $this->config['db_prefix'] . "bets;",
+            "DELETE FROM " . $this->config['db_prefix'] . "matches WHERE round IS NOT NULL;",
+            "DELETE FROM " . $this->config['db_prefix'] . "tags;",
+            "DELETE FROM " . $this->config['db_prefix'] . "invitations;",
+            "DELETE FROM " . $this->config['db_prefix'] . "stats_user;",
          ];
 
         foreach ($requests as $req) {
