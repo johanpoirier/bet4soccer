@@ -2252,11 +2252,6 @@ class BetEngine
 
     function load_bets($edit = false, $userID = false)
     {
-        if (($userID != $this->users->get_current_id()) && !$this->users->is_admin($this->users->get_current_id())) {
-            $edit = false;
-        }
-        $adminEdit = ($userID != $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
-
         if ($userID != false) {
             $user = $this->users->get($userID);
             $current_user = $user['name'];
@@ -2266,6 +2261,13 @@ class BetEngine
             $current_user = $_SESSION['user_name'];
             $all_bets = true;
         }
+
+        if (($userID != $this->users->get_current_id()) && !$this->users->is_admin($this->users->get_current_id())) {
+            $edit = false;
+        }
+
+        $adminEdit = ($userID != $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
+
 
         if ($edit) {
             $this->template->set_filenames(array(
