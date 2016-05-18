@@ -124,11 +124,7 @@
         }
     }
 
-    $(document).ready(function () {
-        $('button.headline-button.phase').click(function () {
-            window.location.assign('/?act=bets');
-        });
-    });
+    $(document).ready(headlineButtonsInit);
 </script>
 <section id="mainarea">
     <div class="maincontent">
@@ -137,7 +133,7 @@
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase">Poules</button>
+                <button class="headline-button phase pools">Poules</button>
             </div>
         </div>
 

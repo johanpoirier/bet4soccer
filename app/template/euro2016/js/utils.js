@@ -127,3 +127,15 @@ function globalInit() {
 		window.location.assign('/');
 	});
 }
+
+function headlineButtonsInit() {
+	$('button.headline-button.phase.finals').click(function () {
+		window.location.assign('/?act=finals_bets');
+	});
+	$('button.headline-button.phase.pools').click(function () {
+		window.location.assign('/?act=bets');
+	});
+	$('button.headline-button.order').click(function () {
+		window.location.assign('/?act=bets&match_display=date');
+	});
+}

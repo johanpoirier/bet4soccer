@@ -54,14 +54,7 @@
         team_ranking.innerHTML = HTML_ranking;
     }
 
-    $(document).ready(function () {
-        $('button.headline-button.phase').click(function () {
-            window.location.assign('/?act=finals_bets');
-        });
-        $('button.headline-button.order').click(function () {
-            window.location.assign('/?act=bets&match_display=date');
-        });
-    });
+    $(document).ready(headlineButtonsInit);
 </script>
 
 <section id="mainarea">
@@ -71,7 +64,7 @@
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
 			<div class="headline-menu">
-                <button class="headline-button phase">Phase finale</button>
+                <button class="headline-button phase finals">Phase finale</button>
                 <button class="headline-button order"><i class="icon-sort-number-up"></i> Trier par date</button>
             </div>
         </div>

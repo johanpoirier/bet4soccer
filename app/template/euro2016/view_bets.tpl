@@ -1,8 +1,6 @@
 <script type="text/javascript" src="{TPL_WEB_PATH}js/jquery.flot.min.js"> </script>
 <script type="text/javascript">
-function changePhase(action) {
-    window.location.href = "?act="+action+"";
-}
+    $(document).ready(headlineButtonsInit);
 </script>
 <section id="mainarea">
     <div class="maincontent">
@@ -11,10 +9,7 @@ function changePhase(action) {
                 <h1 style="float: left;">Pronostics de {CURRENT_USER}</h1>
             </div>
             <div class="headline-menu">
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option selected="selected" value="view_bets{USER_URL}">Poules</option>
-                    <option value="view_finals_bets{USER_URL}">Phase finale</option>
-                </select>
+                <button class="headline-button phase finals">Phase finale</button>
             </div>
         </div>
 
