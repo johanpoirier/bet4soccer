@@ -53,9 +53,15 @@
         var team_ranking = document.getElementById("pool_" + pool + "_ranking");
         team_ranking.innerHTML = HTML_ranking;
     }
-    function changePhase(action) {
-        window.location.assign('/?act=' + action);
-    }
+
+    $(document).ready(function () {
+        $('button.headline-button.phase').click(function () {
+            window.location.assign('/?act=finals_bets');
+        });
+        $('button.headline-button.order').click(function () {
+            window.location.assign('/?act=bets&match_display=date');
+        });
+    });
 </script>
 
 <section id="mainarea">
@@ -65,11 +71,8 @@
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
 			<div class="headline-menu">
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option selected="selected" value="bets">Poules</option>
-                    <option value="finals_bets">Phase finale</option>
-                </select>
-                <a href="/?act=bets&match_display=date">Trier par date</a>
+                <button class="headline-button phase">Phase finale</button>
+                <button class="headline-button order">Trier par date</button>
             </div>
         </div>
 

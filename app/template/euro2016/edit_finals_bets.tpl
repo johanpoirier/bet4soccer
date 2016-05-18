@@ -124,10 +124,11 @@
         }
     }
 
-    function changePhase(action) {
-        window.location.assign('/?act=' + action);
-    }
-
+    $(document).ready(function () {
+        $('button.headline-button.phase').click(function () {
+            window.location.assign('/?act=bets');
+        });
+    });
 </script>
 <section id="mainarea">
     <div class="maincontent">
@@ -136,10 +137,7 @@
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
             <div class="headline-menu">
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option value="bets">Poules</option>
-                    <option selected="selected" value="finals_bets">Phase finale</option>
-                </select>
+                <button class="headline-button phase">Poules</button>
             </div>
         </div>
 
