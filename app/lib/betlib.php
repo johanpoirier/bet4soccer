@@ -2215,6 +2215,7 @@ class BetEngine
                 $data = "[";
                 $nbJournee = 1;
                 $last_stat = null;
+                $maxPts = 0;
                 foreach ($userStats as $stat) {
                     if ($last_stat == null) {
                         $points = $stat['points'];
@@ -2225,11 +2226,24 @@ class BetEngine
                     $data .= " [ $nbJournee, " . $points . "], ";
                     $xSerie .= " [ $nbJournee, ''], ";
 
+                    if ($points > $maxPts) {
+                        $maxPts = $points;
+                    }
+
                     $nbJournee++;
                     $last_stat = $stat;
                 }
                 $data .= " ]";
                 $xSerie .= " ]";
+
+                if ($maxPts < 20) {
+                    $maxPts = 20;
+                }
+                $ticks = [];
+                $inc = round($maxPts / 5);
+                for ($i = 0; $i < 6; $i++) {
+                    $ticks[$i] = $i * $inc;
+                }
 
                 $this->template->assign_block_vars('stats', array(
                     'TYPE' => $type,
@@ -2237,17 +2251,19 @@ class BetEngine
                     'DATA' => '[ ' . $data . ' ]',
                     'XSERIE' => $xSerie,
                     'YMIN' => 0,
-                    'YMAX' => 8,
-                    'YTICKS' => "[ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]",
+                    'YMAX' => $maxPts + 1,
+                    'YTICKS' => '[' . implode(',', $ticks) . ']',
                     'COLOR' => '#50BA50'
                 ));
             }
         }
 
-        if ($edit)
+        if ($edit) {
             $this->blocks_loaded[] = 'edit_finals_bets';
-        else
+        }
+        else {
             $this->blocks_loaded[] = 'view_finals_bets';
+        }
     }
 
     function load_bets($edit = false, $userID = false)
