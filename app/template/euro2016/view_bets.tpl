@@ -15,49 +15,49 @@
 
         <div class="tag_cloud user-infos">
             <!-- BEGIN stats -->
-            <div class="user-infos-block">
-                <strong>{stats.TYPE}</strong>
-                <div class="stats" id="stats_{stats.ID}"></div>
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $.plot("#stats_{stats.ID}", {stats.DATA}, {
-                            colors: [ "{stats.COLOR}" ],
-                            xaxis: {
-                                ticks: {stats.XSERIE}
-                            },
-                            yaxis: {
-                                min: {stats.YMIN},
-                                max: {stats.YMAX},
-                                {stats.INVERSE}
-                                ticks: {stats.YTICKS},
-                                tickDecimals: 0
-                            },
-                            grid: {
-                                backgroundColor: "#ffffff",
-                                hoverable: true
-                            }
-                        });
-
-                        var previousPoint = null;
-                        $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
-                            if (item) {
-                                if (previousPoint != item.dataIndex) {
-                                    previousPoint = item.dataIndex;
-
-                                    $("#tooltip").remove();
-                                    var x = item.datapoint[0].toFixed(2);
-                                    var y = item.datapoint[1].toFixed(2);
-
-                                    showTooltip(item.pageX, item.pageY, parseInt(y));
-                                }
-                            } else {
-                                $("#tooltip").remove();
-                                previousPoint = null;
-                            }
-                        });
-                    });
-                </script>
+            <div class="user-stats">
+                <h4 class="user-stats-title">{stats.TYPE}</h4>
+                <div class="user-stats-chart" id="stats_{stats.ID}"></div>
             </div>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $.plot("#stats_{stats.ID}", {stats.DATA}, {
+                        colors: [ "{stats.COLOR}" ],
+                        xaxis: {
+                            ticks: {stats.XSERIE}
+                        },
+                        yaxis: {
+                            min: {stats.YMIN},
+                            max: {stats.YMAX},
+                            {stats.INVERSE}
+                            ticks: {stats.YTICKS},
+                            tickDecimals: 0
+                        },
+                        grid: {
+                            backgroundColor: "#ffffff",
+                            hoverable: true
+                        }
+                    });
+
+                    var previousPoint = null;
+                    $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
+                        if (item) {
+                            if (previousPoint != item.dataIndex) {
+                                previousPoint = item.dataIndex;
+
+                                $("#tooltip").remove();
+                                var x = item.datapoint[0].toFixed(2);
+                                var y = item.datapoint[1].toFixed(2);
+
+                                showTooltip(item.pageX, item.pageY, parseInt(y));
+                            }
+                        } else {
+                            $("#tooltip").remove();
+                            previousPoint = null;
+                        }
+                    });
+                });
+            </script>
             <!-- END stats -->
         </div>
 
