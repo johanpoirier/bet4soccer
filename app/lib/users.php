@@ -170,7 +170,7 @@ class Users
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t ON (u.groupID = t.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t2 ON (u.groupID2 = t2.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u.groupID3 = t3.groupID)';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
         if ($nb_args > 0) {
             $req .= " WHERE u.userID = $userID";
         }
