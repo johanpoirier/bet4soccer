@@ -64,8 +64,8 @@
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
 			<div class="headline-menu">
-                <button class="headline-button phase finals">Phase finale</button>
-                <button class="headline-button order"><i class="icon-sort-number-up"></i> Trier par date</button>
+                <button class="headline-button phase" data-value="finals_bets">Phase finale</button>
+                <button class="headline-button order" data-value="date"><i class="icon-sort-number-up"></i> Trier par date</button>
             </div>
         </div>
 

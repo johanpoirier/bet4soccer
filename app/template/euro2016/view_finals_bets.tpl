@@ -9,7 +9,7 @@
                 <h1>Pronostics de {CURRENT_USER}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase pools">Poules</button>
+                <button class="headline-button phase" data-value="bets">Poules</button>
             </div>
         </div>
 
