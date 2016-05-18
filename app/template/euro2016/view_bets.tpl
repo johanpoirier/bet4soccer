@@ -19,56 +19,42 @@
                 <strong>{stats.TYPE}</strong>
                 <div class="stats" id="stats_{stats.ID}"></div>
                 <script type="text/javascript">
-                    var data = {stats.DATA};
-                    $.plot("#stats_{stats.ID}", data,
-                            {
-                                colors: ["{stats.COLOR}"],
-                                xaxis: {
-                                    ticks: {stats.XSERIE}
-                                },
-                                yaxis: {
-                                    min: {stats.YMIN},
-                                    max: {stats.YMAX},
-                                    {stats.INVERSE}
-                                    ticks: {stats.YTICKS},
-                                    tickDecimals: 0
-                                },
-                                grid: {
-                                    backgroundColor: "#ffffff",
-                                    hoverable: true
-                                }
-                            });
-
-                    function showTooltip(x, y, contents) {
-                        $("<div id='tooltip'>" + contents + "</div>").css({
-                            position: "absolute",
-                            display: "none",
-                            top: y - 30,
-                            left: x - 10,
-                            border: "1px solid #fdd",
-                            padding: "2px",
-                            "background-color": "#fee",
-                            opacity: 0.80
-                        }).appendTo("body").fadeIn(200);
-                    }
-
-                    var previousPoint = null;
-                    $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
-                        if (item) {
-                            if (previousPoint != item.dataIndex) {
-
-                                previousPoint = item.dataIndex;
-
-                                $("#tooltip").remove();
-                                var x = item.datapoint[0].toFixed(2),
-                                        y = item.datapoint[1].toFixed(2);
-
-                                showTooltip(item.pageX, item.pageY, parseInt(y));
+                    $(document).ready(function() {
+                        $.plot("#stats_{stats.ID}", {stats.DATA}, {
+                            colors: [ "{stats.COLOR}" ],
+                            xaxis: {
+                                ticks: {stats.XSERIE}
+                            },
+                            yaxis: {
+                                min: {stats.YMIN},
+                                max: {stats.YMAX},
+                                {stats.INVERSE}
+                                ticks: {stats.YTICKS},
+                                tickDecimals: 0
+                            },
+                            grid: {
+                                backgroundColor: "#ffffff",
+                                hoverable: true
                             }
-                        } else {
-                            $("#tooltip").remove();
-                            previousPoint = null;
-                        }
+                        });
+
+                        var previousPoint = null;
+                        $("#stats_{stats.ID}").bind("plothover", function (event, pos, item) {
+                            if (item) {
+                                if (previousPoint != item.dataIndex) {
+                                    previousPoint = item.dataIndex;
+
+                                    $("#tooltip").remove();
+                                    var x = item.datapoint[0].toFixed(2);
+                                    var y = item.datapoint[1].toFixed(2);
+
+                                    showTooltip(item.pageX, item.pageY, parseInt(y));
+                                }
+                            } else {
+                                $("#tooltip").remove();
+                                previousPoint = null;
+                            }
+                        });
                     });
                 </script>
             </div>
