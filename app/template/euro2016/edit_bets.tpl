@@ -72,7 +72,7 @@
             </div>
 			<div class="headline-menu">
                 <button class="headline-button phase">Phase finale</button>
-                <button class="headline-button order">Trier par date</button>
+                <button class="headline-button order"><i class="icon-sort-number-up"></i> Trier par date</button>
             </div>
         </div>
 
