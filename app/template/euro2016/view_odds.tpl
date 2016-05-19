@@ -20,13 +20,10 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Resultats & Cotes</h1>
+                <h1>Résultats & Cotes</h1>
             </div>
             <div class="headline-menu">
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option selected="selected" value="view_odds">Poules</option>
-                    <option value="view_finals_odds">Phase finale</option>
-                </select>
+                <button class="headline-button phase" data-value="finals_bets">Phase finale</button>
             </div>
         </div>
 

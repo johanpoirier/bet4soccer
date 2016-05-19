@@ -8,10 +8,9 @@
         <div class="headline">
             <div class="headline-title">
                 <h1>Résultats</h1>
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option value="view_results">Poules</option>
-                    <option selected="selected" value="view_finals_results">Phase finale</option>
-                </select>
+            </div>
+            <div class="headline-menu">
+                <button class="headline-button phase" data-value="finals_bets">Phase finale</button>
             </div>
         </div>
 
