@@ -1,7 +1,5 @@
 <script type="text/javascript">
-    function changePhase(action) {
-        window.location.assign('/?act=' + action);
-    }
+    $(document).ready(headlineButtonsInit);
 </script>
 <section id="mainarea">
     <div class="maincontent">
