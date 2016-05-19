@@ -8,7 +8,7 @@
                 <h1>Résultats</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="finals_results">Phase finale</button>
+                <button class="headline-button phase" data-value="view_results">Phase finale</button>
             </div>
         </div>
 
