@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
 	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/bets4soccer.css" />
-	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/template.css?v=160520133133" />
+	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/template.css?v=160520133322" />
 	<script type="text/javascript" src="{TPL_WEB_PATH}js/jquery-2.2.3.min.js"> </script>
 	<script type="text/javascript" src="{TPL_WEB_PATH}js/utils.js?v=160520130912"> </script>
 	<script>
