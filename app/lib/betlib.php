@@ -720,7 +720,7 @@ class BetEngine
             $class = "";
             if ($_SESSION['userID'] == $user['userID']) {
                 $class = "me";
-            } elseif ($nb_active_users > 10) {
+            } elseif ($nb_active_users > 10 && $this->matches->get_last_played() !== false) {
                 if ($user['rank'] <= 3) {
                     $class = "first";
                 } elseif ($user['rank'] > ($nb_active_users - 1)) {

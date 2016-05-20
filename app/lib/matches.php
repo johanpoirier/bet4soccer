@@ -308,10 +308,12 @@ class Matches
         $req .= ' ORDER BY m.date DESC';
         $req .= ' LIMIT 1 OFFSET 0';
 
-        $match = $this->parent->db->select_line($req, $null);
+        $nb_match = 0;
+        $match = $this->parent->db->select_line($req, $nb_match);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($match);
+        }
 
         return $match;
     }
