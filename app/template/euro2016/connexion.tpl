@@ -1,27 +1,27 @@
 <section id="mainarea">
     <div class="maincontent login">
-        <div class="headline">
-            <div class="headline-title">
-                <h1>Connexion</h1>
-            </div>
-        </div>
-
+        <h1>Bonjour !</h1>
         <div class="login-content">
-            <form method="post" action="/?act=login" class="login">
+            <form method="post" action="/?act=login" class="login-block login">
                 <input type="hidden" name="login" value="1" />
                 <input type="hidden" name="redirect" value="" />
                 <input type="hidden" name="code" value="{CODE}"/>
 
-                <div class="formfield"><b>{LABEL_LOGIN}</b></div>
+                <div class="formfield"><strong>{LABEL_LOGIN}</strong></div>
                 <input type="text" name="login" value="" maxlength="100" autofocus required/>
 
-                <div class="formfield"><b>Mot de passe</b></div>
+                <div class="formfield"><strong>Mot de passe</strong></div>
                 <input type="password" name="pass" maxlength="20" required />
 
                 <span class="error">{WARNING}</span>
 
                 <input type="submit" value="Connexion" />
             </form>
+
+            <div class="login-block signup">
+                <span>Pas encore de compte ?</span>
+                <a href="/?act=register">Je m'en crée un ici</a>
+            </div>
         </div>
     </div>
 </section>

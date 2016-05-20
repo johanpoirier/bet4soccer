@@ -433,6 +433,13 @@ select {
     padding: 0 20%;
 }
 
+.maincontent.login h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
 .login-content {
     -webkit-box-align: center;
     -webkit-align-items: center;
@@ -466,6 +473,27 @@ select {
 
 .login-form-button {
     margin-top: 2rem;
+}
+
+.login-block {
+    background-color: #fff;
+    border-radius: 0.2rem;
+    border: 1px solid #e0dfd6;
+    margin-bottom: 1rem;
+    padding: 2rem;
+    width: 20rem;
+}
+
+.login-block.signup {
+    align-items: center;
+    background-color: #f4f3e9;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+
+.login-block.signup a {
+    color: #5c51b5;
 }
 
 .formfield {
