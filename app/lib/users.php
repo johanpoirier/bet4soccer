@@ -175,7 +175,7 @@ class Users
             $req .= " WHERE u.userID = $userID";
         }
         $req .= ' GROUP BY u.userID';
-        $req .= ' ORDER by nb_bets, u.name';
+        $req .= ' ORDER by u.name';
 
         // Execute Query
         $nb_users = 0;
