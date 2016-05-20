@@ -496,6 +496,26 @@ select {
     color: #5c51b5;
 }
 
+/**************** Register ***************/
+.register form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.register input {
+    border-radius: 0.3rem;
+    margin-top: 1.5rem;
+    max-width: 20rem;
+    padding: 0.7rem;
+    width: 80%;
+}
+
+.register .hint {
+    font-style: italic;
+    margin-top: 0.2rem;
+}
+
 .formfield {
     margin: 5px;
 }
