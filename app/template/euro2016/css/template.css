@@ -1085,7 +1085,7 @@ td.game-date {
 /************* media queries ******************/
 @media (min-width: 1200px) {
     body {
-        background: url(../images/background.png) top center #007cba;
+        background: url(../images/background.png) top center #304a6b;
         background-repeat: repeat;
     }
 
