@@ -159,6 +159,19 @@ header .account-link {
             flex-direction: column;
 }
 
+header .account {
+    background-color: #447f98;
+    color: white;
+    margin: 0 0.5rem;
+    min-width: 4rem;
+    padding: 0.5rem 1rem;
+}
+
+header .account a {
+    color: white;
+    white-space: nowrap;
+}
+
 section#mainarea {
     background-color: #fff;
     color: #333;
@@ -394,6 +407,10 @@ select {
     -webkit-justify-content: space-around;
         -ms-flex-pack: distribute;
             justify-content: space-around;
+}
+
+.headline-menu > a {
+    white-space: nowrap;
 }
 
 /************* CLASSES ***************/
@@ -1060,6 +1077,7 @@ td.game-date {
     border: 0;
     border-radius: 0.2rem;
     font-size: 0.8rem;
+    margin: 0.2rem 0;
     padding: 0.2rem 0.6rem;
 }
 
@@ -1166,6 +1184,14 @@ td.game-date {
 }
 
 @media (max-width: 400px) {
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    h2, aside .headline h2 {
+        font-size: 1.1rem;
+    }
+
     table.ranking th:last-child, table.ranking td:last-child {
         display: none;
     }
@@ -1207,6 +1233,10 @@ td.game-date {
         -webkit-flex-flow: column nowrap;
             -ms-flex-flow: column nowrap;
                 flex-flow: column nowrap;
+    }
+
+    .headline-button {
+        padding: 0.1rem 0.3rem;
     }
 
     .maincontent.login {

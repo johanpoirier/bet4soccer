@@ -16,7 +16,7 @@
             <!-- END matches -->
         </div>
         <!-- BEGIN logged_in -->
-        <div class="block">
+        <div class="block account">
             <!-- BEGIN account -->
             <a href="/?act=account" class="account-link">
                 <strong>{USERNAME}</strong>
