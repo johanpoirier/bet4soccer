@@ -296,10 +296,9 @@ class BetEngine
             'CONTACT_EMAIL' => $this->config['email']
         ));
 
-        if ($this->config['auth'] != 'LDAP')
-            $this->template->assign_block_vars('menu_with_account', []);
-        else
-            $this->template->assign_block_vars('menu_without_account', []);
+        if ($this->isadmin()) {
+            $this->template->assign_block_vars('menu_admin', []);
+        }
 
         if ($this->page_views) {
             $this->template->assign_block_vars('post_view', array(
