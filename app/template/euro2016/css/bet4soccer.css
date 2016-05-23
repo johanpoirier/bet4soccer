@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'bets4soccer';
-  src: url('../font/bets4soccer.eot?89233222');
-  src: url('../font/bets4soccer.eot?89233222#iefix') format('embedded-opentype'),
-       url('../font/bets4soccer.woff2?89233222') format('woff2'),
-       url('../font/bets4soccer.woff?89233222') format('woff'),
-       url('../font/bets4soccer.ttf?89233222') format('truetype'),
-       url('../font/bets4soccer.svg?89233222#bets4soccer') format('svg');
+  font-family: 'bet4soccer';
+  src: url('../font/bet4soccer.eot?41199596');
+  src: url('../font/bet4soccer.eot?41199596#iefix') format('embedded-opentype'),
+       url('../font/bet4soccer.woff2?41199596') format('woff2'),
+       url('../font/bet4soccer.woff?41199596') format('woff'),
+       url('../font/bet4soccer.ttf?41199596') format('truetype'),
+       url('../font/bet4soccer.svg?41199596#bet4soccer') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,14 +14,14 @@
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: 'bets4soccer';
-    src: url('../font/bets4soccer.svg?89233222#bets4soccer') format('svg');
+    font-family: 'bet4soccer';
+    src: url('../font/bet4soccer.svg?41199596#bet4soccer') format('svg');
   }
 }
 */
  
  [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "bets4soccer";
+  font-family: "bet4soccer";
   font-style: normal;
   font-weight: normal;
   speak: none;
@@ -57,3 +57,5 @@
  
 .icon-sort-number-up:before { content: '\3c'; } /* '&lt;' */
 .icon-sort-name-up:before { content: '\3e'; } /* '&gt;' */
+.icon-final:before { content: '\46'; } /* 'F' */
+.icon-pools:before { content: '\50'; } /* 'P' */

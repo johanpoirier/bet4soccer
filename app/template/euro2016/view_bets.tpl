@@ -9,7 +9,7 @@
                 <h1 style="float: left;">Pronostics de {CURRENT_USER}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="finals_bets">Phase finale</button>
+                <button class="headline-button phase" data-value="finals_bets"><i class="icon-final"></i>Phase finale</button>
             </div>
         </div>
 

@@ -1,5 +1,5 @@
 {
-  "name": "bets4soccer",
+  "name": "bet4soccer",
   "css_prefix_text": "icon-",
   "css_use_suffix": false,
   "hinting": true,
@@ -16,6 +16,18 @@
       "uid": "3ed68ae14e9cde775121954242a412b2",
       "css": "sort-name-up",
       "code": 62,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "f6766a8b042c2453a4e153af03294383",
+      "css": "pools",
+      "code": 80,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ab656e280958018a7859eba9a1eabbc7",
+      "css": "final",
+      "code": 70,
       "src": "fontawesome"
     }
   ]

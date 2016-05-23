@@ -9,7 +9,7 @@
                 <h1>Phase finale de {CURRENT_USER}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="bets">Poules</button>
+                <button class="headline-button phase" data-value="bets"><i class="icon-pools"></i>Poules</button>
             </div>
         </div>
 

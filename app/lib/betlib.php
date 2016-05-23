@@ -1977,7 +1977,7 @@ class BetEngine
         }
 
         $this->template->assign_vars(array(
-            'CURRENT_USER' => $current_user,
+            'PAGE_TITLE' => $adminEdit ? "Phase finale de $current_user" : 'Ma phase finale',
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
@@ -2295,7 +2295,7 @@ class BetEngine
         }
 
         $this->template->assign_vars(array(
-            'CURRENT_USER' => $current_user,
+            'PAGE_TITLE' => $adminEdit ? "Pronostics de $current_user" : 'Ma phase de poules',
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
@@ -2516,7 +2516,7 @@ class BetEngine
         }
 
         $this->template->assign_vars(array(
-            'CURRENT_USER' => $current_user,
+            'PAGE_TITLE' => $adminEdit ? "Pronostics de $current_user" : 'Ma phase de poules',
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
