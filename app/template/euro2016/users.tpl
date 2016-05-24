@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     var groups = [];
     <!-- BEGIN groups -->
     groups[{groups.ID_GROUP}] = "{groups.NAME}";
@@ -12,14 +11,16 @@
             data: "act=get_HTTP_user&userID=" + userID,
             success: handleGetUserResponse
         });
+        window.location.hash = '#user_form';
     }
 
     function handleGetUserResponse(data) {
+        window.location.hash = '';
+
         var results = data.split("|");
         var IDuser = results[0];
         var name = results[1];
         var login = results[2];
-        var password = results[3];
         var email = results[4];
         var IDgroup = results[5];
         var status = results[6];
@@ -94,26 +95,30 @@
         var results = data.split("|");
         var list = document.getElementById('list_users');
 
-        var HTML_list = "<table width=\"100%\"><tr><th width=\"40%\">Nom</th><th width=\"30%\">Login</th><th width=\"30%\">Groupe</th></tr>";
+        var HTML_list = '<table width="100%"><tr><th width="30%">Nom</th><th width="20%">Login</th><th width="20%">Groupe</th><th width="10%">Cnx</th><th width="10%">Vote</th><th width="10%">Paris</th></tr>';
         for (var i = 0; i < (results.length - 1); i++) {
             var result = results[i].split(";");
             var IDuser = result[0];
             var login = result[1];
             var name = result[2];
-            var email = result[3];
             var IDgroup = result[4];
             var group_name = groups[IDgroup];
             if (!group_name) {
                 group_name = "";
             }
             var status = result[5];
+            var lastCnx = result[6];
+            var lastBet = result[7];
+
             HTML_list += "<tr id=\"user_" + IDuser + "\" onclick=\"getUser(" + IDuser + ");\">";
             if (status == 1) {
-                HTML_list += "<td><b>" + name + "</b></td><td>" + login + "</td><td>" + group_name + "</td>";
+                HTML_list += "<td><strong>" + name + "</strong></td>";
             }
             else {
-                HTML_list += "<td>" + name + "</td><td>" + login + "</td><td>" + group_name + "</td>";
+                HTML_list += "<td>" + name + "</td>";
             }
+            HTML_list += "<td>" + login + "</td><td>" + group_name + "</td>";
+            HTML_list += "<td>" + lastCnx + "</td><td>" + lastBet + "</td><td></td>";
             HTML_list += "</tr>";
         }
         HTML_list += "</table>";
@@ -215,7 +220,7 @@
         </div>
 
         <div class="tag_cloud">
-            <form name="add_user" action="/?act=add_user" method="post">
+            <form name="add_user" action="/?act=add_user" method="post" id="user_form">
                 <input type="hidden" id="idUser" value=""/>
                 <input type="hidden" id="realname" value=""/>
                 <table>
@@ -273,7 +278,7 @@
                     <th width="10%">Paris</th>
                 </tr>
                 <!-- BEGIN users -->
-                <tr id="user_{users.ID}" onclick="javascript:getUser({users.ID});">
+                <tr id="user_{users.ID}" onclick="getUser({users.ID})">
                     <!-- BEGIN user -->
                     <td>{users.user.NAME}</td>
                     <td>{users.user.LOGIN}</td>

@@ -131,7 +131,7 @@ class Users
         }
 
         // Main Query
-        $req = 'SELECT *';
+        $req = 'SELECT *, DATE_FORMAT(last_connection, \'%d/%m\') as last_connection, DATE_FORMAT(last_bet, \'%d/%m\') as last_bet';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
         if ($nb_args > 0)
             $req .= ' WHERE userID = ' . $userID . '';
@@ -151,7 +151,7 @@ class Users
             return $user;
         } else {
             foreach ($users as $user) {
-                echo $user['userID'] . ";" . $user['login'] . ";" . $user['name'] . ";" . $user['email'] . ";" . $user['groupID'] . ";" . $user['status'] . "|";
+                echo $user['userID'] . ";" . $user['login'] . ";" . $user['name'] . ";" . $user['email'] . ";" . $user['groupID'] . ";" . $user['status'] . ";" . $user['last_connection'] .  ";" . $user['last_bet'] . "|";
             }
             return $users;
         }
