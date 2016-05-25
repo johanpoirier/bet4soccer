@@ -27,8 +27,8 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC64107
 	&& apt-get install -y ca-certificates nginx gettext-base \
 	&& rm -rf /var/lib/apt/lists/*
 RUN rm /etc/nginx/conf.d/default.conf
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-COPY ./config/nginx.conf /etc/nginx/conf.d/bet4l1.conf
+COPY ./config/nginx.conf /etc/nginx/nginx.conf
+COPY ./config/bet4soccer.conf /etc/nginx/conf.d/bet4soccer.conf
 
 # Vim
 RUN apt-get update && apt-get install -y vim
