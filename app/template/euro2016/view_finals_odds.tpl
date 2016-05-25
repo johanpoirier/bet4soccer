@@ -20,7 +20,7 @@
                 <h1>Résultats & Cotes</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="view_odds">Poules</button>
+                <button class="headline-button phase" data-value="view_odds"><i class="icon-pools"></i>Poules</button>
             </div>
         </div>
 
