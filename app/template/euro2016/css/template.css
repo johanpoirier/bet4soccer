@@ -1115,6 +1115,34 @@ td.game-date {
     min-height: 7rem;
 }
 
+/*************** Next game ****************/
+.nextGame {
+    display: inline-block;
+    position: relative;
+}
+
+.nextGameLabel {
+    cursor: help;
+    font-weight: bold;
+}
+
+.nextGameCard {
+    display: none;
+}
+
+.nextGame:hover .nextGameCard:not(:hover) {
+    background-color: white;
+    box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.7);
+    display: block;
+    left: 27px;
+    min-width: 16rem;
+    padding: 8px;
+    position: absolute;
+    top: 24px;
+    white-space: nowrap;
+    z-index: 100;
+}
+
 /*************** bets *****************/
 .headline-button {
     background-color: white;

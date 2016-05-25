@@ -102,7 +102,7 @@ function updateStats() {
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			alert(textStatus);
 		}
-	}); 
+	});
 }
 
 function handleUpdateStatsResponse() {
@@ -126,6 +126,18 @@ function globalInit() {
 	$('.logo').click(function () {
 		window.location.assign('/');
 	});
+
+	$('.nextGame').on('mouseover', function () {
+		var el = $(this);
+		$.ajax({
+			type: 'GET',
+			url: '/',
+			data: 'act=view_match_stats&matchID=' + el.data('game-id'),
+			success: function(data) {
+				$('.nextGameCard').html(data);
+			}
+		});
+	});
 }
 
 function headlineButtonsInit() {
@@ -136,3 +148,4 @@ function headlineButtonsInit() {
 		window.location.assign('/?act=bets&match_display=' + $(el.target).data('value'));
 	});
 }
+

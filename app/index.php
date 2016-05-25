@@ -387,9 +387,9 @@ if (GET_HTTP_MATCH) {
     $bet->settings->set($_POST['setting'], $_POST['value']);
     redirect("/?act=" . $_POST['act']);
 } elseif (VIEW_MATCH_STATS) {
-    if ($debug)
+    if ($debug) {
         echo "VIEW_MATCH_STATS<br />";
-    $bet->load_header();
+    }
     $bet->load_match_stats($_GET['matchID']);
     $bet->display();
     exit();

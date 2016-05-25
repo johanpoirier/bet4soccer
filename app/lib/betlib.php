@@ -1815,6 +1815,7 @@ class BetEngine
         }
 
         $this->template->assign_vars(array(
+            'TPL_WEB_PATH' => $this->template_web_location,
             'ID' => $matchID,
             'NAME' => ($match['round'] > 0) ? $this->lang['LABEL_' . $match['round'] . '_FINAL'] : "Poule " . $match['teamPool'],
             'DATE' => $match['date_str'],

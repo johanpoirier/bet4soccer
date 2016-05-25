@@ -9,9 +9,10 @@
             <strong>{matches.ext_list.TEAM_NAME_A} - {matches.ext_list.TEAM_NAME_B}</strong>
             <!-- END ext_list -->
             <!-- BEGIN list -->
-            <a href="#" onclick="window.open('/?act=view_match_stats&matchID={matches.list.ID}','statistiques','menubar=no, status=no, scrollbars=no, menubar=no, location=no, width=555, height=555')">
-                <strong>{matches.list.TEAM_NAME_A} - {matches.list.TEAM_NAME_B}</strong>
-            </a>
+            <div class="nextGame" data-game-id="{matches.list.ID}">
+                <span class="nextGameLabel">{matches.list.TEAM_NAME_A} - {matches.list.TEAM_NAME_B}</span>
+                <div class="nextGameCard"></div>
+            </div>
             <!-- END list -->
             <!-- END matches -->
         </div>
