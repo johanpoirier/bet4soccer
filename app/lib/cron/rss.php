@@ -9,7 +9,7 @@ define('URL_PATH', '/');
 
 require( BASE_PATH . 'lib/engine.php');
 
-$simulation = true;
+$simulation = false;
 $engine = new Engine(false, false);
 
 define('MAGPIE_DIR', '../rss/');
