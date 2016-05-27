@@ -397,10 +397,7 @@ class Matches
     {
         // Main Query
         $req = 'SELECT *,';
-        $req .= ' tA.teamID as teamAid,';
-        $req .= ' tB.teamID as teamBid,';
-        $req .= ' tA.name as teamAname,';
-        $req .= ' tB.name as teamBname,';
+        $req .= ' tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname,';
         $req .= ' tA.pool as teamPool,';
         $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
         $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
@@ -408,14 +405,28 @@ class Matches
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
-        $req .= ' WHERE m.teamA = ' . $teamA . '';
-        $req .= ' AND m.teamB = ' . $teamB . '';
+        $req .= " WHERE m.teamA = $teamA AND m.teamB = $teamB";
 
-        $nb_teams = 0;
-        $matches = $this->parent->db->select_line($req, $nb_teams);
+        $nb_matches = 0;
+        $matches = $this->parent->db->select_line($req, $nb_matches);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($matches);
+        }
+
+        return $matches;
+    }
+
+    function get_by_team_names($teamAName, $teamBName) {
+        // Main Query
+        $req = "SELECT m.matchID, m.status, DATE_FORMAT(m.date,'%a %e %M à %Hh%i') as dateStr, t1.teamID AS teamAid, t1.name AS teamAname, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, t2.teamID AS teamBid, t2.name AS teamBname";
+        $req .= " FROM " . $this->parent->config['db_prefix'] . "matches m ";
+        $req .= " LEFT JOIN " . $this->parent->config['db_prefix'] . "teams AS t1 ON(m.teamA = t1.teamID)";
+        $req .= " LEFT JOIN " . $this->parent->config['db_prefix'] . "teams AS t2 ON(m.teamB = t2.teamID)";
+        $req .= " WHERE t1.rssName = '$teamAName' AND t2.rssName = '$teamBName'";
+
+        $nb_matches = 0;
+        $matches = $this->parent->db->select_line($req, $nb_matches);
 
         return $matches;
     }

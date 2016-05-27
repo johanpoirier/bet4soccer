@@ -56,3 +56,5 @@ $config['points_1_good_result'] = 20;
 $config['points_1_exact_score'] = 9;
 $config['points_1_qualify'] = 6;
 
+$config['rss_feed_url'] = 'http://www.matchendirect.fr/rss/foot-championnat-europeen-c25.xml';
+$config['rss_feed_title'] = 'EURO 2016';
