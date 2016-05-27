@@ -627,7 +627,7 @@ class Users
     function get_active_users_who_have_not_bet($nbDays, $nbGames)
     {
         $req = "SELECT * FROM " . $this->parent->config['db_prefix'] . 'users';
-        $req .= " WHERE userID NOT IN (";
+        $req .= " WHERE last_connection IS NOT NULL AND userID NOT IN (";
         $req .= "SELECT b.userID FROM " . $this->parent->config['db_prefix'] . "users u";
         $req .= " RIGHT JOIN " . $this->parent->config['db_prefix'] . "bets b ON(u.userID = b.userID)";
         $req .= " WHERE b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL and b.matchID IN (";
