@@ -1,23 +1,20 @@
 #!/usr/bin/php
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/lib/betlib.php';
+
 header("Content-Type: text/plain; charset=utf-8");
-
-define('BASE_PATH', dirname(__FILE__) . '/../../');
-define('WEB_PATH', '/');
-define('URL_PATH', '/');
-
-require(BASE_PATH . 'lib/betlib.php');
-require_once(BASE_PATH . '/lib/rss/SimplePie.php');
 
 $simulation = true;
 $bet = new BetEngine(false, false);
 
-$rss = new SimplePie($bet->config['rss_feed_url']);
+$feedIo = \FeedIo\Factory::create()->getFeedIo();
+$rss = $feedIo->read($bet->config['rss_feed_url']);
 $regexp = sprintf('/^$s : ([a-zA-Z\- ]*) - ([a-zA-Z\- ]*) \(score final : ([0-9])-([0-9])/', $bet->config['rss_feed_title']);
 
-foreach ($rss->get_items() as $item) {
-    $content = $item->get_title();
+foreach ($rss->getFeed() as $item) {
+    $content = $item->getTitle();
     if (preg_match($regexp, $content, $vars)) {
         $match = $bet->matches->get_by_team_names($vars[1], $vars[2]);
         if($match) {
