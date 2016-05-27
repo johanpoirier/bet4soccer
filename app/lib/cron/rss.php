@@ -1,12 +1,16 @@
 #!/usr/bin/php
 <?php
 
+define('BASE_PATH', __DIR__ . '/../../');
+define('WEB_PATH', '/');
+define('URL_PATH', '/');
+
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/lib/betlib.php';
+require_once __DIR__ . '/../betlib.php';
 
 header("Content-Type: text/plain; charset=utf-8");
 
-$simulation = true;
+$simulation = false;
 $bet = new BetEngine(false, false);
 
 $feedIo = \FeedIo\Factory::create()->getFeedIo();
