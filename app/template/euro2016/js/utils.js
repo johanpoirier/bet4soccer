@@ -145,7 +145,8 @@ function headlineButtonsInit() {
 		window.location.assign('/?act=' + $(el.target).data('value'));
 	});
 	$('button.headline-button.order').click(function (el) {
-		window.location.assign('/?act=bets&match_display=' + $(el.target).data('value'));
+		var btn = $(el.target);
+		window.location.assign('/?act=bets&match_display=' + btn.data('value') + '&user=' + btn.data('user'));
 	});
 }
 

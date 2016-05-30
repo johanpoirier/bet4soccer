@@ -50,10 +50,7 @@ class BetEngine
         $this->debug = $debug;
         $this->lang = $lang;
 
-        if ($this->config['DB'] == 'PgSQL')
-            $this->db = new PgSQL_DB();
-        else
-            $this->db = new MySQL_DB();
+        $this->db = new MySQL_DB();
         $this->db->set_debug($debug);
 
         $this->msg = "";
@@ -2266,8 +2263,12 @@ class BetEngine
         }
     }
 
-    function load_bets($edit = false, $userID = false)
+    function load_bets($options = [ 'edit' => false, 'userID' => null, 'orderByDate' => false ])
     {
+        $edit = isset($options['edit']) ? $options['edit'] : false;
+        $userID = isset($options['userID']) ? $options['userID'] : null;
+        $orderByDate = isset($options['orderByDate']) ? $options['orderByDate'] : false;
+
         if ($userID != false) {
             $user = $this->users->get($userID);
             $current_user = $user['name'];
@@ -2284,116 +2285,36 @@ class BetEngine
 
         $adminEdit = ($userID != $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
 
+        $template = sprintf('%s_bets%s.tpl', $edit ? 'edit' : 'view', $orderByDate ? '_date-ordered' : '');
+        $this->template->set_filenames([
+            'bets' => $template
+        ]);
 
-        if ($edit) {
-            $this->template->set_filenames(array(
-                'edit_bets' => 'edit_bets.tpl'
-            ));
-        } else {
-            $this->template->set_filenames(array(
-                'view_bets' => 'view_bets.tpl'
-            ));
-        }
-
-        $this->template->assign_vars(array(
-            'PAGE_TITLE' => $adminEdit ? "Pronostics de $current_user" : 'Ma phase de poules',
+        $this->template->assign_vars([
+            'PAGE_TITLE' => $adminEdit || !$edit ? "Pronostics de $current_user" : 'Ma phase de poules',
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
-        ));
+        ]);
+
+        if ($orderByDate) {
+            $this->load_bets_by_date($userID, $edit, $all_bets);
+        }
 
         $pools = $this->config['pools'];
-
         foreach ($pools as $pool) {
             $this->template->assign_block_vars('pools', array(
                 'POOL' => $pool
             ));
 
-            $bets = $this->bets->get_by_pool($pool, $userID);
             $teams = $this->teams->get_by_pool($pool);
+            $bets = $this->bets->get_by_pool($pool, $userID);
 
-            foreach ($bets as $k => $bet) {
-                if (!$edit && !$all_bets && $this->matches->is_open($bet['matchID'])) {
-                    $bets[$k]['scoreBetA'] = null;
-                    $bets[$k]['scoreBetB'] = null;
-                    $bet['scoreBetA'] = null;
-                    $bet['scoreBetB'] = null;
-                }
-                $match = $this->matches->get($bet['matchID']);
-                $result = $this->bets->get_points($bet);
-
-                $points = "0pt";
-                $color = "red";
-                $diff = $result['diff'];
-
-                if ($result['good_result'] || $result['qualify']) {
-                    $points = "+" . $result['points'] . "pt";
-                    $color = "green";
-                }
-
-                if ($result['exact_score']) {
-                    $points = "<b>+" . $result['points'] . "pts</b>";
-                    $color = "green";
-                }
-
-                if ((!isset($match['scoreA'])) || (!isset($match['scoreB'])) || ($match['scoreA'] == NULL) || ($match['scoreB'] == NULL)) {
-                    $points = "";
-                    $color = "";
-                    $diff = "";
-                }
-                $this->template->assign_block_vars('pools.bets', array(
-                    'ID' => $bet['matchID']
-                ));
-                if ($edit && ($this->matches->is_open($bet['matchID']) || ($this->users->is_admin($this->users->get_current_id()) && ($userID != $this->users->get_current_id())))) {
-                    $this->template->assign_block_vars('pools.bets.edit', array(
-                        'ID' => $bet['matchID'],
-                        'DATE' => $bet['date_str'],
-                        'TEAM_NAME_A' => $bet['teamAname'],
-                        'TEAM_NAME_B' => $bet['teamBname'],
-                        'TEAM_RANK_A' => $bet['teamAfifaRank'],
-                        'TEAM_RANK_B' => $bet['teamBfifaRank'],
-                        'SCORE_A' => (is_numeric($bet['scoreBetA'])) ? $bet['scoreBetA'] : "",
-                        'SCORE_B' => (is_numeric($bet['scoreBetB'])) ? $bet['scoreBetB'] : "",
-                        'RESULT_A' => (isset($match['scoreA']) && is_numeric($match['scoreA'])) ? $match['scoreA'] : "",
-                        'RESULT_B' => (isset($match['scoreB']) && is_numeric($match['scoreB'])) ? $match['scoreB'] : "",
-                        'POINTS' => $points,
-                        'COLOR' => $color,
-                        'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
-                        'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
-                        'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
-                        'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
-                        'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
-                        'POOL' => $bet['teamPool'],
-                        'DISABLED' => (!$this->users->is_admin($this->users->get_current_id()) && ($userID != $this->users->get_current_id())) ? "DISABLED" : ""
-                    ));
-                } else {
-                    $this->template->assign_block_vars('pools.bets.view', array(
-                        'ID' => $bet['matchID'],
-                        'DATE' => $bet['date_str'],
-                        'TEAM_NAME_A' => $bet['teamAname'],
-                        'TEAM_NAME_B' => $bet['teamBname'],
-                        'TEAM_RANK_A' => $bet['teamAfifaRank'],
-                        'TEAM_RANK_B' => $bet['teamBfifaRank'],
-                        'SCORE_A' => (is_numeric($bet['scoreBetA'])) ? $bet['scoreBetA'] : "",
-                        'SCORE_B' => (is_numeric($bet['scoreBetB'])) ? $bet['scoreBetB'] : "",
-                        'RESULT_A' => (isset($match['scoreA']) && is_numeric($match['scoreA'])) ? $match['scoreA'] : "",
-                        'RESULT_B' => (isset($match['scoreB']) && is_numeric($match['scoreB'])) ? $match['scoreB'] : "",
-                        'POINTS' => $points,
-                        'COLOR' => $color,
-                        'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
-                        'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
-                        'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
-                        'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
-                        'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
-                        'POOL' => $bet['teamPool'],
-                        'DISABLED' => "DISABLED",
-                        'USER_URL' => ($userID) ? "&user=" . $userID : ""
-                    ));
-                }
+            if (!$orderByDate) {
+                $this->load_bets_by_pool($userID, $bets, $edit, $all_bets);
             }
 
             $array_teams = $this->teams->get_ranking($teams, $bets, 'scoreBet');
-
             foreach ($array_teams as $team) {
                 $this->template->assign_block_vars('pools.teams', array(
                     'ID' => $team['teamID'],
@@ -2480,49 +2401,94 @@ class BetEngine
             }
         }
 
-        if ($edit) {
-            $this->blocks_loaded[] = 'edit_bets';
-        } else {
-            $this->blocks_loaded[] = 'view_bets';
+        $this->blocks_loaded[] = 'bets';
+    }
+
+    function load_bets_by_pool($userID, $bets, $edit = false, $all_bets = false)
+    {
+        foreach ($bets as $k => $bet) {
+            if (!$edit && !$all_bets && $this->matches->is_open($bet['matchID'])) {
+                $bets[$k]['scoreBetA'] = null;
+                $bets[$k]['scoreBetB'] = null;
+                $bet['scoreBetA'] = null;
+                $bet['scoreBetB'] = null;
+            }
+            $match = $this->matches->get($bet['matchID']);
+            $result = $this->bets->get_points($bet);
+
+            $points = "0pt";
+            $color = "red";
+            $diff = $result['diff'];
+
+            if ($result['good_result'] || $result['qualify']) {
+                $points = "+" . $result['points'] . "pt";
+                $color = "green";
+            }
+
+            if ($result['exact_score']) {
+                $points = "<b>+" . $result['points'] . "pts</b>";
+                $color = "green";
+            }
+
+            if ((!isset($match['scoreA'])) || (!isset($match['scoreB'])) || ($match['scoreA'] == NULL) || ($match['scoreB'] == NULL)) {
+                $points = "";
+                $color = "";
+                $diff = "";
+            }
+            $this->template->assign_block_vars('pools.bets', array(
+                'ID' => $bet['matchID']
+            ));
+            if ($edit && ($this->matches->is_open($bet['matchID']) || ($this->users->is_admin($this->users->get_current_id()) && ($userID != $this->users->get_current_id())))) {
+                $this->template->assign_block_vars('pools.bets.edit', array(
+                    'ID' => $bet['matchID'],
+                    'DATE' => $bet['date_str'],
+                    'TEAM_NAME_A' => $bet['teamAname'],
+                    'TEAM_NAME_B' => $bet['teamBname'],
+                    'TEAM_RANK_A' => $bet['teamAfifaRank'],
+                    'TEAM_RANK_B' => $bet['teamBfifaRank'],
+                    'SCORE_A' => (is_numeric($bet['scoreBetA'])) ? $bet['scoreBetA'] : "",
+                    'SCORE_B' => (is_numeric($bet['scoreBetB'])) ? $bet['scoreBetB'] : "",
+                    'RESULT_A' => (isset($match['scoreA']) && is_numeric($match['scoreA'])) ? $match['scoreA'] : "",
+                    'RESULT_B' => (isset($match['scoreB']) && is_numeric($match['scoreB'])) ? $match['scoreB'] : "",
+                    'POINTS' => $points,
+                    'COLOR' => $color,
+                    'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
+                    'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
+                    'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
+                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
+                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
+                    'POOL' => $bet['teamPool'],
+                    'DISABLED' => (!$this->users->is_admin($this->users->get_current_id()) && ($userID != $this->users->get_current_id())) ? "DISABLED" : ""
+                ));
+            } else {
+                $this->template->assign_block_vars('pools.bets.view', array(
+                    'ID' => $bet['matchID'],
+                    'DATE' => $bet['date_str'],
+                    'TEAM_NAME_A' => $bet['teamAname'],
+                    'TEAM_NAME_B' => $bet['teamBname'],
+                    'TEAM_RANK_A' => $bet['teamAfifaRank'],
+                    'TEAM_RANK_B' => $bet['teamBfifaRank'],
+                    'SCORE_A' => (is_numeric($bet['scoreBetA'])) ? $bet['scoreBetA'] : "",
+                    'SCORE_B' => (is_numeric($bet['scoreBetB'])) ? $bet['scoreBetB'] : "",
+                    'RESULT_A' => (isset($match['scoreA']) && is_numeric($match['scoreA'])) ? $match['scoreA'] : "",
+                    'RESULT_B' => (isset($match['scoreB']) && is_numeric($match['scoreB'])) ? $match['scoreB'] : "",
+                    'POINTS' => $points,
+                    'COLOR' => $color,
+                    'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
+                    'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
+                    'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
+                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
+                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
+                    'POOL' => $bet['teamPool'],
+                    'DISABLED' => "DISABLED",
+                    'USER_URL' => ($userID) ? "&user=" . $userID : ""
+                ));
+            }
         }
     }
 
-    function load_bets_date_ordered($edit = false, $userID = false)
+    function load_bets_by_date($userID, $edit = false, $all_bets = false)
     {
-        if ($userID != false) {
-            $user = $this->users->get($userID);
-            $current_user = $user['name'];
-            $all_bets = false;
-        } else {
-            $userID = $this->users->get_current_id();
-            $current_user = $_SESSION['user_name'];
-            $all_bets = true;
-        }
-
-        if (($userID != $this->users->get_current_id()) && !$this->users->is_admin($this->users->get_current_id())) {
-            $edit = false;
-        }
-
-        $adminEdit = ($userID != $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
-
-
-        if ($edit) {
-            $this->template->set_filenames(array(
-                'edit_bets' => 'edit_bets_date-ordered.tpl'
-            ));
-        } else {
-            $this->template->set_filenames(array(
-                'view_bets' => 'view_bets.tpl'
-            ));
-        }
-
-        $this->template->assign_vars(array(
-            'PAGE_TITLE' => $adminEdit ? "Pronostics de $current_user" : 'Ma phase de poules',
-            'CURRENT_USER_ID' => $userID,
-            'USER_URL' => ($userID) ? "&user=" . $userID : "",
-            'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
-        ));
-
         $bets = $this->bets->get_by_user($userID, 'pool');
         foreach ($bets as $k => $bet) {
             if (!$edit && !$all_bets && $this->matches->is_open($bet['matchID'])) {
@@ -2603,108 +2569,6 @@ class BetEngine
                 ));
             }
         }
-
-        $pools = $this->config['pools'];
-        foreach ($pools as $pool) {
-
-            $this->template->assign_block_vars('pools', array(
-                'POOL' => $pool
-            ));
-
-            $teams = $this->teams->get_by_pool($pool);
-            $bets = $this->bets->get_by_pool($pool, $userID);
-            $array_teams = $this->teams->get_ranking($teams, $bets, 'scoreBet');
-
-            foreach ($array_teams as $team) {
-                $this->template->assign_block_vars('pools.teams', array(
-                    'ID' => $team['teamID'],
-                    'NAME' => $team['name'],
-                    'NAME_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($team['name'])) : rawurlencode($team['name']),
-                    'POINTS' => $team['points'],
-                    'DIFF' => (($team['diff'] > 0) ? "+" : "") . $team['diff']
-                ));
-            }
-        }
-
-        // Stats
-        $types = array(1 => "Evolution au classement", 2 => "Nb de points par jour");
-        $userStats = $this->stats->get_user_stats($userID);
-        foreach ($types as $id => $type) {
-            if ($id == 1) {
-                $xSerie = "[";
-                $data = "[";
-                $nbJournee = 1;
-                foreach ($userStats as $stat) {
-                    $data .= " [ $nbJournee, " . $stat['rank'] . "], ";
-                    $xSerie .= " [ $nbJournee, ''], ";
-                    $nbJournee++;
-                }
-                $data .= " ]";
-                $xSerie .= " ]";
-
-                $this->template->assign_block_vars('stats', array(
-                    'TYPE' => $type,
-                    'ID' => $id,
-                    'DATA' => '[ ' . $data . ' ]',
-                    'XSERIE' => $xSerie,
-                    'YMIN' => 1,
-                    'YMAX' => $this->users->count_active(),
-                    'YTICKS' => "[ 1, 50, 100, 150, 200, 250, " . $this->users->count_active() . " ]",
-                    'INVERSE' => 'transform: function (v) { return -v; }, inverseTransform: function (v) { return -v; },',
-                    'COLOR' => '#5166ED'
-                ));
-            } else if ($id == 2) {
-                $xSerie = "[";
-                $data = "[";
-                $nbJournee = 1;
-                $last_stat = null;
-                $maxPts = 0;
-                foreach ($userStats as $stat) {
-                    if ($last_stat == null) {
-                        $points = $stat['points'];
-                    } else {
-                        $points = ($stat['points'] - $last_stat['points']);
-                    }
-
-                    $data .= " [ $nbJournee, $points ], ";
-                    $xSerie .= " [ $nbJournee, ''], ";
-
-                    if ($points > $maxPts) {
-                        $maxPts = $points;
-                    }
-
-                    $nbJournee++;
-                    $last_stat = $stat;
-                }
-                $data .= " ]";
-                $xSerie .= " ]";
-
-                if ($maxPts < 20) {
-                    $maxPts = 20;
-                }
-                $ticks = [];
-                $inc = round($maxPts / 5);
-                for ($i = 0; $i < 6; $i++) {
-                    $ticks[$i] = $i * $inc;
-                }
-
-                $this->template->assign_block_vars('stats', array(
-                    'TYPE' => $type,
-                    'ID' => $id,
-                    'DATA' => '[ ' . $data . ' ]',
-                    'XSERIE' => $xSerie,
-                    'YMIN' => 0,
-                    'YMAX' => $maxPts + 1,
-                    'YTICKS' => '[' . implode(',', $ticks) . ']',
-                    'COLOR' => '#50BA50'
-                ));
-            }
-        }
-
-        if ($edit)
-            $this->blocks_loaded[] = 'edit_bets';
-        else
-            $this->blocks_loaded[] = 'view_bets';
     }
 
     function load_user_stats($userID = false)

@@ -460,9 +460,9 @@ if (EDIT_RESULTS) {
         $match_display = $_GET['match_display'];
     }
     if ($match_display == 'pool') {
-        $bet->load_bets(true, $userID);
+        $bet->load_bets([ 'edit' => true, 'userID' => $userID ]);
     } else if ($match_display == 'date') {
-        $bet->load_bets_date_ordered(true, $userID);
+        $bet->load_bets([ 'edit' => true, 'userID' => $userID, 'orderByDate' => true ]);
     }
 } elseif (EDIT_FINALS_BETS) {
     $userID = false;
@@ -477,7 +477,7 @@ if (EDIT_RESULTS) {
     if ($debug) {
         echo "VIEW_BETS_OF_USER<br />";
     }
-    $bet->load_bets(false, $_GET['user']);
+    $bet->load_bets([ 'edit' => false, 'userID' => $_GET['user'] ]);
 } elseif (VIEW_FINALS_BETS_OF_USER) {
     if ($debug)
         echo "VIEW_FINALS_BETS_OF_USER<br />";

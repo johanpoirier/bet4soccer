@@ -61,11 +61,11 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Ma phase de poules</h1>
+                <h1>{PAGE_TITLE}</h1>
             </div>
 			<div class="headline-menu">
                 <button class="headline-button phase" data-value="finals_bets"><i class="icon-final"></i>Phase finale</button>
-                <button class="headline-button order" data-value="date"><i class="icon-sort-number-up"></i> Trier par date</button>
+                <button class="headline-button order" data-value="date" data-user="{CURRENT_USER_ID}"><i class="icon-sort-number-up"></i> Trier par date</button>
             </div>
         </div>
 
