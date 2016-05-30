@@ -10,13 +10,14 @@ require_once __DIR__ . '/../betlib.php';
 
 header("Content-Type: text/plain; charset=utf-8");
 
-$simulation = false;
 $bet = new BetEngine(false, false);
+$simulation = $bet->config['rss_feed_simulate'];
 
 $feedIo = \FeedIo\Factory::create()->getFeedIo();
 $rss = $feedIo->read($bet->config['rss_feed_url']);
 $regexp = sprintf('/^%s : ([\w \']*) - ([\w \']*) \(score final ([\d]*)-([\d]*)\)/u', $bet->config['rss_feed_title']);
 
+echo '[' . date('Y-m-d H:i:s') . '] fetching ' . $bet->config['rss_feed_url'] . "\n";
 foreach ($rss->getFeed() as $item) {
     $content = $item->getTitle();
     if (preg_match($regexp, $content, $vars)) {
