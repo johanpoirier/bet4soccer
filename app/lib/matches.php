@@ -569,7 +569,8 @@ class Matches
         if ($date_str) {
             $date_array = explode(":", $date_str);
             $time_match = mktime($date_array[0], $date_array[1] - 15, $date_array[2], $date_array[3], $date_array[4], $date_array[5]);
-            $time_now = time();
+            // FIXME: ugly hack for UTC issue
+            $time_now = time() + (2*60*60);
             return ($time_now < $time_match);
         } else
             return false;
