@@ -191,6 +191,7 @@ section#mainarea {
         -ms-flex-positive: 3;
             flex-grow: 3;
     padding: 0;
+    width: 100%;
 }
 
 aside {
