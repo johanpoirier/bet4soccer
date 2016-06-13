@@ -15,9 +15,15 @@ class Tags
     {
         if (!$userID) {
             $userID = $this->parent->users->get_current_id();
-        } elseif ($userID != $this->parent->users->get_current_id()) {
+        }
+        
+        if ($userID != $this->parent->users->get_current_id()) {
             return false;
         }
+        if ($this->parent->users->is_in_group($groupID) === false) {
+            return false;
+        }
+
         prepare_numeric_data(array(&$groupID, &$userID));
         prepare_alphanumeric_data(array(&$text));
         $text = htmlspecialchars(trim($text));

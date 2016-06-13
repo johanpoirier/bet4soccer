@@ -1143,7 +1143,11 @@ class BetEngine
         ));
 
         $start = $start ? $start : 0;
-        $tags = $this->tags->get_by_group($groupID, $start, 10);
+
+        $tags = [];
+        if (($groupID && $this->users->is_in_group($groupID) > 0) || ($groupID === 0)) {
+            $tags = $this->tags->get_by_group($groupID, $start, 10);
+        }
 
         $nb_tags = $this->tags->count_by_group($groupID);
         $max = ceil($nb_tags / 10);
