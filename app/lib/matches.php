@@ -561,19 +561,18 @@ class Matches
     function is_open($matchID)
     {
         // Main Query
-        $req = 'SELECT DATE_FORMAT(date,\'%H:%i:%s:%m:%d:%Y\') as date_str';
+        $req = 'SELECT DATE_FORMAT(date,\'%Y-%m-%d\T%H:%i:%s\') as date';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         $req .= ' WHERE m.matchID = ' . $matchID . '';
 
-        $date_str = $this->parent->db->select_one($req);
-        if ($date_str) {
-            $date_array = explode(":", $date_str);
-            $time_match = mktime($date_array[0], $date_array[1] - 15, $date_array[2], $date_array[3], $date_array[4], $date_array[5]);
-            // FIXME: ugly hack for UTC issue
-            $time_now = time() + (2*60*60);
-            return ($time_now < $time_match);
-        } else
-            return false;
+        $date = $this->parent->db->select_one($req);
+        if ($date) {
+            $matchDate = new DateTime($date, new DateTimeZone('Europe/Paris'));
+            $limit = isset($this->parent->config['bets_open_limit_minutes']) ? intval($this->parent->config['bets_open_limit_minutes']) : 15;
+            return (time() + ($limit * 60)) < intval($matchDate->format('U'));
+        }
+
+        return false;
     }
 
     function get_pool($matchID)

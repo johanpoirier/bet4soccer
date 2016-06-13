@@ -32,6 +32,7 @@ $config['match_display_default'] = 'date';
 $config['display_empty_group'] = false;
 $config['display_unactive_group'] = true;
 $config['money_group_name'] = 'Cagnotte';
+$config['bets_open_limit_minutes'] = 15;
 
 $config['pools'] = array('A', 'B', 'C', 'D', 'E', 'F');
 
