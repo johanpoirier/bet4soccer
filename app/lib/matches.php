@@ -423,7 +423,7 @@ class Matches
         $req .= " FROM " . $this->parent->config['db_prefix'] . "matches m ";
         $req .= " LEFT JOIN " . $this->parent->config['db_prefix'] . "teams AS t1 ON(m.teamA = t1.teamID)";
         $req .= " LEFT JOIN " . $this->parent->config['db_prefix'] . "teams AS t2 ON(m.teamB = t2.teamID)";
-        $req .= " WHERE t1.rssName = '$teamAName' AND t2.rssName = '$teamBName'";
+        $req .= " WHERE t1.name = '$teamAName' AND t2.name = '$teamBName'";
 
         $nb_matches = 0;
         $matches = $this->parent->db->select_line($req, $nb_matches);
