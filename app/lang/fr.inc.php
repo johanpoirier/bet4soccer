@@ -31,6 +31,9 @@ $lang['day_week'] = array (
 $lang['LABEL_TEAMS_RANKING'] = "Par groupe";
 $lang['LABEL_LOGIN'] = "Utilisateur";
 
+$lang['LABEL_FORGOTTEN_PASSWORD'] = "Renseignez votre nom d'utilisateur.";
+$lang['LABEL_FORGOTTEN_LOGIN'] = "Renseignez l'adresse email utilisée lors de votre inscription.";
+
 $lang['LABEL_POOL'] = "Poules";
 $lang['LABEL_8_FINAL'] = "<small style=\"font-size:0.8em\"><sup>1</sup></small>/<small style=\"line-height:1.5em;font-size:80%;\"><sub>8</sub></small> de finale";
 $lang['LABEL_4_FINAL'] = "<small style=\"font-size:0.8em\"><sup>1</sup></small>/<small style=\"line-height:1.5em;font-size:80%;\"><sub>4</sub></small> de finale";

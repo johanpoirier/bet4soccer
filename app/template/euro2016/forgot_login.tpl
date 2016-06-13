@@ -9,9 +9,10 @@
 		<div class="ppp">
 			<h2>Votre login vous sera envoyé par courriel :</h2>
 
-			<form method="post" action="/?act=forgot_login"><br>
+			<form method="post" action="/?act=forgot_login">
+				<br />
 				<div class="formfield">
-					<b>Saisissez l'adresse email utilisée lors de votre inscription.</b>
+					<strong>{LABEL_FORGOTTEN_LOGIN}</strong>
 				</div>
 				<input type="text" name="email" value="" class="textinput" maxlength="100" />
 

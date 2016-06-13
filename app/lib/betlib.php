@@ -449,34 +449,23 @@ class BetEngine
 
     function load_forgot_password()
     {
-        $this->template->set_filenames(array(
-            'forgot_password' => 'forgot_password.tpl'
-        ));
+        $this->template->set_filenames([ 'forgot_password' => 'forgot_password.tpl' ]);
 
-        $this->template->assign_vars(array(
-            'LABEL_LOGIN' => $this->lang['LABEL_LOGIN']
-        ));
+        $this->template->assign_vars([ 'LABEL_FORGOTTEN_PASSWORD' => $this->lang['LABEL_FORGOTTEN_PASSWORD'] ]);
         $this->blocks_loaded[] = 'forgot_password';
     }
 
     function load_forgot_login()
     {
-        $this->template->set_filenames(array(
-            'forgot_login' => 'forgot_login.tpl'
-        ));
+        $this->template->set_filenames([ 'forgot_login' => 'forgot_login.tpl' ]);
 
-        $this->template->assign_vars(array(
-            'TPL_WEB_PATH' => $this->template_web_location
-        ));
-
+        $this->template->assign_vars([ 'LABEL_FORGOTTEN_LOGIN' => $this->lang['LABEL_FORGOTTEN_LOGIN'] ]);
         $this->blocks_loaded[] = 'forgot_login';
     }
 
     function load_change_account($warning = "")
     {
-        $this->template->set_filenames(array(
-            'change_account' => 'change_account.tpl'
-        ));
+        $this->template->set_filenames([ 'change_account' => 'change_account.tpl' ]);
 
         $user = $this->users->get_current();
 
