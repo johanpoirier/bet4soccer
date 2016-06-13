@@ -27,7 +27,8 @@ class Bets {
             return false;
         
         $this->parent->users->update_last_bet($_SESSION['userID']);
-        
+        $match = $this->parent->matches->get($matchID);
+
         if ($score == "")
             $score = 'NULL';
         if ($final) {
@@ -47,10 +48,10 @@ class Bets {
                 $req .= ' VALUES (' . $userID . ',' . $matchID . ',' . $score . ',' . $final_teamID . ',\'' . $final_teamW . '\');';
                 $this->parent->db->insert($req);
             }
-            $match = $this->parent->matches->get($matchID);
             $bet = $this->get_by_match($matchID);
             $round = $match['round'];
             $rank = $match['rank'];
+
             /* Set the winner on next round */
             if ($round != 1 && $round != 99) {
                 $next_match = $this->parent->matches->get_final(ceil($round / 2), ceil($rank / 2));
@@ -64,6 +65,7 @@ class Bets {
                     $this->add_next_final_team($userID, $next_matchID, $next_team, $next_teamID);
                 }
             }
+
             /* Third place match */
             if ($round == 99) {
                 $next_match = $this->parent->matches->get_final(3, 1);
@@ -78,13 +80,18 @@ class Bets {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
                 $req .= ' SET score' . $team . ' = ' . $score . '';
                 $req .= ' WHERE userID = ' . $userID . ' AND matchID = ' . $matchID . ';';
-                $ret = $this->parent->db->exec_query($req);
+                $this->parent->db->exec_query($req);
             } else {
                 $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,score' . $team . ')';
                 $req .= ' VALUES (' . $userID . ',' . $matchID . ',' . $score . ');';
-                $ret = $this->parent->db->insert($req);
+                $this->parent->db->insert($req);
             }
         }
+
+        # Audit log
+        $bet = $this->get_by_id($userID, $matchID);
+        $this->parent->audit->add(sprintf('a pronostiqué %s-%s pour le match %s : %s - %s (début : %s)', $bet['scoreA'], $bet['scoreB'], $matchID, $match['teamAname'], $match['teamBname'], $match['date_str']));
+
         return true;
     }
 
@@ -292,6 +299,21 @@ class Bets {
         return $this->get_bets_by_user($userID);
     }
 
+    function get_by_id($userID, $matchID) {
+        // Main Query
+        $req = 'SELECT *, DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'bets';
+        $req .= " WHERE userID = $userID AND matchID = $matchID";
+
+        $nb_bets = 0;
+        $bet = $this->parent->db->select_line($req, $nb_bets);
+
+        if ($this->parent->debug)
+            array_show($bet);
+
+        return $bet;
+    }
+
     function get_odds_by_match($matchID, $teamA = NULL, $teamB = NULL) {
         prepare_numeric_data(array(&$matchID));
         prepare_alphanumeric_data(array(&$teamA, &$teamB));
@@ -354,7 +376,8 @@ class Bets {
         $req .= ' AND b.userID = ' . $userID . '';
         $req .= ' ORDER BY date, teamAname;';
 
-        $bet = $this->parent->db->select_line($req, $null);
+        $nb_bets = 0;
+        $bet = $this->parent->db->select_line($req, $nb_bets);
 
         if ($this->parent->debug)
             array_show($bet);
@@ -364,10 +387,12 @@ class Bets {
 
     function get_by_match_and_group($matchID, $groupID) {
         prepare_numeric_data(array(&$matchID, &$groupID));
-        if (!$groupID)
+        if (!$groupID) {
             return false;
-        if (!$matchID)
+        }
+        if (!$matchID) {
             return false;
+        }
 
         // Main Query
         $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool,';
@@ -381,10 +406,11 @@ class Bets {
         $req .= ' AND u.groupID = ' . $groupID . '';
         $req .= ' ORDER BY date, teamAname;';
 
+        $nb_bets = 0;
         $bets = $this->parent->db->select_array($req, $nb_bets);
 
         if ($this->parent->debug)
-            array_show($bet);
+            array_show($bets);
 
         return $bets;
     }
@@ -408,9 +434,10 @@ class Bets {
         }
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
-        $req .= ' WHERE m.matchID = ' . $matchID . '';
+        $req .= " WHERE m.matchID = $matchID";
         $req .= ' ORDER BY date, teamAname';
 
+        $nb_bets = 0;
         $bets = $this->parent->db->select_array($req, $nb_bets);
 
         if ($this->parent->debug)
@@ -431,6 +458,8 @@ class Bets {
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         $req .= ' WHERE m.matchID = ' . $matchID . '';
         $req .= ' ORDER BY date, teamAname';
+
+        $nb_bets = 0;
         $bets = $this->parent->db->select_array($req, $nb_bets);
         if ($this->parent->debug)
             array_show($bets);
@@ -481,6 +510,7 @@ class Bets {
             $req .= ' WHERE round IS NOT NULL';
         $req .= ' ORDER BY date, teamAname;';
 
+        $nb_teams = 0;
         $bets = $this->parent->db->select_array($req, $nb_teams);
 
         if ($this->parent->debug)

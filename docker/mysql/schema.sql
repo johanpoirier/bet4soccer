@@ -8,6 +8,19 @@ SET time_zone = "+02:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `euro2016__audit`
+--
+
+CREATE TABLE `euro2016__audit` (
+  `id` int(12) UNSIGNED NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `userID` int(9) UNSIGNED NOT NULL,
+  `action` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `euro2016__bets`
 --
 
@@ -145,6 +158,16 @@ CREATE TABLE `euro2016__teams` (
   `status` int(2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Contenu de la table `euro2016__teams`
+--
+
+INSERT INTO `euro2016__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) VALUES
+  (1, 'France', '17', 'A', 1),
+  (2, 'Roumanie', '24', 'A', 1),
+  (3, 'Angleterre', '8', 'B', 1),
+  (4, 'Russie', '32', 'B', 1);
+
 
 --
 -- Structure de la table `euro2016__users`
@@ -182,6 +205,14 @@ INSERT INTO `euro2016__users` (`userID`, `name`, `login`, `password`, `email`, `
 --
 -- Index pour les tables exportées
 --
+
+--
+-- Index pour la table `euro2016__audit`
+--
+ALTER TABLE `euro2016__audit`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_date` (`date`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Index pour la table `euro2016__bets`
@@ -254,6 +285,11 @@ ADD KEY `login` (`login`);
 -- AUTO_INCREMENT pour les tables exportées
 --
 
+--
+-- AUTO_INCREMENT pour la table `euro2016__audit`
+--
+ALTER TABLE `euro2016__audit`
+  MODIFY `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `euro2016__groups`
 --

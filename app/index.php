@@ -86,8 +86,9 @@ define('CREATE_GROUP', (isset($_GET['act']) && ($_GET['act']) == "create_group")
 define('INVITE_FRIENDS', (isset($_GET['act']) && ($_GET['act']) == "invite_friends"));
 define('MONEY', (isset($_GET['act']) && ($_GET['act']) == "money"));
 
-define('ADMIN', (isset($_GET['act']) && ($_GET['act']) == "admin") && ($bet->isadmin()));
-define('RESET', (isset($_GET['act']) && ($_GET['act']) == "reset") && ($bet->isadmin()));
+define('VIEW_AUDIT', isset($_GET['act']) && ($_GET['act'] == "audit") && $bet->isadmin());
+define('ADMIN', isset($_GET['act']) && ($_GET['act'] == "admin") && $bet->isadmin());
+define('RESET', isset($_GET['act']) && ($_GET['act'] == "reset") && $bet->isadmin());
 
 define('CODE', (isset($_GET['c']) && !isset($_GET['act'])));
 
@@ -657,6 +658,11 @@ if (EDIT_RESULTS) {
     $bet->load_admin();
     $bet->display();
     exit();
+} elseif (VIEW_AUDIT) {
+    if ($debug) {
+        echo "VIEW_AUDIT<br />";
+    }
+    $bet->load_audit_logs($bet->audit->get_between(0, 100));
 } else {
     if ($debug) {
         echo "VIEW_USERS_RANKING<br />";

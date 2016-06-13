@@ -13,6 +13,7 @@ include_once(BASE_PATH . 'lib/tags.php');
 include_once(BASE_PATH . 'lib/users.php');
 include_once(BASE_PATH . 'lib/bets.php');
 include_once(BASE_PATH . 'lib/groups.php');
+include_once(BASE_PATH . 'lib/audit.php');
 include_once(BASE_PATH . 'lib/db.mysql.php');
 
 class BetEngine
@@ -36,6 +37,7 @@ class BetEngine
     var $users;
     var $bets;
     var $groups;
+    var $audit;
 
     public function __construct($admin = false, $debug = false)
     {
@@ -44,7 +46,6 @@ class BetEngine
         global $debug;
         global $db;
 
-        $time = time();
         $this->start_time = get_moment();
         $this->config = $config;
         $this->debug = $debug;
@@ -73,6 +74,7 @@ class BetEngine
         $this->users = new Users($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->bets = new Bets($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->groups = new Groups($this, $this->db, $this->config, $this->lang, $this->debug);
+        $this->audit = new Audit($this, $this->db, $this->config, $this->lang, $this->debug);
     }
 
     function islogin()
@@ -562,6 +564,24 @@ class BetEngine
         }
 
         $this->blocks_loaded[] = 'users';
+    }
+
+    /*     * **************** */
+
+
+    function load_audit_logs($logs)
+    {
+        $this->template->set_filenames([ 'audit' => 'audit.tpl' ]);
+echo json_encode($logs);
+        foreach ($logs as $log) {
+            $this->template->assign_block_vars('logs', [
+                'DATE' => $log['date'],
+                'USER' => $log['name'],
+                'ACTION' => $log['action']
+            ]);
+        }
+
+        $this->blocks_loaded[] = 'audit';
     }
 
     /*     * **************** */
