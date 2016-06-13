@@ -572,7 +572,7 @@ class BetEngine
     function load_audit_logs($logs)
     {
         $this->template->set_filenames([ 'audit' => 'audit.tpl' ]);
-echo json_encode($logs);
+
         foreach ($logs as $log) {
             $this->template->assign_block_vars('logs', [
                 'DATE' => $log['date'],
