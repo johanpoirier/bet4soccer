@@ -20,7 +20,6 @@ class Audit
         $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'audit (`userID`, `action`)';
         $req .= " VALUES ($userID, '$action')";
 
-        echo $req;
         return $this->parent->db->insert($req);
     }
 

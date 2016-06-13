@@ -301,10 +301,10 @@ class Bets {
 
     function get_by_id($userID, $matchID) {
         // Main Query
-        $req = 'SELECT *, DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
+        $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'bets';
         $req .= " WHERE userID = $userID AND matchID = $matchID";
-
+        
         $nb_bets = 0;
         $bet = $this->parent->db->select_line($req, $nb_bets);
 

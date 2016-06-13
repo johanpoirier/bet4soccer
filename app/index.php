@@ -662,7 +662,7 @@ if (EDIT_RESULTS) {
     if ($debug) {
         echo "VIEW_AUDIT<br />";
     }
-    $bet->load_audit_logs($bet->audit->get_between(0, 100));
+    $bet->load_audit_logs($bet->audit->get_between(0, 500));
 } else {
     if ($debug) {
         echo "VIEW_USERS_RANKING<br />";

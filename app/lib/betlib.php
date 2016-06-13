@@ -576,7 +576,8 @@ class BetEngine
         foreach ($logs as $log) {
             $this->template->assign_block_vars('logs', [
                 'DATE' => $log['date'],
-                'USER' => $log['name'],
+                'USER_ID' => $log['userID'],
+                'USER_NAME' => $log['name'],
                 'ACTION' => $log['action']
             ]);
         }
