@@ -8,10 +8,10 @@
                 <input type="hidden" name="code" value="{CODE}"/>
 
                 <div class="formfield"><strong>{LABEL_LOGIN}</strong></div>
-                <input type="text" name="login" value="" maxlength="100" autofocus required/>
+                <input type="text" name="login" value="" autofocus required/>
 
                 <div class="formfield"><strong>Mot de passe</strong></div>
-                <input type="password" name="pass" maxlength="20" required />
+                <input type="password" name="pass" required />
 
                 <span class="error">{WARNING}</span>
 
