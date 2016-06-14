@@ -5,6 +5,7 @@
     "vendor-dir": "app/lib/vendor"
   },
   "require": {
-    "debril/feed-io": "*"
+    "debril/feed-io": "*",
+    "ircmaxell/random-lib": "^1.1"
   }
 }

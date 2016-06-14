@@ -1,7 +1,6 @@
 <?php
 
 error_reporting(E_ALL);
-//session_save_path($_SERVER['DOCUMENT_ROOT']."/../sessions");
 session_start();
 
 header("Content-Type: text/html; charset=utf-8");
@@ -12,6 +11,9 @@ require('lib/betlib.php');
 $debug = false;
 $bet = new BetEngine(false, $debug);
 $w = "";
+
+// keep me logged in
+$bet->remember_me();
 
 define('EDIT_USERS', (($bet->isadmin()) && isset($_GET['act']) && ($_GET['act']) == "edit_users"));
 define('ADD_USER', (($bet->isadmin()) && isset($_GET['act']) && ($_GET['act']) == "add_user"));
@@ -217,6 +219,7 @@ if (LOGOUT) {
     if ($debug)
         echo "LOGOUT<br />";
     session_destroy();
+    setcookie('rememberme', '', time() - 7200);
     redirect("/");
 } elseif (ADD_TEAM) {
     if ($debug)

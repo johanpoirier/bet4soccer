@@ -3,11 +3,11 @@
 function redirect($url)
 {
 	if(substr($url,0,1) == "/") {
-		Header("Location: http://".$_SERVER['HTTP_HOST'].$url);
-	} elseif(substr($url,0,7) == "http://") {
+		Header("Location: https://".$_SERVER['HTTP_HOST'].$url);
+	} elseif(substr($url,0,7) == "https://") {
 		Header("Location: ".$url);
 	} else {
-		Header("Location: http://".$_SERVER['HTTP_HOST'].final_slash(dirname($_SERVER['PHP_SELF'])).$url);
+		Header("Location: https://".$_SERVER['HTTP_HOST'].final_slash(dirname($_SERVER['PHP_SELF'])).$url);
 	}
 	exit();
 }
