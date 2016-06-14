@@ -24,7 +24,7 @@
 	<meta name="msapplication-TileImage" content="/icon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 	<script type="text/javascript" src="{TPL_WEB_PATH}js/jquery-2.2.3.min.js"> </script>
-	<script type="text/javascript" src="{TPL_WEB_PATH}js/utils.js?v=3005251353"> </script>
+	<script type="text/javascript" src="{TPL_WEB_PATH}js/utils.js?v=1606141629"> </script>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
