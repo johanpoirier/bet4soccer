@@ -13,8 +13,8 @@ $bet = new BetEngine(false, $debug);
 $w = "";
 
 // keep me logged in
-if ($bet->islogin()) {
-    $bet->remember_me($_SERVER['HTTP_USER_AGENT']);
+if (!$bet->islogin()) {
+    $bet->remember_me();
 }
 
 define('EDIT_USERS', (($bet->isadmin()) && isset($_GET['act']) && ($_GET['act']) == "edit_users"));
