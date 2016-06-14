@@ -2638,7 +2638,7 @@ class BetEngine
             $this->template->pparse($block);
     }
 
-    function login($login, $pass, $keep)
+    function login($login, $pass, $keep, $deviceUuid)
     {
         $ret = $this->users->is_authentificate($login, $pass, $user);
         if ($ret > 0) {
@@ -2647,12 +2647,13 @@ class BetEngine
             // store identification
             if ($keep === true) {
                 $token = $this->generate_random_token();
-                $this->tokens->add($user['userID'], $token);
+                $this->tokens->add($user['userID'], $deviceUuid, $token);
                 $cookie = $user['userID'] . ':' . $token;
 
                 $mac = hash_hmac('sha256', $cookie, $this->config['secret_key']);
                 $cookie .= ':' . $mac;
 
+                setcookie('device', $deviceUuid, time() + 60 * 60 * 24 * 365, null, null, true, true);
                 setcookie('rememberme', $cookie, time() + 60 * 60 * 24 * 365, null, null, true, true);
             }
 
@@ -2685,13 +2686,16 @@ class BetEngine
 
     function remember_me() {
         $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : '';
+        $deviceUuid = isset($_COOKIE['device']) ? $_COOKIE['device'] : '';
         if ($cookie) {
             list ($userID, $token, $mac) = explode(':', $cookie);
             if (!hash_equals(hash_hmac('sha256', $userID . ':' . $token, $this->config['secret_key']), $mac)) {
                 return false;
             }
-            $userToken = $this->tokens->get_by_user($userID);
-            if (hash_equals($userToken, $token)) {
+
+            $userToken = $this->tokens->get_by_user_and_device($userID, $deviceUuid);
+
+            if ($userToken && hash_equals($userToken, $token)) {
                 $user = $this->users->get($userID);
                 $this->log_user_in($user);
                 return true;

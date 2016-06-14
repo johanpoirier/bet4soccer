@@ -13,25 +13,32 @@ class Tokens
 
     /*******************/
 
-    function add($userID, $token)
+    function add($userID, $deviceUuid, $token)
     {
-        $req = 'REPLACE INTO ' . $this->config['db_prefix'] . 'tokens (`userID`, `token`)';
-        $req .= " VALUES ($userID,'$token')";
+        $req = 'REPLACE INTO ' . $this->config['db_prefix'] . 'tokens (`userID`, `device`, `token`)';
+        $req .= " VALUES ($userID, '$deviceUuid', '$token')";
 
         return $this->db->insert($req);
     }
 
     /*******************/
 
+    function get_by_user_and_device($userID, $deviceUuid)
+    {
+        $req = 'SELECT token FROM ' . $this->config['db_prefix'] . 'tokens';
+        $req .= " WHERE  userID = $userID and device = '$deviceUuid'";
+
+        return $this->db->select_one($req);
+    }
+
     function get_by_user($userID)
     {
         $req = 'SELECT token FROM ' . $this->config['db_prefix'] . 'tokens';
         $req .= " WHERE  userID = $userID";
 
-        return $this->db->select_one($req);
+        $nb_tokens = 0;
+        return $this->db->select_array($req, $nb_tokens);
     }
-
-    /*******************/
 
     function get()
     {

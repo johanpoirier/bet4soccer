@@ -5,5 +5,10 @@
                 | <a href="mailto:{CONTACT_EMAIL}">Contact</a>
             </footer>
         </main>
+        <script type="text/javascript">
+            $(window.document).ready(function () {
+                globalInit(true);
+            });
+        </script>
     </body>
 </html>

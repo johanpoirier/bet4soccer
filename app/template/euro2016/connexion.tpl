@@ -6,6 +6,7 @@
                 <input type="hidden" name="login" value="1" />
                 <input type="hidden" name="redirect" value="" />
                 <input type="hidden" name="code" value="{CODE}"/>
+                <input type="hidden" name="uuid" value=""/>
 
                 <div class="formfield"><strong>{LABEL_LOGIN}</strong></div>
                 <input type="text" name="login" value="" autofocus required/>
@@ -30,3 +31,10 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form.login').submit(function () {
+            $("input[name='uuid']").val(getUuid());
+        });
+    });
+</script>

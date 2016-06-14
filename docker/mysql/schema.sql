@@ -175,6 +175,7 @@ INSERT INTO `euro2016__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) V
 
 CREATE TABLE `euro2016__tokens` (
   `userID` int(9) UNSIGNED NOT NULL,
+  `device` VARCHAR(36) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `token` VARCHAR(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -284,10 +285,10 @@ ALTER TABLE `euro2016__teams`
   ADD PRIMARY KEY (`teamID`);
 
 --
--- Index pour la table `euro2016__groups`
+-- Index pour la table `euro2016__tokens`
 --
 ALTER TABLE `euro2016__tokens`
-  ADD PRIMARY KEY (`userID`);
+  ADD PRIMARY KEY (`userID`,`device`);
 
 --
 -- Index pour la table `euro2016__users`

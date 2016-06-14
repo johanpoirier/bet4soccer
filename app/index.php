@@ -13,7 +13,9 @@ $bet = new BetEngine(false, $debug);
 $w = "";
 
 // keep me logged in
-$bet->remember_me();
+if ($bet->islogin()) {
+    $bet->remember_me($_SERVER['HTTP_USER_AGENT']);
+}
 
 define('EDIT_USERS', (($bet->isadmin()) && isset($_GET['act']) && ($_GET['act']) == "edit_users"));
 define('ADD_USER', (($bet->isadmin()) && isset($_GET['act']) && ($_GET['act']) == "add_user"));
@@ -205,7 +207,7 @@ if (LOGIN) {
     if ($debug) {
         echo "LOGIN<br />";
     }
-    $ret = $bet->login($_POST['login'], $_POST['pass'], isset($_POST['keep']));
+    $ret = $bet->login($_POST['login'], $_POST['pass'], isset($_POST['keep']), $_POST['uuid']);
     $code = (isset($_POST['code']) && ($_POST['code'] != "")) ? "?c=" . $_POST['code'] : "";
     $and_code = (isset($_POST['code']) && ($_POST['code'] != "")) ? "&s=" . $_POST['code'] : "";
     if ($ret > 0) {
@@ -219,6 +221,7 @@ if (LOGOUT) {
     if ($debug)
         echo "LOGOUT<br />";
     session_destroy();
+    setcookie('device', '', time() - 7200);
     setcookie('rememberme', '', time() - 7200);
     redirect("/");
 } elseif (ADD_TEAM) {

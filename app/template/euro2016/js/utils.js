@@ -122,22 +122,31 @@ function showTooltip(x, y, contents) {
 	}).appendTo("body").fadeIn(200);
 }
 
-function globalInit() {
+function globalInit(isPublic) {
 	$('.logo').click(function () {
 		window.location.assign('/');
 	});
 
-	$('.nextGame').on('mouseover', function () {
-		var el = $(this);
-		$.ajax({
-			type: 'GET',
-			url: '/',
-			data: 'act=view_match_stats&matchID=' + el.data('game-id'),
-			success: function(data) {
-				$('.nextGameCard').html(data);
-			}
+	if (window.localStorage) {
+		var uuid = getUuid();
+		if (uuid === null) {
+			window.localStorage.setItem('uuid', generateUuid());
+		}
+	}
+
+	if (isPublic !== true) {
+		$('.nextGame').on('mouseover', function () {
+			var el = $(this);
+			$.ajax({
+				type: 'GET',
+				url: '/',
+				data: 'act=view_match_stats&matchID=' + el.data('game-id'),
+				success: function(data) {
+					$('.nextGameCard').html(data);
+				}
+			});
 		});
-	});
+	}
 }
 
 function headlineButtonsInit() {
@@ -150,3 +159,16 @@ function headlineButtonsInit() {
 	});
 }
 
+function generateUuid() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+		return v.toString(16);
+	});
+}
+
+function getUuid() {
+	if (window.localStorage) {
+		return window.localStorage.getItem('uuid');
+	}
+	return null;
+}
