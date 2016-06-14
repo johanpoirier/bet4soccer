@@ -205,7 +205,7 @@ if (LOGIN) {
     if ($debug) {
         echo "LOGIN<br />";
     }
-    $ret = $bet->login($_POST['login'], $_POST['pass']);
+    $ret = $bet->login($_POST['login'], $_POST['pass'], isset($_POST['keep']));
     $code = (isset($_POST['code']) && ($_POST['code'] != "")) ? "?c=" . $_POST['code'] : "";
     $and_code = (isset($_POST['code']) && ($_POST['code'] != "")) ? "&s=" . $_POST['code'] : "";
     if ($ret > 0) {

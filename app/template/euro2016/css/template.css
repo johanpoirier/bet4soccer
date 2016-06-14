@@ -497,6 +497,10 @@ select {
     color: #5c51b5;
 }
 
+.login-keep {
+    margin-top: 1rem;
+}
+
 /**************** Register ***************/
 .register form {
     align-items: center;

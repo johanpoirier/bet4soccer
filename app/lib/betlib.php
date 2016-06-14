@@ -2638,22 +2638,23 @@ class BetEngine
             $this->template->pparse($block);
     }
 
-    function login($login, $pass)
+    function login($login, $pass, $keep)
     {
         $ret = $this->users->is_authentificate($login, $pass, $user);
         if ($ret > 0) {
             $this->log_user_in($user);
 
             // store identification
-            $token = $this->generate_random_token();
-            $this->tokens->add($user['userID'], $token);
-            $cookie = $user['userID'] . ':' . $token;
+            if ($keep === true) {
+                $token = $this->generate_random_token();
+                $this->tokens->add($user['userID'], $token);
+                $cookie = $user['userID'] . ':' . $token;
 
-            $mac = hash_hmac('sha256', $cookie, $this->config['secret_key']);
-            $cookie .= ':' . $mac;
+                $mac = hash_hmac('sha256', $cookie, $this->config['secret_key']);
+                $cookie .= ':' . $mac;
 
-            setcookie('rememberme', '', time() - 3600);
-            setcookie('rememberme', $cookie, time() + 60*60*24*365, null, null, true, true);
+                setcookie('rememberme', $cookie, time() + 60 * 60 * 24 * 365, null, null, true, true);
+            }
 
             return true;
         } else
