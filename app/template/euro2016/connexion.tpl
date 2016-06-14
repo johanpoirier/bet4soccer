@@ -13,6 +13,11 @@
                 <div class="formfield"><strong>Mot de passe</strong></div>
                 <input type="password" name="pass" required />
 
+                <div class="login-keep">
+                    <input type="checkbox" name="keep" value="true" id="input-keep" />
+                    <label for="input-keep">rester connecté</label>
+                </div>
+
                 <span class="error">{WARNING}</span>
 
                 <input type="submit" value="Connexion" />

@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/vendor/autoload.php');
+
 include_once(BASE_PATH . 'lib/define.inc.php');
 include_once(BASE_PATH . 'lib/config.inc.php');
 include_once(BASE_PATH . 'lang/' . $config['lang'] . '.inc.php');
@@ -14,6 +16,7 @@ include_once(BASE_PATH . 'lib/users.php');
 include_once(BASE_PATH . 'lib/bets.php');
 include_once(BASE_PATH . 'lib/groups.php');
 include_once(BASE_PATH . 'lib/audit.php');
+include_once(BASE_PATH . 'lib/tokens.php');
 include_once(BASE_PATH . 'lib/db.mysql.php');
 
 class BetEngine
@@ -38,6 +41,7 @@ class BetEngine
     var $bets;
     var $groups;
     var $audit;
+    var $tokens;
 
     public function __construct($admin = false, $debug = false)
     {
@@ -75,16 +79,17 @@ class BetEngine
         $this->bets = new Bets($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->groups = new Groups($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->audit = new Audit($this, $this->db, $this->config, $this->lang, $this->debug);
+        $this->tokens = new Tokens($this->db, $this->config);
     }
 
     function islogin()
     {
-        return (isset($_SESSION['userID']));
+        return isset($_SESSION['userID']);
     }
 
     function isadmin()
     {
-        return (isset($_SESSION['status']) && $_SESSION['status'] == 1);
+        return isset($_SESSION['status']) && (intval($_SESSION['status']) === 1);
     }
 
     /*     * **************** */
@@ -2633,25 +2638,66 @@ class BetEngine
             $this->template->pparse($block);
     }
 
-    function login($login, $pass)
+    function login($login, $pass, $keep)
     {
         $ret = $this->users->is_authentificate($login, $pass, $user);
         if ($ret > 0) {
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['login'] = $user['login'];
-            $_SESSION['userID'] = $user['userID'];
-            $_SESSION['group_id'] = $user['groupID'];
-            $_SESSION['group_id2'] = $user['groupID2'];
-            $_SESSION['group_id3'] = $user['groupID3'];
-            $_SESSION['group_name'] = $this->groups->get_name_by_user($user['userID']);
-            $_SESSION['group_name2'] = $this->groups->get_name_by_user($user['userID'], 2);
-            $_SESSION['group_name3'] = $this->groups->get_name_by_user($user['userID'], 3);
-            $_SESSION['status'] = $user['status'];
-            $_SESSION['theme'] = $user['theme'];
-            $_SESSION['match_display'] = $user['match_display'];
+            $this->log_user_in($user);
+
+            // store identification
+            if ($keep === true) {
+                $token = $this->generate_random_token();
+                $this->tokens->add($user['userID'], $token);
+                $cookie = $user['userID'] . ':' . $token;
+
+                $mac = hash_hmac('sha256', $cookie, $this->config['secret_key']);
+                $cookie .= ':' . $mac;
+
+                setcookie('rememberme', $cookie, time() + 60 * 60 * 24 * 365, null, null, true, true);
+            }
+
             return true;
         } else
             return $ret;
+    }
+
+    function log_user_in($user)
+    {
+        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['login'] = $user['login'];
+        $_SESSION['userID'] = $user['userID'];
+        $_SESSION['group_id'] = $user['groupID'];
+        $_SESSION['group_id2'] = $user['groupID2'];
+        $_SESSION['group_id3'] = $user['groupID3'];
+        $_SESSION['group_name'] = $this->groups->get_name_by_user($user['userID']);
+        $_SESSION['group_name2'] = $this->groups->get_name_by_user($user['userID'], 2);
+        $_SESSION['group_name3'] = $this->groups->get_name_by_user($user['userID'], 3);
+        $_SESSION['status'] = $user['status'];
+        $_SESSION['theme'] = $user['theme'];
+        $_SESSION['match_display'] = $user['match_display'];
+    }
+
+    function generate_random_token() {
+        $factory = new RandomLib\Factory;
+        $generator = $factory->getMediumStrengthGenerator();
+        return $generator->generateString(128);
+    }
+
+    function remember_me() {
+        $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : '';
+        if ($cookie) {
+            list ($userID, $token, $mac) = explode(':', $cookie);
+            if (!hash_equals(hash_hmac('sha256', $userID . ':' . $token, $this->config['secret_key']), $mac)) {
+                return false;
+            }
+            $userToken = $this->tokens->get_by_user($userID);
+            if (hash_equals($userToken, $token)) {
+                $user = $this->users->get($userID);
+                $this->log_user_in($user);
+                return true;
+            }
+        }
+        return false;
     }
 
     function update_session()

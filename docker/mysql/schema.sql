@@ -170,6 +170,16 @@ INSERT INTO `euro2016__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) V
 
 
 --
+-- Structure de la table `euro2016__tokens`
+--
+
+CREATE TABLE `euro2016__tokens` (
+  `userID` int(9) UNSIGNED NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `token` VARCHAR(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Structure de la table `euro2016__users`
 --
 
@@ -235,50 +245,56 @@ ADD KEY `ownerID` (`ownerID`);
 -- Index pour la table `euro2016__invitations`
 --
 ALTER TABLE `euro2016__invitations`
-ADD PRIMARY KEY (`code`),
-ADD KEY `groupID` (`groupID`);
+  ADD PRIMARY KEY (`code`),
+  ADD KEY `groupID` (`groupID`);
 
 --
 -- Index pour la table `euro2016__matches`
 --
 ALTER TABLE `euro2016__matches`
-ADD PRIMARY KEY (`matchID`),
-ADD UNIQUE KEY `round` (`round`,`rank`),
-ADD KEY `teamA` (`teamA`),
-ADD KEY `teamB` (`teamB`);
+  ADD PRIMARY KEY (`matchID`),
+  ADD UNIQUE KEY `round` (`round`,`rank`),
+  ADD KEY `teamA` (`teamA`),
+  ADD KEY `teamB` (`teamB`);
 
 --
 -- Index pour la table `euro2016__settings`
 --
 ALTER TABLE `euro2016__settings`
-ADD PRIMARY KEY (`name`);
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Index pour la table `euro2016__stats_user`
 --
 ALTER TABLE `euro2016__stats_user`
-ADD KEY `userID` (`userID`);
+  ADD KEY `userID` (`userID`);
 
 --
 -- Index pour la table `euro2016__tags`
 --
 ALTER TABLE `euro2016__tags`
-ADD PRIMARY KEY (`tagID`),
-ADD KEY `userID` (`userID`),
-ADD KEY `groupID` (`groupID`);
+  ADD PRIMARY KEY (`tagID`),
+  ADD KEY `userID` (`userID`),
+  ADD KEY `groupID` (`groupID`);
 
 --
 -- Index pour la table `euro2016__teams`
 --
 ALTER TABLE `euro2016__teams`
-ADD PRIMARY KEY (`teamID`);
+  ADD PRIMARY KEY (`teamID`);
+
+--
+-- Index pour la table `euro2016__groups`
+--
+ALTER TABLE `euro2016__tokens`
+  ADD PRIMARY KEY (`userID`);
 
 --
 -- Index pour la table `euro2016__users`
 --
 ALTER TABLE `euro2016__users`
-ADD PRIMARY KEY (`userID`),
-ADD KEY `login` (`login`);
+  ADD PRIMARY KEY (`userID`),
+  ADD KEY `login` (`login`);
 
 
 --
@@ -361,3 +377,9 @@ ADD CONSTRAINT `euro2016__stats_user_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `
 ALTER TABLE `euro2016__tags`
 ADD CONSTRAINT `euro2016__tags_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `euro2016__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `euro2016__tags_ibfk_2` FOREIGN KEY (`groupID`) REFERENCES `euro2016__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `euro2016__tokens`
+--
+ALTER TABLE `euro2016__tokens`
+  ADD CONSTRAINT `euro2016__tokens_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `euro2016__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
