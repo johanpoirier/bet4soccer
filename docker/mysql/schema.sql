@@ -191,6 +191,7 @@ CREATE TABLE `euro2016__users` (
 ALTER TABLE `euro2016__audit`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_date` (`date`),
+  ADD KEY `idx_category` (`category`),
   ADD KEY `userID` (`userID`);
 
 --
