@@ -578,11 +578,25 @@ class BetEngine
     {
         $this->template->set_filenames([ 'audit' => 'audit.tpl' ]);
 
+        $users = $this->users->get();
+        foreach ($users as $user) {
+            $this->template->assign_block_vars('users', [
+                'ID' => $user['userID'],
+                'NAME' => $user['name']
+            ]);
+        }
+
+        $categories = $this->audit->get_categories();
+        foreach ($categories as $category) {
+            $this->template->assign_block_vars('categories', [ 'CATEGORY' => $category ]);
+        }
+        
         foreach ($logs as $log) {
             $this->template->assign_block_vars('logs', [
                 'DATE' => $log['date'],
                 'USER_ID' => $log['userID'],
                 'USER_NAME' => $log['name'],
+                'CATEGORY' => $log['category'],
                 'ACTION' => $log['action']
             ]);
         }

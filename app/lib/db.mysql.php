@@ -104,7 +104,7 @@ class MySQL_DB
             $nbCols = $statement->rowCount();
             for ($i = 0; $i < $nbCols; $i++) {
                 $tmpResultSet = $statement->fetch();
-                $resultSet[$i] = $tmpResultSet[0];
+                $resultSet[$i] = array_shift($tmpResultSet);
             }
         }
         return $resultSet;
@@ -124,46 +124,6 @@ class MySQL_DB
         }
 
         return $resultSet;
-    }
-
-    // Renvoie une ligne (i.e. un enregistrement), ne renvoie que le 1er si plusieurs
-    function select_line_o($req, &$NbLig)
-    {
-        $ret_id = $this->exec_query($req);
-        if ($this->test_error($ret_id)) return $ret_id;
-        else {
-            $NbLig = mysql_num_rows($ret_id);
-            $resultset = $NbLig ? mysql_fetch_object($ret_id) : "";
-        }
-        return $resultset;
-    }
-
-    // Renvoie resultset complet
-    function select_col_o($req, &$NbCol)
-    {
-        $ret_id = $this->exec_query($req);
-        if ($this->test_error($ret_id)) return $ret_id;
-        else {
-            $NbCol = mysql_num_rows($ret_id);
-            for ($i = 0; $i < $NbCol; $i++) {
-                $tmp_resultset = mysql_fetch_object($ret_id);
-                $resultset[$i] = $tmp_resultset[0];
-            }
-        }
-        return $resultset;
-    }
-
-    // Renvoie resultset complet
-    function select_array_o($req, &$NbLig)
-    {
-        $ret_id = $this->exec_query($req);
-        $resultset = array();
-        if ($this->test_error($ret_id)) return $ret_id;
-        else {
-            $NbLig = mysql_num_rows($ret_id);
-            for ($i = 0; $i < $NbLig; $i++) $resultset[$i] = mysql_fetch_object($ret_id);
-        }
-        return $resultset;
     }
 
     // Fonction req sans retour

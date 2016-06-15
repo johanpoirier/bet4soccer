@@ -172,3 +172,9 @@ function getUuid() {
 	}
 	return null;
 }
+
+function getUrlArgValue(argName) {
+	var regexp = new RegExp(argName + '=(\\w*)');
+	var value = regexp.exec(window.location.search);
+	return value && value.length > 1 ? value[1]: null;
+}

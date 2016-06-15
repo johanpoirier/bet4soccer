@@ -668,7 +668,12 @@ if (EDIT_RESULTS) {
     if ($debug) {
         echo "VIEW_AUDIT<br />";
     }
-    $bet->load_audit_logs($bet->audit->get_between(0, 500));
+    if (isset($_GET['user']) || $_GET['category']) {
+        $logs = $bet->audit->get_by_user_and_category($_GET['user'], $_GET['category']);
+    } else {
+        $logs = $bet->audit->get_between(0, 500);
+    }
+    $bet->load_audit_logs($logs);
 } else {
     if ($debug) {
         echo "VIEW_USERS_RANKING<br />";

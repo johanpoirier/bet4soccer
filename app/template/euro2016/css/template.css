@@ -1164,6 +1164,14 @@ td.game-date {
     text-align: center;
 }
 
+
+/*************** audit logs *****************/
+.audit-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
 /************* media queries ******************/
 @media (min-width: 1200px) {
     body {

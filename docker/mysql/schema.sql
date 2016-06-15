@@ -15,6 +15,7 @@ CREATE TABLE `euro2016__audit` (
   `id` int(12) UNSIGNED NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `userID` int(9) UNSIGNED NOT NULL,
+  `category` varchar(9) DEFAULT NULL,
   `action` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -99,21 +100,6 @@ CREATE TABLE `euro2016__settings` (
   `status` int(2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Contenu de la table `euro2016__settings`
---
-
-INSERT INTO `euro2016__settings` (`name`, `value`, `date`, `status`) VALUES
-  ('IS_GROUP_RANKING_GENERATING', '', NULL, 0),
-  ('IS_RANKING_GENERATING', '', '0000-00-00 00:00:00', 0),
-  ('IS_USER_RANKING_GENERATING', '', NULL, 0),
-  ('LAST_GENERATE', NULL, '2014-07-13 23:36:35', 0),
-  ('LAST_RESULT', NULL, '2014-06-27 11:43:55', 0),
-  ('MONEY', '2', NULL, 0),
-  ('NB_MATCHES_GENERATED', '0', NULL, 0),
-  ('RANK_GROUPS_UPDATE', NULL, '2014-07-13 23:36:35', 0),
-  ('RANK_UPDATE', NULL, '2014-07-13 23:36:34', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -159,17 +145,6 @@ CREATE TABLE `euro2016__teams` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Contenu de la table `euro2016__teams`
---
-
-INSERT INTO `euro2016__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) VALUES
-  (1, 'France', '17', 'A', 1),
-  (2, 'Roumanie', '24', 'A', 1),
-  (3, 'Angleterre', '8', 'B', 1),
-  (4, 'Russie', '32', 'B', 1);
-
-
---
 -- Structure de la table `euro2016__tokens`
 --
 
@@ -204,13 +179,6 @@ CREATE TABLE `euro2016__users` (
   `last_connection` timestamp NULL DEFAULT NULL,
   `last_bet` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Contenu de la table `euro2016__users`
---
-
-INSERT INTO `euro2016__users` (`userID`, `name`, `login`, `password`, `email`, `status`) VALUES
-  (1, 'John Foo', 'admin', 'f71dbe52628a3f83a77ab494817525c6', 'admin@bet4soccer.fr', 1);
 
 
 --
@@ -384,3 +352,35 @@ ADD CONSTRAINT `euro2016__tags_ibfk_2` FOREIGN KEY (`groupID`) REFERENCES `euro2
 --
 ALTER TABLE `euro2016__tokens`
   ADD CONSTRAINT `euro2016__tokens_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `euro2016__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+--
+-- Contenu pour les tables exportées
+--
+
+INSERT INTO `euro2016__settings` (`name`, `value`, `date`, `status`) VALUES
+  ('IS_GROUP_RANKING_GENERATING', '', NULL, 0),
+  ('IS_RANKING_GENERATING', '', '0000-00-00 00:00:00', 0),
+  ('IS_USER_RANKING_GENERATING', '', NULL, 0),
+  ('LAST_GENERATE', NULL, '2014-07-13 23:36:35', 0),
+  ('LAST_RESULT', NULL, '2014-06-27 11:43:55', 0),
+  ('MONEY', '2', NULL, 0),
+  ('NB_MATCHES_GENERATED', '0', NULL, 0),
+  ('RANK_GROUPS_UPDATE', NULL, '2014-07-13 23:36:35', 0),
+  ('RANK_UPDATE', NULL, '2014-07-13 23:36:34', 0);
+
+INSERT INTO `euro2016__users` (`userID`, `name`, `login`, `password`, `email`, `status`) VALUES
+  (1, 'John Foo', 'admin', 'f71dbe52628a3f83a77ab494817525c6', 'admin@bet4soccer.fr', 1);
+
+INSERT INTO `euro2016__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) VALUES
+  (1, 'France', '17', 'A', 1),
+  (2, 'Roumanie', '24', 'A', 1),
+  (3, 'Angleterre', '8', 'B', 1),
+  (4, 'Russie', '32', 'B', 1);
+
+INSERT INTO `euro2016__matches` (`matchID`, `teamA`, `teamB`, `scoreA`, `scoreB`, `date`) VALUES
+  (1, 1, 2, 2, 1, '2016-06-11 21:00:00'),
+  (2, 3, 4, NULL, NULL, '2020-07-12 18:00:00');
+
+INSERT INTO `euro2016__bets` (`userID`, `matchID`, `scoreA`, `scoreB`) VALUES (1, 1, 2, 1);
