@@ -4,21 +4,33 @@ include_once(BASE_PATH . 'lib/date_iterator.php');
 
 class Stats
 {
-    var $parent;
+    var $db;
+    var $config;
+    var $lang;
+    var $users;
+    var $groups;
+    var $matches;
+    var $bets;
 
-    public function __construct(&$parent)
+    public function __construct(&$db, &$config, &$lang, &$users, &$groups, &$matches, &$bets)
     {
-        $this->parent = $parent;
+        $this->db = $db;
+        $this->config = $config;
+        $this->lang = $lang;
+        $this->users = $users;
+        $this->groups = $groups;
+        $this->matches = $matches;
+        $this->bets = $bets;
     }
 
     function get_user_stats($userID)
     {
         // Main Query
-        $req = 'SELECT *, label FROM ' . $this->parent->config['db_prefix'] . 'stats_user';
+        $req = 'SELECT *, label FROM ' . $this->config['db_prefix'] . 'stats_user';
         $req .= " WHERE userID = $userID";
 
         $nb_stats = 0;
-        $stats = $this->parent->db->select_array($req, $nb_stats);
+        $stats = $this->db->select_array($req, $nb_stats);
 
         return $stats;
     }
@@ -28,11 +40,11 @@ class Stats
         $_userStats = $this->get_user_stats($userID);
         $userStats = array();
         foreach ($_userStats as $_userStat) $userStats[$_userStat['label']] = $_userStat;
-        $nb_users = $this->parent->users->count_active();
-        $nb_groups = $this->parent->groups->count();
+        $nb_users = $this->users->count_active();
+        $nb_groups = $this->groups->count();
 
-        $firstMatch = $this->parent->matches->get_first();
-        $lastMatch = $this->parent->matches->get_last();
+        $firstMatch = $this->matches->get_first();
+        $lastMatch = $this->matches->get_last();
         $dateIterator = new DateIterator('day', $firstMatch['date'], $lastMatch['date']);
 
         $stats = array();
@@ -40,7 +52,7 @@ class Stats
             $dateTime = new DateTime($date);
             $date_key = $dateTime->format('m/d');
             $date_array = explode('/', $date_key);
-            $new_date = $date_array[1] . " " . $this->parent->lang['months'][$date_array[0] - 1];
+            $new_date = $date_array[1] . " " . $this->lang['months'][$date_array[0] - 1];
             if ($type == 1) $stats[$new_date] = (isset($userStats[$date_key])) ? $userStats[$date_key]['rank'] : $nb_users;
             elseif ($type == 2) $stats[$new_date] = (isset($userStats[$date_key])) ? $userStats[$date_key]['points'] : 0;
             else if ($type == 4) $stats[$new_date] = (isset($userStats[$date_key])) ? $userStats[$date_key]['rank_group'] : $nb_groups;
@@ -51,9 +63,9 @@ class Stats
     function get_user_stat_max_of($data)
     {
         // Main Query
-        $req = "SELECT MAX($data) FROM " . $this->parent->config['db_prefix'] . "stats_user";
+        $req = "SELECT MAX($data) FROM " . $this->config['db_prefix'] . "stats_user";
 
-        $max = $this->parent->db->select_one($req);
+        $max = $this->db->select_one($req);
 
         return $max;
     }
@@ -61,20 +73,20 @@ class Stats
     function generate_user_stats()
     {
         // empty the table
-        $this->parent->db->exec_query("DELETE FROM " . $this->parent->config['db_prefix'] . "stats_user");
+        $this->db->exec_query("DELETE FROM " . $this->config['db_prefix'] . "stats_user");
 
         // period of time
         $dateTimeFormat = 'Y-m-d';
-        $firstMatchPlayed = $this->parent->matches->get_first_played();
-        $lastMatchPlayed = $this->parent->matches->get_last_played();
+        $firstMatchPlayed = $this->matches->get_first_played();
+        $lastMatchPlayed = $this->matches->get_last_played();
         $yesterday = date($dateTimeFormat, $lastMatchPlayed['time'] - 86400);
         $dateIterator = new DateIterator('day', $firstMatchPlayed['date'], $lastMatchPlayed['date']);
 
         // ranking snapshot for each day
         $globalUsersRanking = array();
         $nbMatchesPlayed = 0;
-        $reqBase = "INSERT INTO " . $this->parent->config['db_prefix'] . "stats_user VALUES";
-        $reqGroupBase = "UPDATE " . $this->parent->config['db_prefix'] . "stats_user SET";
+        $reqBase = "INSERT INTO " . $this->config['db_prefix'] . "stats_user VALUES";
+        $reqGroupBase = "UPDATE " . $this->config['db_prefix'] . "stats_user SET";
         foreach ($dateIterator as $day => $date) {
             $dateTime = new DateTime($date);
 
@@ -83,13 +95,13 @@ class Stats
             $rank = $j = 1;
             $last_user = (isset($globalUsersRanking[0])) ? $globalUsersRanking[0] : false;
             foreach ($globalUsersRanking as $user) {
-                if ((($user['nbbets'] / $nbMatchesPlayed) < $this->parent->config['min_ratio_played_matches_for_rank']) && (!$user['lastmatch'])) {
+                if ((($user['nbbets'] / $nbMatchesPlayed) < $this->config['min_ratio_played_matches_for_rank']) && (!$user['lastmatch'])) {
                     $user['points'] = 0;
                 }
                 if (compare_users($user, $last_user) != 0) $rank = $j;
                 $req = $reqBase . " (" . $user['userID'] . ", '" . $dateTime->format('m/d') . "', $rank, 0, " . $user['points'] . ", " . $user['nbresults'] . ", " . $user['nbscores'] . ")";
-                $this->parent->db->insert($req);
-                if ($date == $yesterday) $this->parent->users->set_last_rank($user['userID'], $rank);
+                $this->db->insert($req);
+                if ($date == $yesterday) $this->users->set_last_rank($user['userID'], $rank);
                 $last_user = $user;
                 $j++;
             }
@@ -99,7 +111,7 @@ class Stats
             $last_group = (isset($globalGroupsRanking[0])) ? $globalGroupsRanking[0] : false;
             foreach ($globalGroupsRanking as $group) {
                 if (compare_groups($group, $last_group) != 0) $rank = $j;
-                if ($date == $yesterday) $this->parent->groups->set_last_rank($group['groupID'], $rank);
+                if ($date == $yesterday) $this->groups->set_last_rank($group['groupID'], $rank);
                 $last_group = $group;
                 $j++;
             }
@@ -111,18 +123,18 @@ class Stats
     {
         if (!$day) $day = now();
 
-        $matches = $this->parent->matches->get_played_until_day($day);
+        $matches = $this->matches->get_played_until_day($day);
         $nbMatchesPlayed = count($matches);
-        $last_played = $this->parent->matches->get_last_played_until_day($day);
+        $last_played = $this->matches->get_last_played_until_day($day);
         $users = array();
 
         // Points pr les matchs
         foreach ($matches as $match) {
-            $bets = $this->parent->bets->get_by_match($match['matchID']);
+            $bets = $this->bets->get_by_match($match['matchID']);
 
             foreach ($bets as $bet) {
                 if (!isset($users[$bet['userID']])) {
-                    $user = $this->parent->users->get($bet['userID']);
+                    $user = $this->users->get($bet['userID']);
                     $users[$bet['userID']] = array();
                     $users[$bet['userID']]['userID'] = $bet['userID'];
                     $users[$bet['userID']]['points'] = 0;
@@ -140,7 +152,7 @@ class Stats
                 }
 
                 if (($bet['scoreBetA'] != NULL) && ($bet['scoreBetB'] != NULL) && ($match['scoreA'] != NULL) && ($match['scoreB'] != NULL)) {
-                    $resBet = $this->parent->bets->get_points($bet);
+                    $resBet = $this->bets->get_points($bet);
                     if ($last_played['matchID'] == $match['matchID']) $users[$bet['userID']]['lastmatch'] = true;
                     $users[$bet['userID']]['nbbets']++;
                     $users[$bet['userID']]['points'] += $resBet['points'];
@@ -160,7 +172,7 @@ class Stats
 
         foreach ($users as $user) {
             $uID = $user['userID'];
-            if (($this->parent->bets->count_played_by_user($uID) / $nbMatchesPlayed) <= $this->parent->config['min_ratio_played_matches_for_group']) continue;
+            if (($this->bets->count_played_by_user($uID) / $nbMatchesPlayed) <= $this->config['min_ratio_played_matches_for_group']) continue;
             for ($i = 1; $i <= 3; $i++) {
                 if ($i == 1) $gID = $user['groupID'];
                 else $gID = $user['groupID' . $i];

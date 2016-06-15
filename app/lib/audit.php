@@ -2,33 +2,34 @@
 
 class Audit
 {
-    var $parent;
+    var $db;
+    var $config;
 
-    public function __construct(&$parent)
+    public function __construct(&$db, &$config)
     {
-        $this->parent = $parent;
+        $this->db = $db;
+        $this->config = $config;
     }
 
     /*******************/
 
-    function add($action)
+    function add($userID, $action)
     {
-        $userID = $this->parent->users->get_current_id();
         prepare_alphanumeric_data(array(&$action));
         $action = htmlspecialchars(trim($action));
 
-        $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'audit (`userID`, `action`)';
+        $req = 'INSERT INTO ' . $this->config['db_prefix'] . 'audit (`userID`, `action`)';
         $req .= " VALUES ($userID, '$action')";
 
-        return $this->parent->db->insert($req);
+        return $this->db->insert($req);
     }
 
     function delete($id)
     {
-        $req = 'DELETE FROM ' . $this->parent->config['db_prefix'] . 'audit';
+        $req = 'DELETE FROM ' . $this->config['db_prefix'] . 'audit';
         $req .= " WHERE id = $id";
 
-        return $this->parent->db->exec_query($req);
+        return $this->db->exec_query($req);
     }
 
     function get($id)
@@ -36,16 +37,12 @@ class Audit
         // Main Query
         $req = 'SELECT id, action, DATE_FORMAT(date,\'%Y-%m-%d %H:%i:%s\') as date,';
         $req .= ' u.userID, u.name, u.login, u.status as userStatus';
-        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'audit a';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u.userID = a.userID)';
+        $req .= ' FROM ' . $this->config['db_prefix'] . 'audit a';
+        $req .= ' LEFT JOIN ' . $this->config['db_prefix'] . 'users u ON (u.userID = a.userID)';
         $req .= " WHERE id = $id";
 
         $nb_audit_logs = 0;
-        $log = $this->parent->db->select_line($req, $nb_audit_logs);
-
-        if ($this->parent->debug) {
-            array_show($log);
-        }
+        $log = $this->db->select_line($req, $nb_audit_logs);
 
         return $log;
     }
@@ -57,19 +54,15 @@ class Audit
         // Main Query
         $req = 'SELECT id, action, DATE_FORMAT(date,\'%Y-%m-%d %H:%i:%s\') as date,';
         $req .= ' u.userID, u.name, u.login, u.status as userStatus';
-        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'audit a';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'users u ON (u.userID = a.userID)';
+        $req .= ' FROM ' . $this->config['db_prefix'] . 'audit a';
+        $req .= ' LEFT JOIN ' . $this->config['db_prefix'] . 'users u ON (u.userID = a.userID)';
         $req .= ' ORDER BY id DESC';
         if ($limit != false) {
             $req .= ' LIMIT ' . $limit . ' OFFSET ' . $start . '';
         }
 
         $nb_logs = 0;
-        $logs = $this->parent->db->select_array($req, $nb_logs);
-
-        if ($this->parent->debug) {
-            array_show($logs);
-        }
+        $logs = $this->db->select_array($req, $nb_logs);
 
         return $logs;
     }
@@ -81,16 +74,12 @@ class Audit
         // Main Query
         $req = 'SELECT id, action, DATE_FORMAT(date,\'%Y-%m-%d %H:%i:%s\') as date,';
         $req .= ' u.userID, u.name, u.login, u.status as userStatus';
-        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'audit a';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . "users u ON (u.userID = a.userID AND a.userID = $userID)";
+        $req .= ' FROM ' . $this->config['db_prefix'] . 'audit a';
+        $req .= ' LEFT JOIN ' . $this->config['db_prefix'] . "users u ON (u.userID = a.userID AND a.userID = $userID)";
         $req .= ' ORDER BY id DESC';
 
         $nb_logs = 0;
-        $logs = $this->parent->db->select_array($req, $nb_logs);
-
-        if ($this->parent->debug) {
-            array_show($logs);
-        }
+        $logs = $this->db->select_array($req, $nb_logs);
 
         return $logs;
     }

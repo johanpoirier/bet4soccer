@@ -48,7 +48,6 @@ class BetEngine
         global $config;
         global $lang;
         global $debug;
-        global $db;
 
         $this->start_time = get_moment();
         $this->config = $config;
@@ -73,12 +72,13 @@ class BetEngine
         $this->settings = new Settings($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->matches = new Matches($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->teams = new Teams($this, $this->db, $this->config, $this->lang, $this->debug);
-        $this->stats = new Stats($this);
         $this->tags = new Tags($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->users = new Users($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->bets = new Bets($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->groups = new Groups($this, $this->db, $this->config, $this->lang, $this->debug);
-        $this->audit = new Audit($this, $this->db, $this->config, $this->lang, $this->debug);
+        
+        $this->audit = new Audit($this->db, $this->config);
+        $this->stats = new Stats($this->db, $this->config, $this->lang, $this->users, $this->groups, $this->matches, $this->bets);
         $this->tokens = new Tokens($this->db, $this->config);
     }
 
