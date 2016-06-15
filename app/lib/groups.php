@@ -420,7 +420,7 @@ class Groups
                 }
             }
             if ($nbUsersActifs > 0) {
-                $group['avgPoints'] = round($group['totalPoints'] / $nbUsersActifs, 2);
+                $group['avgPoints'] = round($group['totalPoints'] / $nbUsersActifs, 1);
             }
             $groupsView[] = $group;
         }
