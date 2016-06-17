@@ -2314,6 +2314,7 @@ class BetEngine
         }
 
         if (($userID != $this->users->get_current_id()) && !$this->users->is_admin($this->users->get_current_id())) {
+            $orderByDate = false;
             $edit = false;
         }
 
