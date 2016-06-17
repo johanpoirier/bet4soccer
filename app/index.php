@@ -221,7 +221,7 @@ if (LOGOUT) {
     if ($debug) {
         echo "LOGOUT<br />";
     }
-    $bets->audit->add($_SESSION['userID'], 'authentification', 's\'est déconnecté');
+    $bet->audit->add($_SESSION['userID'], 'auth', 's\'est déconnecté');
     session_destroy();
     setcookie('device', '', time() - 7200);
     setcookie('rememberme', '', time() - 7200);
