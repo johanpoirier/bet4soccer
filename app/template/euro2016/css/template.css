@@ -1165,6 +1165,18 @@ td.game-date {
 }
 
 
+/*************** tooltips *****************/
+.tooltip {
+    background-color: #ffffff;
+    box-shadow: 0.1rem 0.1rem 0.2rem #848484;
+    display: none;
+    opacity: 1;
+    position: absolute;
+    padding: 0.1rem 0.2rem 0.1rem 0.25rem;
+    z-index: 2;
+}
+
+
 /*************** audit logs *****************/
 .audit-form {
     display: flex;

@@ -109,19 +109,6 @@ function handleUpdateStatsResponse() {
 	$('#generate_stats').html("<strong>Statistiques à jour.</strong>");
 }
 
-function showTooltip(x, y, contents) {
-	$("<div id='tooltip'>" + contents + "</div>").css({
-		position: "absolute",
-		display: "none",
-		top: y - 30,
-		left: x - 10,
-		border: "1px solid #fdd",
-		padding: "2px",
-		"background-color": "#fee",
-		opacity: 0.80
-	}).appendTo("body").fadeIn(200);
-}
-
 function globalInit(isPublic) {
 	$('.logo').click(function () {
 		window.location.assign('/');
@@ -177,4 +164,55 @@ function getUrlArgValue(argName) {
 	var regexp = new RegExp(argName + '=(\\w*)');
 	var value = regexp.exec(window.location.search);
 	return value && value.length > 1 ? value[1]: null;
+}
+
+function showTooltip(x, y, contents) {
+	$('<div class="tooltip">' + contents + '</div>').css({
+		top: y - 30,
+		left: x - 10
+	}).appendTo('body').fadeIn(200);
+}
+
+function displayChart(id, data, color, xSerie, yTicks, yMin, yMax, transformFunc, inverseTransformFunc) {
+	var elId = '#stats_' + id;
+	var options = {
+		colors: [ color ],
+		xaxis: {
+			ticks: xSerie
+		},
+		yaxis: {
+			min: yMin,
+			max: yMax,
+			ticks: yTicks,
+			tickDecimals: 0
+		},
+		grid: {
+			backgroundColor: "#ffffff",
+			hoverable: true
+		}
+	};
+	if (transformFunc) {
+		options.yaxis.transform = transformFunc;
+	}
+	if (inverseTransformFunc) {
+		options.yaxis.inverseTransform = inverseTransformFunc;
+	}
+	$.plot(elId, data, options);
+
+	var previousPoint = null;
+	$(elId).bind("plothover", function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+				previousPoint = item.dataIndex;
+
+				$('.tooltip').remove();
+				var y = item.datapoint[1].toFixed(2);
+
+				showTooltip(parseInt(item.pageX, 10), parseInt(item.pageY, 10) - 3, parseInt(y, 10));
+			}
+		} else {
+			$('.tooltip').remove();
+			previousPoint = null;
+		}
+	});
 }

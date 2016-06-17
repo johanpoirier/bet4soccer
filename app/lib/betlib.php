@@ -2237,7 +2237,8 @@ class BetEngine
                     'YMIN' => 1,
                     'YMAX' => $this->users->count_active(),
                     'YTICKS' => "[ 1, 50, 100, 150, 200, 250, " . $this->users->count_active() . " ]",
-                    'INVERSE' => 'transform: function (v) { return -v; }, inverseTransform: function (v) { return -v; },',
+                    'TRANSFORM' => 'function (v) { return -v; }',
+                    'INVERSE_TRANSFORM' => 'function (v) { return -v; }',
                     'COLOR' => '#5166ED'
                 ));
             } else if ($id == 2) {
@@ -2383,7 +2384,8 @@ class BetEngine
                     'YMIN' => 1,
                     'YMAX' => $this->users->count_active(),
                     'YTICKS' => "[ 1, 50, 100, 150, 200, 250, " . $this->users->count_active() . " ]",
-                    'INVERSE' => 'transform: function (v) { return -v; }, inverseTransform: function (v) { return -v; },',
+                    'TRANSFORM' => 'function (v) { return -v; }',
+                    'INVERSE_TRANSFORM' => 'function (v) { return -v; }',
                     'COLOR' => '#5166ED'
                 ));
             } else if ($id == 2) {
@@ -2429,7 +2431,9 @@ class BetEngine
                     'YMIN' => 0,
                     'YMAX' => $maxPts + 1,
                     'YTICKS' => '[' . implode(',', $ticks) . ']',
-                    'COLOR' => '#50BA50'
+                    'COLOR' => '#50BA50',
+                    'TRANSFORM' => 'false',
+                    'INVERSE_TRANSFORM' => 'false'
                 ));
             }
         }
