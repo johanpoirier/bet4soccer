@@ -218,12 +218,14 @@ if (LOGIN) {
 }
 
 if (LOGOUT) {
-    if ($debug)
+    if ($debug) {
         echo "LOGOUT<br />";
+    }
+    $bets->audit->add($_SESSION['userID'], 'authentification', 's\'est déconnecté');
     session_destroy();
     setcookie('device', '', time() - 7200);
     setcookie('rememberme', '', time() - 7200);
-    redirect("/");
+    redirect('/');
 } elseif (ADD_TEAM) {
     if ($debug)
         echo "ADD_TEAM<br />";

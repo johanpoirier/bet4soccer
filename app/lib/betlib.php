@@ -2676,6 +2676,8 @@ class BetEngine
                 setcookie('rememberme', $cookie, time() + 60 * 60 * 24 * 365, null, null, true, true);
             }
 
+            $this->audit->add($user['userID'], 'authentification', 's\'est loggué via le formulaire de login');
+
             return true;
         } else
             return $ret;
