@@ -1135,9 +1135,9 @@ class BetEngine
                 }
             } else {
                 if ($last_pool_match['delay_sec'] > 0) {
-                    $user_url = "<a href=\"/?act=view_bets&user=" . $user['userID'] . "\">";
+                    $user_url = "<a href=\"/?act=bets&user=" . $user['userID'] . "\">";
                 } else {
-                    $user_url = "<a href=\"/?act=view_finals_bets&user=" . $user['userID'] . "\">";
+                    $user_url = "<a href=\"/?act=finals_bets&user=" . $user['userID'] . "\">";
                 }
             }
 
