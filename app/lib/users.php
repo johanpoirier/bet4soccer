@@ -115,38 +115,13 @@ class Users
         return;
     }
 
-    function get_HTTP()
+    function get_HTTP($userID = null)
     {
-        // 0 arg = get all users
-        // 1 arg = get one user
-
-        $nb_args = func_num_args();
-        $args = func_get_args();
-        $userID = null;
-
-        if ($nb_args > 0) {
-            $userID = $args[0];
-            if (($userID == "") || ($userID == NULL))
-                $userID = 'NULL';
-        }
-
-        // Main Query
-        $req = 'SELECT *, DATE_FORMAT(last_connection, \'%d/%m\') as last_connection, DATE_FORMAT(last_bet, \'%d/%m\') as last_bet';
-        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
-        if ($nb_args > 0)
-            $req .= ' WHERE userID = ' . $userID . '';
-        $req .= ' ORDER by name';
-
-        // Execute Query
-        $nb_users = 0;
-        $users = $this->parent->db->select_array($req, $nb_users);
-        if ($this->parent->debug) {
-            array_show($users);
-        }
+        $users = $this->get($userID);
 
         // Return results
-        if ($nb_args > 0 && $nb_users > 0) {
-            $user = $users[0];
+        if (intval($userID) > 0) {
+            $user = $users;
             echo $user['userID'] . "|" . $user['name'] . "|" . $user['login'] . "|" . $user['password'] . "|" . $user['email'] . "|" . $user['groupID'] . "|" . $user['status'];
             return $user;
         } else {
@@ -160,6 +135,7 @@ class Users
     function get($userID = null)
     {
         $nb_args = func_num_args();
+        $params = [];
 
         // Main Query
         $req = 'SELECT u.*, t.name as groupName, t2.name as groupName2, t3.name as groupName3';
@@ -171,15 +147,16 @@ class Users
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t2 ON (u.groupID2 = t2.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u.groupID3 = t3.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
-        if ($nb_args > 0) {
-            $req .= " WHERE u.userID = $userID";
+        if ($nb_args == 1) {
+            $params = ['userID' => $userID];
+            $req .= ' WHERE u.userID = :userID';
         }
         $req .= ' GROUP BY u.userID';
         $req .= ' ORDER by u.name';
 
         // Execute Query
         $nb_users = 0;
-        $users = $this->parent->db->select_array($req, $nb_users);
+        $users = $this->parent->db->selectArray($req, $params, $nb_users);
         if ($this->parent->debug) {
             array_show($users);
         }

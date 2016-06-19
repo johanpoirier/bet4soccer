@@ -62,7 +62,7 @@ class Audit
         }
 
         $nb_logs = 0;
-        $logs = $this->db->select_array($req, $nb_logs);
+        $logs = $this->db->selectArray($req, [], $nb_logs);
 
         return $logs;
     }
@@ -73,17 +73,19 @@ class Audit
         $req = 'SELECT id, category, action, DATE_FORMAT(date,\'%Y-%m-%d %H:%i:%s\') as date,';
         $req .= ' u.userID, u.name, u.login, u.status as userStatus';
         $req .= ' FROM ' . $this->config['db_prefix'] . 'audit a';
-        $req .= ' LEFT JOIN ' . $this->config['db_prefix'] . "users u ON (u.userID = a.userID AND a.userID = $userID)";
+        $req .= ' LEFT JOIN ' . $this->config['db_prefix'] . 'users u ON (u.userID = a.userID AND a.userID = :userID)';
         $req .= ' ORDER BY id DESC';
 
         $nb_logs = 0;
-        $logs = $this->db->select_array($req, $nb_logs);
+        $logs = $this->db->selectArray($req, ['userID' => $userID], $nb_logs);
 
         return $logs;
     }
 
     function get_by_user_and_category($userID, $category)
     {
+        $params = [];
+
         // Main Query
         $req = 'SELECT id, category, action, DATE_FORMAT(date,\'%Y-%m-%d %H:%i:%s\') as date,';
         $req .= ' u.userID, u.name, u.login, u.status as userStatus';
@@ -91,15 +93,17 @@ class Audit
         $req .= ' LEFT JOIN ' . $this->config['db_prefix'] . "users u ON (u.userID = a.userID)";
         $req .= ' WHERE 1';
         if ($category) {
-            $req .= " AND category = '$category'";
+            $params['category'] = $category;
+            $req .= ' AND category = :category';
         }
         if ($userID) {
-            $req .= " AND a.userID = $userID";
+            $params['userID'] = $userID;
+            $req .= ' AND a.userID = :userID';
         }
         $req .= ' ORDER BY id DESC';
 
         $nb_logs = 0;
-        $logs = $this->db->select_array($req, $nb_logs);
+        $logs = $this->db->selectArray($req, $params, $nb_logs);
 
         return $logs;
     }

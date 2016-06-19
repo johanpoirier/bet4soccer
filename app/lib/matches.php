@@ -347,20 +347,10 @@ class Matches
 
     /*     * **************** */
 
-    function get()
+    function get($matchID = null)
     {
-        // 0 arg = get all matches
-        // 1 arg = get one match
 
         $nb_args = func_num_args();
-        $args = func_get_args();
-        $matchID = null;
-
-        if ($nb_args > 0) {
-            $matchID = $args[0];
-            if (($matchID == "") || ($matchID == NULL))
-                $matchID = 'NULL';
-        }
 
         // Main Query
         $req = 'SELECT *,';
@@ -375,17 +365,20 @@ class Matches
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
-        if ($nb_args > 0)
-            $req .= ' WHERE m.matchID = ' . $matchID . '';
+        if ($nb_args > 0) {
+            $params = ['matchID' => $matchID];
+            $req .= ' WHERE m.matchID = :matchID';
+        }
         $req .= ' ORDER BY date, teamAname';
 
-        // Execute Query			
-        $matches = $this->parent->db->select_array($req, $nb_matches);
-        if ($this->parent->debug)
+        $nb_games = 0;
+        $matches = $this->parent->db->selectArray($req, $params, $nb_games);
+        if ($this->parent->debug) {
             array_show($matches);
+        }
 
         // Return results
-        if ($nb_args > 0 && $nb_matches > 0)
+        if ($nb_args > 0 && $nb_games > 0)
             return $matches[0];
         else
             return $matches;

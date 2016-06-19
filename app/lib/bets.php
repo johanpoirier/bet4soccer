@@ -185,17 +185,17 @@ class Bets {
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
             $req .= ' SET team' . $next_team . ' = ' . addslashes($next_teamID) . '';
             $req .= ' WHERE userID = ' . $userID . ' AND matchID = ' . $next_matchID . ';';
-            $ret = $this->parent->db->exec_query($req);
+            $this->parent->db->exec_query($req);
         } else {
             $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,team' . $next_team . ')';
             $req .= ' VALUES (' . $userID . ',' . $next_matchID . ',' . $next_teamID . ');';
-            $ret = $this->parent->db->insert($req);
+            $this->parent->db->insert($req);
         }
     }
 
     function get_by_pool($pool, $userID = false) {
         if (!$userID) {
-            $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
+            $userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : 0;
         }
         prepare_numeric_data(array(&$userID));
         prepare_alphanumeric_data(array(&$pool));
@@ -204,16 +204,16 @@ class Bets {
         $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
         $req .= 'DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = ' . $userID . ')';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = :userID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
-        $req .= ' WHERE tA.pool = \'' . $pool . '\'';
-        $req .= ' AND tB.pool = \'' . $pool . '\'';
+        $req .= ' WHERE tA.pool = :poolA';
+        $req .= ' AND tB.pool = :poolB';
         $req .= ' AND m.round IS NULL';
         $req .= ' ORDER BY date, teamAname;';
 
-        $nb_teams = 0;
-        $bets = $this->parent->db->select_array($req, $nb_teams);
+        $nb_bets = 0;
+        $bets = $this->parent->db->selectArray($req, ['userID' => $userID, 'poolA' => $pool, 'poolB' => $pool], $nb_bets);
 
         if ($this->parent->debug) {
             array_show($bets);
@@ -294,12 +294,6 @@ class Bets {
     }
 
     /*     * **************** */
-
-    function get() {
-        $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
-
-        return $this->get_bets_by_user($userID);
-    }
 
     function get_by_id($userID, $matchID) {
         // Main Query
@@ -494,16 +488,18 @@ class Bets {
 
     function get_by_user($userID = false, $option = false) {
         prepare_numeric_data(array(&$userID));
-        if (!$userID)
+        if (!$userID) {
             $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
-        if ($option)
+        }
+        if ($option) {
             prepare_alphanumeric_data(array(&$option));
+        }
 
         // Main Query
         $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
         $req .= 'DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = ' . $userID . ')';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = :userID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
         if ($option == "pool")
@@ -512,11 +508,12 @@ class Bets {
             $req .= ' WHERE round IS NOT NULL';
         $req .= ' ORDER BY date, teamAname;';
 
-        $nb_teams = 0;
-        $bets = $this->parent->db->select_array($req, $nb_teams);
+        $nb_bets = 0;
+        $bets = $this->parent->db->selectArray($req, ['userID' => $userID], $nb_bets);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($bets);
+        }
 
         return $bets;
     }

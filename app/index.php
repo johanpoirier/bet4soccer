@@ -670,8 +670,10 @@ if (EDIT_RESULTS) {
     if ($debug) {
         echo "VIEW_AUDIT<br />";
     }
-    if (isset($_GET['user']) || $_GET['category']) {
-        $logs = $bet->audit->get_by_user_and_category($_GET['user'], $_GET['category']);
+    $user = isset($_GET['user']) ? $_GET['user'] : false;
+    $category = isset($_GET['category']) ? $_GET['category'] : false;
+    if ($user || $category) {
+        $logs = $bet->audit->get_by_user_and_category($user, $category);
     } else {
         $logs = $bet->audit->get_between(0, 500);
     }

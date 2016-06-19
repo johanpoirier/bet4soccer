@@ -203,7 +203,7 @@ class Template {
     function make_filename($filename) {
         // Check if it's an absolute or relative path.
         if (substr($filename, 0, 1) != '/') {
-            $filename = phpbb_realpath($this->root . '/' . $filename);
+            $filename = realpath($this->root . '/' . $filename);
         }
 
         if (!file_exists($filename)) {

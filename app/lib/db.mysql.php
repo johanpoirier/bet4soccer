@@ -39,7 +39,7 @@ class MySQL_DB
         $this->debug = $debug;
     }
 
-    function exec_query($req) {
+    function exec_query($req, $params = []) {
         // Start Time
         $startTime = get_moment();
         $this->nb_queries++;
@@ -52,13 +52,17 @@ class MySQL_DB
             $this->cnx = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->dbname, $this->username, $this->password, [
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET lc_time_names='fr_FR',NAMES utf8"
             ]);
+
         }
         if (!$this->cnx) {
             return $this->error_query("Echec Connexion MySql", $this->cnx);
         }
 
+        $this->cnx->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
         try {
-            $result = $this->cnx->query($req, PDO::FETCH_ASSOC);
+            $statement = $this->cnx->prepare($req);
+             $statement->execute($params);
         } catch(PDOException $e) {
             return $e;
         }
@@ -71,7 +75,7 @@ class MySQL_DB
 
         $this->exec_time += $elapsed_time;
 
-        return $result;
+        return $statement;
     }
 
     function select_one($req) {
@@ -112,6 +116,23 @@ class MySQL_DB
 
     function select_array($req, &$nbLines) {
         $statement = $this->exec_query($req);
+        $resultSet = [];
+        if ($this->test_error($statement)) {
+            return $statement;
+        }
+        else {
+            $nbLines = $statement->rowCount();
+            for ($i = 0; $i < $nbLines; $i++) {
+                $resultSet[$i] = $statement->fetch();
+            }
+        }
+
+        return $resultSet;
+    }
+
+    function selectArray($req, $params = [], &$nbLines) {
+        $statement = $this->exec_query($req, $params);
+
         $resultSet = [];
         if ($this->test_error($statement)) {
             return $statement;
