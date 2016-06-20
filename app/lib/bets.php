@@ -145,7 +145,7 @@ class Bets {
     function add_HTTP_final($userID, $matchID, $team, $score, $final_teamID, $final_teamW) {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
-        if ($final_teamW == "" || $final_teamW == NULL) {
+        if ($final_teamW == "" || $final_teamW === null) {
             $final_teamW = 'A';
         }
         if ($ret = $this->add($userID, $matchID, $team, $score, true, $final_teamID, $final_teamW)) {
@@ -193,35 +193,6 @@ class Bets {
         }
     }
 
-    function get_by_pool($pool, $userID = false) {
-        if (!$userID) {
-            $userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : 0;
-        }
-        prepare_numeric_data(array(&$userID));
-        prepare_alphanumeric_data(array(&$pool));
-
-        // Main Query
-        $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
-        $req .= 'DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
-        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = :userID)';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
-        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
-        $req .= ' WHERE tA.pool = :poolA';
-        $req .= ' AND tB.pool = :poolB';
-        $req .= ' AND m.round IS NULL';
-        $req .= ' ORDER BY date, teamAname;';
-
-        $nb_bets = 0;
-        $bets = $this->parent->db->selectArray($req, ['userID' => $userID, 'poolA' => $pool, 'poolB' => $pool], $nb_bets);
-
-        if ($this->parent->debug) {
-            array_show($bets);
-        }
-
-        return $bets;
-    }
-
     /*     * **************** */
 
     function count_by_users() {
@@ -234,7 +205,7 @@ class Bets {
         $nb_teams = 0;
         $nb_bets = $this->parent->db->select_array($req, $nb_teams);
 
-        $bets_array = array();
+        $bets_array = [];
 
         foreach ($nb_bets as $nb_bet)
             $bets_array[$nb_bet['userID']] = $nb_bet['nb_bet'];
@@ -260,7 +231,7 @@ class Bets {
         $nb_teams = 0;
         $nb_bets = $this->parent->db->select_array($req, $nb_teams);
 
-        $bets_array = array();
+        $bets_array = [];
 
         foreach ($nb_bets as $nb_bet) {
             $bets_array[$nb_bet['userID']] = $nb_bet['nb_bet'];
@@ -311,19 +282,28 @@ class Bets {
     }
 
     function get_odds_by_match($matchID, $teamA = NULL, $teamB = NULL) {
-        prepare_numeric_data(array(&$matchID));
-        prepare_alphanumeric_data(array(&$teamA, &$teamB));
+        prepare_numeric_data([&$matchID]);
+        prepare_alphanumeric_data([&$teamA, &$teamB]);
+
+        $params = ['matchID' => $matchID];
+
         // Main Query
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'bets b';
-        $req .= ' WHERE matchID = ' . $matchID . '';
-        if ($teamA != NULL)
-            $req .= ' AND teamA = ' . $teamA . '';
-        if ($teamB != NULL)
-            $req .= ' AND teamB = ' . $teamB . '';
-        $bets = $this->parent->db->select_array($req, $nb_bets);
+        $req .= ' WHERE matchID = :matchID';
+        if ($teamA != null) {
+            $params ['teamA'] = $teamA;
+            $req .= ' AND teamA = :teamA' . $teamA;
+        }
+        if ($teamB != null) {
+            $params ['teamB'] = $teamB;
+            $req .= ' AND teamB = :teamB' . $teamB;
+        }
 
-        $odds = array();
+        $nb_bets = 0;
+        $bets = $this->parent->db->selectArray($req, $params, $nb_bets);
+
+        $odds = [];
         $odds['A_AVG'] = 0;
         $odds['B_AVG'] = 0;
         $odds['A_WINS'] = 0;
@@ -331,15 +311,15 @@ class Bets {
         $odds['NUL'] = 0;
 
         foreach ($bets as $bet) {
-            if (($bet['scoreA'] > $bet['scoreB']) && ($bet['scoreA'] != null) && ($bet['scoreB'] != null))
+            if (($bet['scoreA'] > $bet['scoreB']) && ($bet['scoreA'] !== null) && ($bet['scoreB'] !== null))
                 $odds['A_WINS']++;
-            if (($bet['scoreB'] > $bet['scoreA']) && ($bet['scoreA'] != null) && ($bet['scoreB'] != null))
+            if (($bet['scoreB'] > $bet['scoreA']) && ($bet['scoreA'] !== null) && ($bet['scoreB'] !== null))
                 $odds['B_WINS']++;
-            if (($bet['scoreA'] == $bet['scoreB']) && ($bet['scoreA'] != null) && ($bet['scoreB'] != null))
+            if (($bet['scoreA'] == $bet['scoreB']) && ($bet['scoreA'] !== null) && ($bet['scoreB'] !== null))
                 $odds['NUL']++;
             $odds['A_AVG'] += $bet['scoreA'];
             $odds['B_AVG'] += $bet['scoreB'];
-            if (($bet['scoreA'] == null) && ($bet['scoreB'] == null))
+            if (($bet['scoreA'] === null) && ($bet['scoreB'] === null))
                 $nb_bets--;
         }
         $odds['A_AVG'] = ($nb_bets > 0) ? (round($odds['A_AVG'] / $nb_bets, 2)) : null;
@@ -412,12 +392,15 @@ class Bets {
     }
 
     function get_by_match($matchID, $points = false) {
-        prepare_numeric_data(array(&$matchID, &$points));
+        prepare_numeric_data([&$matchID, &$points]);
         // Main Query
-        $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool,';
-        $req .= 'DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
-        if (($points == EXACT_SCORE) || ($points == GOOD_RESULT))
+        $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB,';
+        $req .= ' b.userID, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, b.teamW,';
+        $req .= ' tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool,';
+        $req .= ' DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
+        if (($points == EXACT_SCORE) || ($points == GOOD_RESULT)) {
             $req .= ', u.name as username';
+        }
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
         if ($points == EXACT_SCORE) {
             $req .= ' RIGHT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND m.scoreA IS NOT NULL AND m.scoreB IS NOT NULL AND ( b.scoreA IS NOT NULL OR b.scoreB IS NOT NULL ) AND m.scoreA = b.scoreA AND m.scoreB = b.scoreB)';
@@ -430,14 +413,15 @@ class Bets {
         }
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
-        $req .= " WHERE m.matchID = $matchID";
+        $req .= ' WHERE m.matchID = :matchID';
         $req .= ' ORDER BY date, teamAname';
 
         $nb_bets = 0;
-        $bets = $this->parent->db->select_array($req, $nb_bets);
+        $bets = $this->parent->db->selectArray($req, ['matchID' => $matchID], $nb_bets);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($bets);
+        }
 
         return $bets;
     }
@@ -460,17 +444,17 @@ class Bets {
         if ($this->parent->debug)
             array_show($bets);
 
-        $g_bets = array();
-        $g_bets['A'] = array();
-        $g_bets['N'] = array();
-        $g_bets['B'] = array();
+        $g_bets = [];
+        $g_bets['A'] = [];
+        $g_bets['N'] = [];
+        $g_bets['B'] = [];
         $g_bets['count'] = $nb_bets;
         foreach ($bets as $bet) {
             $score = $bet['scoreA'] . "-" . $bet['scoreB'];
             $type = ($bet['scoreA'] > $bet['scoreB']) ? 'A' : (($bet['scoreB'] > $bet['scoreA']) ? 'B' : 'N');
             if (!isset($g_bets[$type][$score])) {
-                $g_bets[$type][$score] = array();
-                $g_bets[$type][$score]['users'] = array();
+                $g_bets[$type][$score] = [];
+                $g_bets[$type][$score]['users'] = [];
                 $g_bets[$type][$score]['count'] = 0;
             }
             $_tmp = array('ID' => $bet['userID'], 'NAME' => $bet['username']);
@@ -482,6 +466,35 @@ class Bets {
         ksort($g_bets['N']);
         ksort($g_bets['B']);
         return $g_bets;
+    }
+
+    function get_by_pool($pool, $userID = false) {
+        if (!$userID) {
+            $userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : 0;
+        }
+        prepare_numeric_data(array(&$userID));
+        prepare_alphanumeric_data(array(&$pool));
+
+        // Main Query
+        $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';
+        $req .= 'DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
+        $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m ';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (m.matchID = b.matchID AND b.userID = :userID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tA ON (m.teamA = tA.teamID)';
+        $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'teams tB ON (m.teamB = tB.teamID)';
+        $req .= ' WHERE tA.pool = :poolA';
+        $req .= ' AND tB.pool = :poolB';
+        $req .= ' AND m.round IS NULL';
+        $req .= ' ORDER BY date, teamAname;';
+
+        $nb_bets = 0;
+        $bets = $this->parent->db->selectArray($req, ['userID' => $userID, 'poolA' => $pool, 'poolB' => $pool], $nb_bets);
+
+        if ($this->parent->debug) {
+            array_show($bets);
+        }
+
+        return $bets;
     }
 
     /*     * **************** */
@@ -530,38 +543,48 @@ class Bets {
     }
 
     function get_points($bet) {
-        $result = array();
+        $result = [];
         $result['points'] = 0;
-        $result['diff'] = "";
+        $result['diff'] = '';
         $result['exact_score'] = false;
         $result['qualify'] = false;
         $result['good_result'] = false;
 
-        if (!isset($bet['matchID']))
+        if (!isset($bet['matchID'])) {
             return $result;
+        }
         $match = $this->parent->matches->get($bet['matchID']);
 
-        if (($match['scoreA'] == NULL) || ($match['scoreB'] == NULL) || ($bet['scoreBetA'] == NULL) || ($bet['scoreBetB'] == NULL))
+        if (($match['scoreA'] === null) || ($match['scoreB'] === null) || ($bet['scoreBetA'] === null) || ($bet['scoreBetB'] === null)) {
             return $result;
+        }
 
-        if ($match['round'] == NULL)
+        if ($match['round'] === null) {
             $round = "pool";
-        else
+        }
+        else {
             $round = $match['round'];
+        }
 
-        if ($match['scoreA'] > $match['scoreB'])
+        if ($match['scoreA'] > $match['scoreB']) {
             $resultWinner = 'A';
-        elseif ($match['scoreA'] < $match['scoreB'])
+        }
+        elseif ($match['scoreA'] < $match['scoreB']) {
             $resultWinner = 'B';
-        elseif ($match['scoreA'] == $match['scoreB'])
+        }
+        elseif ($match['scoreA'] == $match['scoreB']) {
             $resultWinner = 'N';
+        }
 
-        if ($bet['scoreBetA'] > $bet['scoreBetB'])
+        if ($bet['scoreBetA'] > $bet['scoreBetB']) {
             $betWinner = 'A';
-        elseif ($bet['scoreBetA'] < $bet['scoreBetB'])
+        }
+        elseif ($bet['scoreBetA'] < $bet['scoreBetB']) {
             $betWinner = 'B';
-        elseif ($bet['scoreBetA'] == $bet['scoreBetB'])
+        }
+        elseif ($bet['scoreBetA'] == $bet['scoreBetB']) {
             $betWinner = 'N';
+        }
 
         if (($bet['scoreBetA'] == $match['scoreA']) && ($bet['scoreBetB'] == $match['scoreB'])) {
             /* Exact score */
@@ -569,14 +592,16 @@ class Bets {
             $result['exact_score'] = true;
         }
 
-        if (($bet['teamW'] == NULL) && ($bet['scoreBetA'] != NULL) && ($bet['scoreBetB'] != NULL)) {
-            if ($bet['scoreBetA'] > $bet['scoreBetB'])
+        if (($bet['teamW'] === null) && ($bet['scoreBetA'] !== null) && ($bet['scoreBetB'] !== null)) {
+            if ($bet['scoreBetA'] > $bet['scoreBetB']) {
                 $bet['teamW'] = 'A';
-            if ($bet['scoreBetA'] < $bet['scoreBetB'])
+            }
+            if ($bet['scoreBetA'] < $bet['scoreBetB']) {
                 $bet['teamW'] = 'B';
+            }
         }
 
-        if (( $bet['teamW'] == $match['teamW'] ) && ($match['teamW'] != NULL)) {
+        if (( $bet['teamW'] == $match['teamW'] ) && ($match['teamW'] !== null)) {
             /* Good qualify */
             $result['points'] += $this->parent->config['points_' . $round . '_qualify'];
             $result['qualify'] = true;

@@ -138,7 +138,8 @@ class Users
         $params = [];
 
         // Main Query
-        $req = 'SELECT u.*, t.name as groupName, t2.name as groupName2, t3.name as groupName3';
+        $req = 'SELECT u.userID, u.login, u.name, u.email, u.points, u.nbresults, u.nbscores, u.diff, u.last_rank, u.match_display, u.theme, u.status';
+        $req .= ', u.groupID, t.name as groupName, u.groupID2, t2.name as groupName2, u.groupID3, t3.name as groupName3';
         $req .= ', DATE_FORMAT(u.last_connection, \'%d/%m\') as last_connection';
         $req .= ', DATE_FORMAT(u.last_bet, \'%d/%m\') as last_bet';
         $req .= ', count(b.userID) as nb_bets';
@@ -673,7 +674,7 @@ class Users
     {
         $users = $this->get();
         $nb_bets = $this->parent->bets->count_by_users();
-        $ranks = array();
+        $ranks = [];
         usort($users, "compare_users");
         $i = 1;
         $j = 0;
@@ -705,20 +706,20 @@ class Users
             $this->parent->settings->set('IS_USER_RANKING_GENERATING', $cur_user, 'NULL');
         }
         $matches = $this->parent->matches->get();
-        $users = array();
+        $users = [];
         $ranks = $this->get_ranking();
         $last_played = $this->parent->matches->get_last_played();
 
         $m = 0;
         foreach ($matches as $match) {
-            if (($match['scoreA'] == NULL) || ($match['scoreB'] == NULL)) {
+            if (($match['scoreA'] === null) || ($match['scoreB'] === null)) {
                 continue;
             }
 
             $bets = $this->parent->bets->get_by_match($match['matchID']);
             foreach ($bets as $bet) {
                 if (!isset($users[$bet['userID']])) {
-                    $users[$bet['userID']] = array();
+                    $users[$bet['userID']] = [];
                     $users[$bet['userID']]['nbbets'] = 0;
                     $users[$bet['userID']]['points'] = 0;
                     $users[$bet['userID']]['nbscores'] = 0;

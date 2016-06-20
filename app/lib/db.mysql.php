@@ -62,7 +62,7 @@ class MySQL_DB
 
         try {
             $statement = $this->cnx->prepare($req);
-             $statement->execute($params);
+            $statement->execute($params);
         } catch(PDOException $e) {
             return $e;
         }
@@ -99,6 +99,15 @@ class MySQL_DB
         return $statement->fetch();
     }
 
+    function selectLine($req, $params = [], &$nbLines) {
+        $statement = $this->exec_query($req, $params);
+        if ($this->test_error($statement)) {
+            return $statement;
+        }
+        $nbLines = $statement->rowCount();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
     function select_col($req, &$nbCols) {
         $statement = $this->exec_query($req);
         $resultSet = [];
@@ -133,15 +142,12 @@ class MySQL_DB
     function selectArray($req, $params = [], &$nbLines) {
         $statement = $this->exec_query($req, $params);
 
-        $resultSet = [];
         if ($this->test_error($statement)) {
             return $statement;
         }
         else {
             $nbLines = $statement->rowCount();
-            for ($i = 0; $i < $nbLines; $i++) {
-                $resultSet[$i] = $statement->fetch();
-            }
+            $resultSet = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
         return $resultSet;

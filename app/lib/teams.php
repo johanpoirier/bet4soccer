@@ -45,20 +45,31 @@ class Teams
 
         if ($nb_args > 0) {
             $teamID = $args[0];
-            if (($teamID == "") || ($teamID == NULL)) $teamID = 'NULL';
+            if (($teamID == "") || ($teamID === null)) {
+                $teamID = 'NULL';
+            }
         }
         // Main Query
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'teams';
-        if ($nb_args > 0) $req .= ' WHERE teamID = ' . $teamID . '';
+        if ($nb_args > 0) {
+            $req .= ' WHERE teamID = ' . $teamID . '';
+        }
 
         // Execute Query
+        $nb_teams = 0;
         $teams = $this->parent->db->select_array($req, $nb_teams);
-        if ($this->parent->debug) array_show($teams);
+        if ($this->parent->debug) {
+            array_show($teams);
+        }
 
         // Return results
-        if (($nb_args > 0) && ($nb_teams > 0)) return $teams[0];
-        else return $teams;
+        if (($nb_args > 0) && ($nb_teams > 0)) {
+            return $teams[0];
+        }
+        else {
+            return $teams;
+        }
     }
 
     /*******************/

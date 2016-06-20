@@ -280,10 +280,12 @@ class Matches
         $req .= ' ORDER BY m.date DESC';
         $req .= ' LIMIT 1 OFFSET 0';
 
-        $match = $this->parent->db->select_line($req, $null);
+        $nb_games = 0;
+        $match = $this->parent->db->select_line($req, $nb_games);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($match);
+        }
 
         return $match;
     }
@@ -309,7 +311,7 @@ class Matches
         $req .= ' LIMIT 1 OFFSET 0';
 
         $nb_match = 0;
-        $match = $this->parent->db->select_line($req, $nb_match);
+        $match = $this->parent->db->selectLine($req, null, $nb_match);
 
         if ($this->parent->debug) {
             array_show($match);
@@ -349,6 +351,7 @@ class Matches
 
     function get($matchID = null)
     {
+        $params = [];
 
         $nb_args = func_num_args();
 
@@ -378,10 +381,12 @@ class Matches
         }
 
         // Return results
-        if ($nb_args > 0 && $nb_games > 0)
+        if ($nb_args > 0 && $nb_games > 0) {
             return $matches[0];
-        else
+        }
+        else {
             return $matches;
+        }
     }
 
     /*     * **************** */

@@ -526,7 +526,6 @@ class BetEngine
             $this->template->assign_block_vars('users', array(
                 'ID' => $user['userID'],
                 'LOGIN' => $user['login'],
-                'PASS' => $user['password'],
                 'POINTS' => $user['points'],
                 'STATUS' => $user['status'],
                 'ID_GROUP' => $user['groupID'],
@@ -668,7 +667,7 @@ class BetEngine
             if ($nb_bets[$user['userID']] == 0)
                 continue;
 
-            if ($user['points'] != null) {
+            if ($user['points'] !== null) {
                 $evol = $user['evol'];
                 if ($evol == 0) {
                     $img = "egal.png";
@@ -756,7 +755,7 @@ class BetEngine
             $this->template->assign_block_vars('users', array(
                 'EVOLUTION' => ($img) ? "($evol)" : "",
                 'RANK_CLASS' => ($img) ? $rank_class : "",
-                'RANK' => ($user['points'] != null) ? $user['rank'] : "",
+                'RANK' => ($user['points'] !== null) ? $user['rank'] : "",
                 'LAST_RANK' => ($img) ? "<img src=\"" . $this->template_web_location . "/images/" . $img . "\" /><br/><span style=\"text-align:center;font-size:70%;\">(" . $evol . ")</span>" : "",
                 'NB_MISS_BETS' => ((isset($nb_played_bets[$user['userID']])) && ($nb_played_bets[$user['userID']] < $nb_matches)) ? "(<span style=\"color:grey;\">-" . ($nb_matches - $nb_played_bets[$user['userID']]) . "</span>)" : "",
                 'ID' => $user['userID'],
@@ -773,7 +772,7 @@ class BetEngine
             ));
         }
 
-        if (sizeof($users) > 0 && $users[$_SESSION['userID']]['rank'] != null) {
+        if (sizeof($users) > 0 && $users[$_SESSION['userID']]['rank'] !== null) {
             $evol = $users[$_SESSION['userID']]['evol'];
             $this->template->assign_block_vars('mine', array(
                 'ID' => $_SESSION['userID'],
@@ -1231,7 +1230,7 @@ class BetEngine
         $rounds_matches = [];
 
         foreach ($matches as $match) {
-            if ($match['round'] != NULL) {
+            if ($match['round'] !== null) {
                 $r = $match['round'];
                 $m = array(
                     'ID' => $match['matchID'],
@@ -1417,8 +1416,8 @@ class BetEngine
                     'HEIGHT_BOTTOM' => $height_bottom
                 ));
 
-                $teamA = (isset($match['teamA']) && $match['teamA'] != "" && $match['teamA'] != NULL) ? $this->teams->get($match['teamA']) : "";
-                $teamB = (isset($match['teamB']) && $match['teamB'] != "" && $match['teamB'] != NULL) ? $this->teams->get($match['teamB']) : "";
+                $teamA = (isset($match['teamA']) && $match['teamA'] != "" && $match['teamA'] !== null) ? $this->teams->get($match['teamA']) : "";
+                $teamB = (isset($match['teamB']) && $match['teamB'] != "" && $match['teamB'] !== null) ? $this->teams->get($match['teamB']) : "";
                 $match['teamAname'] = (isset($teamA['name'])) ? $teamA['name'] : "";
                 $match['teamBname'] = (isset($teamB['name'])) ? $teamB['name'] : "";
                 if (!isset($match['scoreA']))
@@ -1641,7 +1640,7 @@ class BetEngine
                     $match_result = 'A';
                 elseif ($match['scoreA'] == $match['scoreB'] && $match['teamW'] == 'B')
                     $match_result = 'B';
-                if (($match['scoreA'] == NULL) && ($match['scoreB'] == NULL))
+                if (($match['scoreA'] === null) && ($match['scoreB'] === null))
                     $match_result = "";
 
                 /* Resultats des paris */
@@ -1659,7 +1658,7 @@ class BetEngine
                     $next_round = ceil($round / 2);
                     $next_rank = ceil($rank / 2);
                     $next_team = (is_float($rank / 2)) ? "A" : "B";
-                    if ((isset($odds_teams[$round][$rank][$bets_result])) && ((($match['scoreA'] == NULL) && ($match['scoreB'] == NULL)) || (($match['scoreA'] == "") && ($match['scoreB'] == "")))) {
+                    if ((isset($odds_teams[$round][$rank][$bets_result])) && ((($match['scoreA'] === null) && ($match['scoreB'] === null)) || (($match['scoreA'] == "") && ($match['scoreB'] == "")))) {
                         $next_teamID = $odds_teams[$round][$rank][$bets_result];
                     } else {
                         $next_teamID = $match["team" . $match_result];
@@ -1731,7 +1730,7 @@ class BetEngine
                 $color['B'] = ($result == 'B') ? "#99FF99" : "#F9F9F9";
 
                 foreach ($teams as $team) {
-                    if (isset($odds_teams[$round][$rank][$team]) && ((($match['scoreA'] == "") && ($match['scoreB'] == "")) || (($match['scoreA'] == NULL) && ($match['scoreB'] == NULL))) && ($round < 4)) {
+                    if (isset($odds_teams[$round][$rank][$team]) && ((($match['scoreA'] == "") && ($match['scoreB'] == "")) || (($match['scoreA'] === null) && ($match['scoreB'] === null))) && ($round < 4)) {
                         $bets_team = $this->teams->get($odds_teams[$round][$rank][$team]);
                     } else {
                         $bets_team = $this->teams->get($match['team' . $team]);
@@ -1854,9 +1853,9 @@ class BetEngine
             'SCORE_A' => ($match['scoreA'] != "") ? $match['scoreA'] : $odds['A_AVG'],
             'SCORE_B' => ($match['scoreB'] != "") ? $match['scoreB'] : $odds['B_AVG'],
             'COLOR' => (($match['scoreA'] == "") && ($match['scoreB'] == "")) ? "blue" : "black",
-            'ODD_A' => ($odds['A_WINS'] != null) ? (($match_result == 'A') ? "<b>" . $odds['A_WINS'] . "/1</b>" : $odds['A_WINS'] . "/1") : "",
-            'ODD_B' => ($odds['B_WINS'] != null) ? (($match_result == 'B') ? "<b>" . $odds['B_WINS'] . "/1</b>" : $odds['B_WINS'] . "/1") : "",
-            'ODD_NUL' => ($odds['NUL'] != null) ? (($match_result == 'N') ? "<b>" . $odds['NUL'] . "/1</b>" : $odds['NUL'] . "/1") : "",
+            'ODD_A' => ($odds['A_WINS'] !== null) ? (($match_result == 'A') ? "<b>" . $odds['A_WINS'] . "/1</b>" : $odds['A_WINS'] . "/1") : "",
+            'ODD_B' => ($odds['B_WINS'] !== null) ? (($match_result == 'B') ? "<b>" . $odds['B_WINS'] . "/1</b>" : $odds['B_WINS'] . "/1") : "",
+            'ODD_NUL' => ($odds['NUL'] !== null) ? (($match_result == 'N') ? "<b>" . $odds['NUL'] . "/1</b>" : $odds['NUL'] . "/1") : "",
             'TEAM_COLOR_A' => ($match['scoreA'] > $match['scoreB']) ? "#99FF99" : "transparent",
             'TEAM_COLOR_B' => ($match['scoreB'] > $match['scoreA']) ? "#99FF99" : "transparent",
             'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($match['teamAname'])) : rawurlencode($match['teamAname']),
@@ -1897,7 +1896,7 @@ class BetEngine
                     $match_result = 'B';
                 if ($match['scoreA'] == $match['scoreB'])
                     $match_result = 'N';
-                if (($match['scoreA'] == NULL) && ($match['scoreB'] == NULL))
+                if (($match['scoreA'] === null) && ($match['scoreB'] === null))
                     $match_result = "";
 
                 /* Stats paris */
@@ -1934,9 +1933,9 @@ class BetEngine
                     'SCORE_B' => $match['scoreB'],
                     'AVG_A' => $odds['A_AVG'],
                     'AVG_B' => $odds['B_AVG'],
-                    'ODD_A' => ($odds['A_WINS'] != null) ? (($match_result == 'A') ? "<b>" . $odds['A_WINS'] . "/1</b>" : $odds['A_WINS'] . "/1") : "",
-                    'ODD_B' => ($odds['B_WINS'] != null) ? (($match_result == 'B') ? "<b>" . $odds['B_WINS'] . "/1</b>" : $odds['B_WINS'] . "/1") : "",
-                    'ODD_NUL' => ($odds['NUL'] != null) ? (($match_result == 'N') ? "<b>" . $odds['NUL'] . "/1</b>" : $odds['NUL'] . "/1") : "",
+                    'ODD_A' => ($odds['A_WINS'] !== null) ? (($match_result == 'A') ? "<b>" . $odds['A_WINS'] . "/1</b>" : $odds['A_WINS'] . "/1") : "",
+                    'ODD_B' => ($odds['B_WINS'] !== null) ? (($match_result == 'B') ? "<b>" . $odds['B_WINS'] . "/1</b>" : $odds['B_WINS'] . "/1") : "",
+                    'ODD_NUL' => ($odds['NUL'] !== null) ? (($match_result == 'N') ? "<b>" . $odds['NUL'] . "/1</b>" : $odds['NUL'] . "/1") : "",
                     'TEAM_COLOR_A' => ($match['scoreA'] > $match['scoreB']) ? "#99FF99" : "transparent",
                     'TEAM_COLOR_B' => ($match['scoreB'] > $match['scoreA']) ? "#99FF99" : "transparent",
                     'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($match['teamAname'])) : rawurlencode($match['teamAname']),
@@ -2082,8 +2081,8 @@ class BetEngine
                 $matchA_is_set = (isset($match['teamAid']) && (strlen($match['teamAid']) != 0));
                 $betB_is_null = (!isset($bet['teamBetB']) || (strlen($bet['teamBetB']) != 0));
                 $matchB_is_set = (isset($match['teamBid']) && (strlen($match['teamBid']) != 0));
-                $match_is_set = (isset($match['teamA']) && isset($match['teamB']) && ($match['teamA'] != null) && ($match['teamB'] != null) && ($match['teamA'] != 0) && ($match['teamB'] != 0));
-                $result_is_set = (isset($match['scoreA'])) && (isset($match['scoreB'])) && ($match['scoreA'] != NULL) && ($match['scoreB'] != NULL);
+                $match_is_set = (isset($match['teamA']) && isset($match['teamB']) && ($match['teamA'] !== null) && ($match['teamB'] !== null) && ($match['teamA'] != 0) && ($match['teamB'] != 0));
+                $result_is_set = (isset($match['scoreA'])) && (isset($match['scoreB'])) && ($match['scoreA'] !== null) && ($match['scoreB'] !== null);
 
 
                 /* Priorité à l'équipe du résultat */
@@ -2142,12 +2141,12 @@ class BetEngine
                 ));
 
                 if (!$betA_is_null && !$matchA_is_set) {
-                    $teamA = (isset($bet['teamBetA']) && $bet['teamBetA'] != "" && $bet['teamBetA'] != NULL) ? $this->teams->get($bet['teamBetA']) : "";
+                    $teamA = (isset($bet['teamBetA']) && $bet['teamBetA'] != "" && $bet['teamBetA'] !== null) ? $this->teams->get($bet['teamBetA']) : "";
                     $bet['teamAname'] = (isset($teamA['name'])) ? $teamA['name'] : "";
                 }
 
                 if (!$betB_is_null && !$matchB_is_set) {
-                    $teamB = (isset($bet['teamBetB']) && $bet['teamBetB'] != "" && $bet['teamBetB'] != NULL) ? $this->teams->get($bet['teamBetB']) : "";
+                    $teamB = (isset($bet['teamBetB']) && $bet['teamBetB'] != "" && $bet['teamBetB'] !== null) ? $this->teams->get($bet['teamBetB']) : "";
                     $bet['teamBname'] = (isset($teamB['name'])) ? $teamB['name'] : "";
                 }
                 if (!isset($bet['scoreBetA']))
@@ -2186,7 +2185,7 @@ class BetEngine
                             'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : ""
                         ));
 
-                        if (((($team == 'A') && ($i % 2 == 1)) || (($team == 'B') && ($i % 2 == 0))) && ($match['scoreB'] != NULL) && ($match['scoreA'] != NULL)) {
+                        if (((($team == 'A') && ($i % 2 == 1)) || (($team == 'B') && ($i % 2 == 0))) && ($match['scoreB'] !== null) && ($match['scoreA'] !== null)) {
                             $this->template->assign_block_vars('finals.rounds.ranks.teams.points', []);
                         }
                     } else {
@@ -2468,7 +2467,7 @@ class BetEngine
                 $color = "green";
             }
 
-            if ((!isset($match['scoreA'])) || (!isset($match['scoreB'])) || ($match['scoreA'] == NULL) || ($match['scoreB'] == NULL)) {
+            if ((!isset($match['scoreA'])) || (!isset($match['scoreB'])) || ($match['scoreA'] === null) || ($match['scoreB'] === null)) {
                 $points = "";
                 $color = "";
                 $diff = "";
@@ -2552,7 +2551,7 @@ class BetEngine
                 $color = "green";
             }
 
-            if ((!isset($match['scoreA'])) || (!isset($match['scoreB'])) || ($match['scoreA'] == NULL) || ($match['scoreB'] == NULL)) {
+            if ((!isset($match['scoreA'])) || (!isset($match['scoreB'])) || ($match['scoreA'] === null) || ($match['scoreB'] === null)) {
                 $points = "";
                 $color = "";
                 $diff = "";
@@ -3082,7 +3081,7 @@ class BetEngine
         foreach ($users as $user) {
             $bets = $this->bets->get_by_user($user['userID']);
             foreach ($bets as $bet) {
-                if (($bet['scoreBetA'] == NULL) && ($bet['scoreBetB'] == NULL))
+                if (($bet['scoreBetA'] === null) && ($bet['scoreBetB'] === null))
                     continue;
                 $match = $this->matches->get($bet['matchID']);
                 if (!$match)
@@ -3100,16 +3099,16 @@ class BetEngine
                 $rank = $match['rank'];
 
                 $b_teamA_id = $bet['teamAid'];
-                $b_teamA_obj = ($b_teamA_id != NULL && $b_teamA_id != "") ? $this->teams->get($b_teamA_id) : array('name' => 'NULL');
+                $b_teamA_obj = ($b_teamA_id !== null && $b_teamA_id != "") ? $this->teams->get($b_teamA_id) : array('name' => 'NULL');
                 $b_teamA_name = $b_teamA_obj['name'];
                 $b_scoreA = $bet['scoreBetA'];
                 $b_teamB_id = $bet['teamBid'];
-                $b_teamB_obj = ($b_teamB_id != NULL && $b_teamB_id != "") ? $this->teams->get($b_teamB_id) : array('name' => 'NULL');
+                $b_teamB_obj = ($b_teamB_id !== null && $b_teamB_id != "") ? $this->teams->get($b_teamB_id) : array('name' => 'NULL');
                 $b_teamB_name = $b_teamB_obj['name'];
                 $b_scoreB = $bet['scoreBetB'];
                 $b_teamW = $bet['teamW'];
 
-                if ($round != NULL && $rank != NULL && $round != "" && $rank != "") {
+                if ($round !== null && $rank !== null && $round != "" && $rank != "") {
                     if ($round != 1 && $round != 3) {
                         $next_round = ceil($round / 2);
                         $next_rank = ceil($rank / 2);
@@ -3149,11 +3148,11 @@ class BetEngine
                     }
 
                     if (($round != 1) && ($round != 3)) {
-                        if ($bet['teamW'] == NULL || $bet['teamW'] == "") {
+                        if ($bet['teamW'] === null || $bet['teamW'] == "") {
                             echo $user['name'] . " => " . $round . "/" . $rank . " : TeamW null<br/>";
                         } elseif (isset($next_bet['team' . $next_team]) && isset($bet['team' . $bet['teamW']]) && isset($next_match['team' . $next_team]) && ($next_bet['team' . $next_team] != $bet['team' . $bet['teamW']]) && !($next_round == 4 && $next_bet['team' . $next_team] == $next_match['team' . $next_team])) {
-                            $next_team_obj = ($next_bet['team' . $next_team] != "" && $next_bet['team' . $next_team] != "35" && $next_bet['team' . $next_team] != NULL) ? $this->get_team($next_bet['team' . $next_team]) : array('name' => 'NULL');
-                            $team_obj = ($bet['team' . $bet['teamW']] != "" && $bet['team' . $bet['teamW']] != "35" && $bet['team' . $bet['teamW']] != NULL) ? $this->get_team($bet['team' . $bet['teamW']]) : array('name' => 'NULL');
+                            $next_team_obj = ($next_bet['team' . $next_team] != "" && $next_bet['team' . $next_team] != "35" && $next_bet['team' . $next_team] !== null) ? $this->get_team($next_bet['team' . $next_team]) : array('name' => 'NULL');
+                            $team_obj = ($bet['team' . $bet['teamW']] != "" && $bet['team' . $bet['teamW']] != "35" && $bet['team' . $bet['teamW']] !== null) ? $this->get_team($bet['team' . $bet['teamW']]) : array('name' => 'NULL');
                             echo $user['name'] . " => " . $round . "/" . $rank . " : Team " . $bet['teamW'] . " incorrecte (" . $team_obj['name'] . " qualifiée mais " . $next_team_obj['name'] . " au tour suivant)<br/>";
 
                             echo "UPDATE " . $this->parent->config['db_prefix'] . "bets SET team" . $next_team . " = " . $bet['team' . $bet['teamW']] . " WHERE userID = " . $user['userID'] . " AND matchID = " . $next_match['matchID'] . ";<br/>";

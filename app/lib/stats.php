@@ -38,7 +38,7 @@ class Stats
     function get_user_stats_by_type($userID, $type)
     {
         $_userStats = $this->get_user_stats($userID);
-        $userStats = array();
+        $userStats = [];
         foreach ($_userStats as $_userStat) $userStats[$_userStat['label']] = $_userStat;
         $nb_users = $this->users->count_active();
         $nb_groups = $this->groups->count();
@@ -47,7 +47,7 @@ class Stats
         $lastMatch = $this->matches->get_last();
         $dateIterator = new DateIterator('day', $firstMatch['date'], $lastMatch['date']);
 
-        $stats = array();
+        $stats = [];
         foreach ($dateIterator as $day => $date) {
             $dateTime = new DateTime($date);
             $date_key = $dateTime->format('m/d');
@@ -83,7 +83,7 @@ class Stats
         $dateIterator = new DateIterator('day', $firstMatchPlayed['date'], $lastMatchPlayed['date']);
 
         // ranking snapshot for each day
-        $globalUsersRanking = array();
+        $globalUsersRanking = [];
         $nbMatchesPlayed = 0;
         $reqBase = "INSERT INTO " . $this->config['db_prefix'] . "stats_user VALUES";
         $reqGroupBase = "UPDATE " . $this->config['db_prefix'] . "stats_user SET";
@@ -126,7 +126,7 @@ class Stats
         $matches = $this->matches->get_played_until_day($day);
         $nbMatchesPlayed = count($matches);
         $last_played = $this->matches->get_last_played_until_day($day);
-        $users = array();
+        $users = [];
 
         // Points pr les matchs
         foreach ($matches as $match) {
@@ -135,7 +135,7 @@ class Stats
             foreach ($bets as $bet) {
                 if (!isset($users[$bet['userID']])) {
                     $user = $this->users->get($bet['userID']);
-                    $users[$bet['userID']] = array();
+                    $users[$bet['userID']] = [];
                     $users[$bet['userID']]['userID'] = $bet['userID'];
                     $users[$bet['userID']]['points'] = 0;
                     $users[$bet['userID']]['nbscores'] = 0;
@@ -151,7 +151,7 @@ class Stats
                     $users[$bet['userID']]['lastmatch'] = false;
                 }
 
-                if (($bet['scoreBetA'] != NULL) && ($bet['scoreBetB'] != NULL) && ($match['scoreA'] != NULL) && ($match['scoreB'] != NULL)) {
+                if (($bet['scoreBetA'] !== null) && ($bet['scoreBetB'] !== null) && ($match['scoreA'] !== null) && ($match['scoreB'] !== null)) {
                     $resBet = $this->bets->get_points($bet);
                     if ($last_played['matchID'] == $match['matchID']) $users[$bet['userID']]['lastmatch'] = true;
                     $users[$bet['userID']]['nbbets']++;
@@ -168,7 +168,7 @@ class Stats
 
     function get_group_ranking($users, $nbMatchesPlayed)
     {
-        $groups = array();
+        $groups = [];
 
         foreach ($users as $user) {
             $uID = $user['userID'];
@@ -177,7 +177,7 @@ class Stats
                 if ($i == 1) $gID = $user['groupID'];
                 else $gID = $user['groupID' . $i];
 
-                if ($gID == null || $gID == '') continue;
+                if ($gID === null || $gID == '') continue;
 
                 if (!isset($groups[$gID])) {
                     $groups[$gID]['groupID'] = $gID;
