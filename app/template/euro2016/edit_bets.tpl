@@ -16,12 +16,11 @@
         });
     }
 
-    function handleHttpResponse(data) {
-        var results = data.split("|");
-        var matchID = results[0];
-        var pool = results[1];
-        var scoreA = document.getElementById(matchID + '_score_team_A').value;
-        var scoreB = document.getElementById(matchID + '_score_team_B').value;
+    function handleHttpResponse(response) {
+        var matchID = response.matchID;
+        var pool = response.pool;
+        var scoreA = $('#' + matchID + '_score_team_A').val();
+        var scoreB = $('#' + matchID + '_score_team_B').val();
         var teamA = document.getElementById(matchID + '_team_A');
         var teamB = document.getElementById(matchID + '_team_B');
 
@@ -35,23 +34,19 @@
             teamB.style.backgroundColor = '#99FF99';
         }
 
-        var HTML_ranking = '<table class="ranking-pool">';
-        HTML_ranking += "<tr>";
-        HTML_ranking += "<td width=\"80%\"><b>Nations</b></td><td width=\"10%\"><b>Pts</b></td><td width=\"10%\"><b>Diff</b></td>";
-        HTML_ranking += "</tr>";
+        var rankingTableBody = $('#pool_' + pool + '_ranking tbody');
+        rankingTableBody.html('');
 
-        for (var i = 2; i < results.length - 1; i++) {
-            var result = results[i].split(";");
+        for (var i = 0; i < response.teams.length; i++) {
+            var team = response.teams[i];
 
-            HTML_ranking += "<tr>";
-            HTML_ranking += "<td id=\"" + result[0] + "_team\"><img width=\"15px\" src=\"{TPL_WEB_PATH}/images/flag/" + result[2] + ".png\" /> " + result[1] + "</td>";
-            HTML_ranking += "<td>" + result[3] + "</td>";
-            HTML_ranking += "<td>" + result[4] + "</td>";
-            HTML_ranking += "</tr>";
+            var line = $('<tr>');
+            line.append($('<td>').attr('id', team.teamID).append('<img width="15px" src="{TPL_WEB_PATH}/images/flag/' + team.name + '.png" alt="' + team.name + '" />' + team.name));
+            line.append($('<td>').html(team.points));
+            line.append($('<td>').html((team.diff > 0 ? '+' : '') + team.diff));
+
+            rankingTableBody.append(line);
         }
-
-        var team_ranking = document.getElementById("pool_" + pool + "_ranking");
-        team_ranking.innerHTML = HTML_ranking;
     }
 
     $(document).ready(headlineButtonsInit);
@@ -109,7 +104,7 @@
                         <td id="{pools.bets.view.ID}_team_A" width="35%" rowspan="2"
                             style="text-align:right;background-color:{pools.bets.view.TEAM_COLOR_A};">
                             {pools.bets.view.TEAM_NAME_A}
-                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_A_URL}.png"/>
+                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_A}.png"/>
                         </td>
                         <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">
                             {pools.bets.view.SCORE_A}
@@ -125,7 +120,7 @@
                         </td>
                         <td id="{pools.bets.view.ID}_team_B" width="35%" rowspan="2"
                             style="text-align:left;background-color:{pools.bets.view.TEAM_COLOR_B};">
-                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_B_URL}.png"/>
+                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_B}.png"/>
                             {pools.bets.view.TEAM_NAME_B}
                         </td>
                     </tr>
@@ -147,7 +142,7 @@
                             style="text-align:right;background-color:{pools.bets.edit.TEAM_COLOR_A};">
                             <div class="team">
                                 {pools.bets.edit.TEAM_NAME_A}
-                                <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_A_URL}.png"/>
+                                <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_A}.png"/>
                                 <span class="fifaRankTip">Classement FIFA : {pools.bets.edit.TEAM_RANK_A}</span>
                             </div>
                         </td>
@@ -171,7 +166,7 @@
                         <td id="{pools.bets.edit.ID}_team_B" width="35%"
                             style="text-align:left;background-color:{pools.bets.edit.TEAM_COLOR_B};">
                             <div class="team">
-                                <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_B_URL}.png"/>
+                                <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_B}.png"/>
                                 {pools.bets.edit.TEAM_NAME_B}
                                 <span class="fifaRankTip">Classement FIFA : {pools.bets.edit.TEAM_RANK_B}</span>
                             </div>
@@ -201,25 +196,28 @@
             <div><h3>Groupe {pools.POOL}</h3></div>
             <div id="pool_{pools.POOL}_ranking">
                 <table class="ranking-pool">
-                    <tr>
-                        <td width="80%"><b>Nations</b></td>
-                        <td width="10%"><b>Pts</b></td>
-                        <td width="10%"><b>Diff</b></td>
-                    </tr>
-                    <!-- BEGIN teams -->
-                    <tr>
-                        <td id="{pools.teams.ID}_team">
-                            <img width="15px" src="{TPL_WEB_PATH}/images/flag/{pools.teams.NAME_URL}.png"/>
-                            {pools.teams.NAME}
-                        </td>
-                        <td>{pools.teams.POINTS}</td>
-                        <td>{pools.teams.DIFF}</td>
-                    </tr>
-                    <!-- END teams -->
+                    <thead>
+                        <tr>
+                            <th width="80%"><b>Nations</b></th>
+                            <th width="10%"><b>Pts</b></th>
+                            <th width="10%"><b>Diff</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- BEGIN teams -->
+                        <tr>
+                            <td id="{pools.teams.ID}_team">
+                                <img width="15px" src="{TPL_WEB_PATH}/images/flag/{pools.teams.NAME}.png" alt="{pools.teams.NAME}" />
+                                {pools.teams.NAME}
+                            </td>
+                            <td>{pools.teams.POINTS}</td>
+                            <td>{pools.teams.DIFF}</td>
+                        </tr>
+                        <!-- END teams -->
+                    </tbody>
                 </table>
             </div>
         </div>
         <!-- END pools -->
-
     </aside>
 </section>

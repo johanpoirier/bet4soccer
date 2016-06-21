@@ -672,13 +672,14 @@ class Matches
 
     function add_HTTP_result($matchID, $team, $score)
     {
-        if ($score == "") {
-            $score = 'NULL';
+        if ($score === "") {
+            $score = null;
         }
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'matches';
-        $req .= ' SET score' . $team . ' = ' . $score . '';
-        $req .= ' WHERE matchID = ' . $matchID . '';
-        $ret = $this->parent->db->exec_query($req);
+        $req .= ' SET score' . $team . ' = :score';
+        $req .= ' WHERE matchID = :matchID';
+
+        $this->parent->db->exec_query($req, ['matchID' => $matchID, 'score' => $score]);
 
         $pool = $this->get_pool($matchID);
         $matches = $this->get_by_pool($pool);
@@ -686,12 +687,15 @@ class Matches
 
         $array_teams = $this->parent->teams->get_ranking($teams, $matches, 'score');
 
-        echo $matchID . "|" . $pool . "|";
-        foreach ($array_teams as $team) {
-            echo $team['teamID'] . ";" . $team['name'] . ";" . rawurlencode(utf8_encode($team['name'])) . ";" . $team['points'] . ";" . (($team['diff'] > 0) ? "+" : "") . $team['diff'] . "|";
-        }
+        $response = [
+            'matchID' => $matchID,
+            'pool' => $pool,
+            'teams' => $array_teams
+        ];
+
+        $this->parent->setJsonHeader();
+        echo json_encode($response);
 
         $this->parent->settings->set_last_result();
-        return $ret;
     }
 }

@@ -60,16 +60,16 @@ function getTags(groupID, startTag) {
 	});
 }
 
-function selectListValue(id_liste, value) {
-	$('#' + id_liste).val(value);
+function selectListValue(id_list, value) {
+	$('#' + id_list).val(value);
 }
 
 function updateRanking(forced) {
-	$('#update_ranking').html('En cours...');
+	$('.update-ranking').html('En cours...');
 	$.ajax({
-		type: "GET",
-		url: "/",
-		data: "act=update_HTTP_ranking&forced="+forced,
+		type: 'GET',
+		url: '/',
+		data: 'act=update_HTTP_ranking&forced=' + forced,
 		success: function(data) {
 			handleUpdateRankingResponse(data);
 		}
@@ -78,35 +78,35 @@ function updateRanking(forced) {
 
 function handleUpdateRankingResponse(results) {
 	if(results == 'OKOK') {
-		$('#update_ranking').html("<strong>Classement à jour.</strong>");
+		$('.update-ranking').html('Classement à jour.');
 	}
 	else if ((results == 'IN_PROGRESS') || (results == 'OKIN_PROGRESS')) {
-		$('#update_ranking').html("<strong><a href=\"#\" onClick=\"updateRanking(1)\">Génération déjà en cours. Forcer ?</a></strong>");
+		$('.update-ranking button').attr('onclick', 'updateRanking(1)').html('Génération déjà en cours. Forcer ?');
 	}
 	else {
-		$('#update_ranking').html("<strong>Erreur</strong>");
+		$('.update-ranking').html('Erreur !');
 		alert(results);
 	}
 	
 }
 
 function updateStats() {
-	$('#generate_stats').html("Génération en cours...");
+	$('.update-stats button').html("Génération en cours...");
 	$.ajax({
-		type: "GET",
-		url: "/",
-		data: "act=update_HTTP_stats",
+		type: 'GET',
+		url: '/',
+		data: 'act=update_HTTP_stats',
 		success: function(data) {
 			handleUpdateStatsResponse(data);
 		},
-		error: function(XMLHttpRequest, textStatus, errorThrown) {
+		error: function(XMLHttpRequest, textStatus) {
 			alert(textStatus);
 		}
 	});
 }
 
 function handleUpdateStatsResponse() {
-	$('#generate_stats').html("<strong>Statistiques à jour.</strong>");
+	$('.update-stats').html('Stats à jour.');
 }
 
 function globalInit(isPublic) {

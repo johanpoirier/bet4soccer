@@ -1159,9 +1159,19 @@ td.game-date {
     padding: 0.2rem 0.6rem;
 }
 
+
 /*************** odds *****************/
 .odds-help {
     text-align: center;
+}
+
+
+/*************** results *****************/
+.update-ranking button, .update-stats button {
+    color: #d10016;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0.2rem 0.4rem;
 }
 
 

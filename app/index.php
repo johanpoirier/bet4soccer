@@ -3,7 +3,6 @@
 error_reporting(E_ALL);
 session_start();
 
-header("Content-Type: text/html; charset=utf-8");
 define('WEB_PATH', "/");
 define('BASE_PATH', dirname(realpath(__FILE__)) . "/");
 define('URL_PATH', "/");
@@ -242,6 +241,7 @@ if (LOGOUT) {
     $bet->users->add($_POST['login'], $_POST['pass'], $_POST['name'], $_POST['email'], $_POST['groupID'], $_POST['status']);
     redirect("/?act=edit_users");
 }
+
 if (GET_HTTP_TEAMS) {
     if ($debug)
         echo "GET_HTTP_TEAMS<br />";

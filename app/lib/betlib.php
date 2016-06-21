@@ -114,8 +114,22 @@ class BetEngine
 
     /*     * **************** */
 
+    function setJsonHeader()
+    {
+        header("Content-Type: application/json; charset=utf-8");
+    }
+
+    function setHtmlHeader()
+    {
+        header("Content-Type: text/html; charset=utf-8");
+    }
+
+    /*     * **************** */
+
     function load_header($title = false)
     {
+        $this->setHtmlHeader();
+
         $this->template->set_filenames([ 'head' => 'header.tpl' ]);
 
         if ($title) {
@@ -1471,7 +1485,7 @@ class BetEngine
         $pools = $this->config['pools'];
 
         $this->template->assign_vars(array(
-            'UPDATE_RANK_LINK' => ($this->users->is_ranking_ok()) ? "<b><a href=\"#\" onClick=\"javascript:updateRanking(0);\">Classement obsoléte.</a><b>" : "<b>Classement à jour.</b>"
+            'UPDATE_RANK_LINK' => ($this->users->is_ranking_ok()) ? '<button onclick="updateRanking(0)">Classement obsoléte.</button>' : 'Classement à jour.'
         ));
 
         foreach ($pools as $pool) {
@@ -1529,8 +1543,6 @@ class BetEngine
                     'SCORE_B' => (is_numeric($match['scoreB'])) ? $match['scoreB'] : "",
                     'TEAM_COLOR_A' => ($match['scoreA'] > $match['scoreB']) ? "#99FF99" : "transparent",
                     'TEAM_COLOR_B' => ($match['scoreB'] > $match['scoreA']) ? "#99FF99" : "transparent",
-                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($match['teamAname'])) : rawurlencode($match['teamAname']),
-                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($match['teamBname'])) : rawurlencode($match['teamBname']),
                     'POOL' => $match['teamPool']
                 ));
             }
@@ -1542,7 +1554,6 @@ class BetEngine
                     $this->template->assign_block_vars('pools.teams', array(
                         'ID' => $team['teamID'],
                         'NAME' => $team['name'],
-                        'NAME_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($team['name'])) : rawurlencode($team['name']),
                         'POINTS' => $team['points'],
                         'DIFF' => (($team['diff'] > 0) ? "+" : "") . $team['diff']
                     ));
@@ -2353,7 +2364,6 @@ class BetEngine
                 $this->template->assign_block_vars('pools.teams', array(
                     'ID' => $team['teamID'],
                     'NAME' => $team['name'],
-                    'NAME_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($team['name'])) : rawurlencode($team['name']),
                     'POINTS' => $team['points'],
                     'DIFF' => (($team['diff'] > 0) ? "+" : "") . $team['diff']
                 ));
@@ -2492,8 +2502,6 @@ class BetEngine
                     'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
                     'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
                     'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
-                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
-                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
                     'POOL' => $bet['teamPool'],
                     'DISABLED' => (!$this->users->is_admin($this->users->get_current_id()) && ($userID != $this->users->get_current_id())) ? "DISABLED" : ""
                 ));
@@ -2514,8 +2522,6 @@ class BetEngine
                     'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
                     'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
                     'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
-                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
-                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
                     'POOL' => $bet['teamPool'],
                     'DISABLED' => "DISABLED",
                     'USER_URL' => ($userID) ? "&user=" . $userID : ""
@@ -2576,8 +2582,6 @@ class BetEngine
                     'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
                     'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
                     'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
-                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
-                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
                     'POOL' => $bet['teamPool'],
                     'DISABLED' => (!$this->users->is_admin($this->users->get_current_id()) && ($userID != $this->users->get_current_id())) ? "DISABLED" : ""
                 ));
@@ -2598,8 +2602,6 @@ class BetEngine
                     'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
                     'TEAM_COLOR_A' => ($bet['scoreBetA'] > $bet['scoreBetB']) ? "#99FF99" : "transparent",
                     'TEAM_COLOR_B' => ($bet['scoreBetB'] > $bet['scoreBetA']) ? "#99FF99" : "transparent",
-                    'TEAM_NAME_A_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamAname'])) : rawurlencode($bet['teamAname']),
-                    'TEAM_NAME_B_URL' => $this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($bet['teamBname'])) : rawurlencode($bet['teamBname']),
                     'POOL' => $bet['teamPool'],
                     'DISABLED' => "DISABLED",
                     'USER_URL' => ($userID) ? "&user=" . $userID : ""

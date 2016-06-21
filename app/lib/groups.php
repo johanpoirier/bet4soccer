@@ -12,12 +12,12 @@ class Groups
     function add($group_id, $group_name, $password = "")
     {
         $group_name = trim($group_name);
-        if ($group_name == null || $group_name == "") {
+        if ($group_name == null || $group_name === "") {
             return false;
         }
         $ownerID = $this->parent->users->get_current_id();
-        prepare_alphanumeric_data(array(&$group_name, &$password));
-        prepare_numeric_data(array(&$group_id));
+        prepare_alphanumeric_data([&$group_name, &$password]);
+        prepare_numeric_data([&$group_id]);
 
         if ($group_id = $this->is_exist($group_id)) {
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'groups ';
@@ -32,12 +32,11 @@ class Groups
             $req .= ' VALUES (\'' . $group_name . '\', \'' . $password . '\', ' . $ownerID . ')';
             return $this->parent->db->insert($req);
         }
-        return $group_id;
     }
 
     function delete($groupID)
     {
-        prepare_numeric_data(array(&$groupID));
+        prepare_numeric_data([&$groupID]);
         $req = 'DELETE';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'groups';
         $req .= ' WHERE groupID=' . $groupID . '';
@@ -69,7 +68,9 @@ class Groups
         // Execute Query
         $nb_groups = 0;
         $groups = $this->parent->db->select_array($req, $nb_groups);
-        if ($this->parent->debug) array_show($groups);
+        if ($this->parent->debug) {
+            array_show($groups);
+        }
 
         // Return results
         if ($nb_args > 0 && $nb_groups > 0) {
@@ -95,7 +96,7 @@ class Groups
 
         if ($nb_args > 0) {
             $groupID = $args[0];
-            prepare_numeric_data(array(&$groupID));
+            prepare_numeric_data([&$groupID]);
         }
 
         // Main Query
@@ -145,18 +146,23 @@ class Groups
         $req .= ' ORDER BY g.name ASC';
 
         // Execute Query
+        $nb_groups = 0;
         $groups = $this->parent->db->select_array($req, $nb_groups);
-        if ($this->parent->debug) array_show($groups);
+        if ($this->parent->debug) {
+            array_show($groups);
+        }
 
         // Return results
-        else return $groups;
+        return $groups;
     }
 
     function set_last_rank($groupID, $last_rank)
     {
-        prepare_numeric_data(array(&$last_rank, &$groupID));
+        prepare_numeric_data([&$last_rank, &$groupID]);
         $group = $this->get($groupID);
-        if (!$group) return false;
+        if (!$group) {
+            return false;
+        }
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'groups';
         $req .= ' SET lastRank = ' . $last_rank;
@@ -237,7 +243,7 @@ class Groups
 
     function get_invitation($code)
     {
-        prepare_alphanumeric_data(array(&$code));
+        prepare_alphanumeric_data([&$code]);
         // Main Query
         $req = 'SELECT i.*,(expiration < NOW()) as expired,g.name as group_name';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'invitations i';
@@ -254,7 +260,7 @@ class Groups
 
     function get_invitations_by_sender($senderID)
     {
-        prepare_numeric_data(array(&$senderID));
+        prepare_numeric_data([&$senderID]);
         // Main Query
         $req = 'SELECT i.*,(expiration < NOW()) as expired,g.name as group_name';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'invitations i';
@@ -263,7 +269,9 @@ class Groups
 
         $nb_invitations = 0;
         $invitations = $this->parent->db->select_array($req, $nb_invitations);
-        if ($this->parent->debug) array_show($invitations);
+        if ($this->parent->debug) {
+            array_show($invitations);
+        }
         return $invitations;
     }
 
@@ -286,9 +294,11 @@ class Groups
 
     function delete_invitation($code)
     {
-        prepare_alphanumeric_data(array(&$code));
+        prepare_alphanumeric_data([&$code]);
         $invitation = $this->get_invitation($code);
-        if ($invitation['status'] < 0) return true;
+        if ($invitation['status'] < 0) {
+            return true;
+        }
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'invitations';
         $req .= ' SET status = -' . $invitation['status'] . '';
         $req .= ' WHERE code = \'' . $code . '\';';
@@ -303,14 +313,18 @@ class Groups
         if ($invitation) {
             $this->delete_invitation($code);
             return $invitation['groupID'];
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     function create_uniq_invitation($email, $groupID, $type)
     {
         $code = md5(uniqid(rand(), true));
         $user = $this->parent->users->get_current();
-        if ($this->parent->users->is_in_group($groupID, $user['userID']) < 1) return false;
+        if ($this->parent->users->is_in_group($groupID, $user['userID']) < 1) {
+            return false;
+        }
         // Main Query
         $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'invitations (code,senderID,groupID,email,expiration,status)';
         $req .= ' VALUES (\'' . addslashes($code) . '\', \'' . $user['userID'] . '\',\'' . $groupID . '\', \'' . addslashes($email) . '\',';
@@ -326,7 +340,7 @@ class Groups
 
     function create_uniq_invitations($invitations, $type)
     {
-        $codes = array();
+        $codes = [];
         foreach ($invitations as $invitation) {
             if ($invitation['groupID'] == 0) continue;
             if ($code = $this->create_uniq_invitation($invitation['email'], $invitation['groupID'], $type)) {
@@ -339,8 +353,12 @@ class Groups
 
     function is_invited($groupID, $userID = false)
     {
-        if ($userID) $user = $this->parent->users->get($userID);
-        else $user = $this->parent->users->get_current();
+        if ($userID) {
+            $user = $this->parent->users->get($userID);
+        }
+        else {
+            $user = $this->parent->users->get_current();
+        }
         $email = $user['email'];
 
         // Main Query
@@ -361,7 +379,7 @@ class Groups
 
     function get_name_by_user($userID, $order = "")
     {
-        prepare_numeric_data(array(&$userID));
+        prepare_numeric_data([&$userID]);
         // Main Query
         $req = 'SELECT t.name';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users u';
@@ -369,14 +387,18 @@ class Groups
         $req .= ' WHERE u.userID = ' . $userID . '';
 
         $group_name = $this->parent->db->select_one($req);
-        if ($this->parent->debug) echo $group_name;
+        if ($this->parent->debug) {
+            echo $group_name;
+        }
 
         return $group_name;
     }
 
     function is_exist($group_id)
     {
-        if (!$group_id || ($group_id == "")) return false;
+        if (!$group_id || ($group_id == "")) {
+            return false;
+        }
         // Main Query
         $req = 'SELECT groupID';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'groups ';

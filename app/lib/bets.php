@@ -164,14 +164,17 @@ class Bets {
             $pool = $this->parent->matches->get_pool($matchID);
             $bets = $this->get_by_pool($pool);
             $teams = $this->parent->teams->get_by_pool($pool);
-            $array_teams = $this->parent->teams->get_ranking($teams, $bets, 'scoreBet');
+            $arrayTeams = $this->parent->teams->get_ranking($teams, $bets, 'scoreBet');
 
-            echo $matchID . "|" . $pool . "|";
-            foreach ($array_teams as $team) {
-                echo $team['teamID'] . ";" . $team['name'] . ";" . rawurlencode($team['name']) . ";" . $team['points'] . ";" . (($team['diff'] > 0) ? "+" : "") . $team['diff'] . "|";
-            }
+            $response = [
+                'matchID' => $matchID,
+                'pool' => $pool,
+                'teams' => $arrayTeams
+            ];
+
+            $this->parent->setJsonHeader();
+            echo json_encode($response);
         }
-        return false;
     }
 
     function add_next_final_team($userID, $next_matchID, $next_team, $next_teamID) {
