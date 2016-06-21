@@ -160,7 +160,7 @@ class Bets {
     }
 
     function add_HTTP($userID, $matchID, $team, $score) {
-        if ($ret = $this->add($userID, $matchID, $team, $score)) {
+        if ($this->add($userID, $matchID, $team, $score)) {
             $pool = $this->parent->matches->get_pool($matchID);
             $bets = $this->get_by_pool($pool);
             $teams = $this->parent->teams->get_by_pool($pool);
@@ -170,10 +170,8 @@ class Bets {
             foreach ($array_teams as $team) {
                 echo $team['teamID'] . ";" . $team['name'] . ";" . rawurlencode($team['name']) . ";" . $team['points'] . ";" . (($team['diff'] > 0) ? "+" : "") . $team['diff'] . "|";
             }
-        } else {
-            echo $ret;
         }
-        return $ret;
+        return false;
     }
 
     function add_next_final_team($userID, $next_matchID, $next_team, $next_teamID) {
@@ -427,7 +425,7 @@ class Bets {
     }
 
     function get_by_match_group_by_score($matchID) {
-        prepare_numeric_data(array(&$matchID));
+        prepare_numeric_data([&$matchID]);
         // Main Query
         $req = 'SELECT *, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.teamA as teamBetA, b.teamB as teamBetB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.pool as teamPool, u.name as username,';
         $req .= 'DATE_FORMAT(date,\'%W %d/%m, %Hh\') as date_str';
@@ -457,7 +455,7 @@ class Bets {
                 $g_bets[$type][$score]['users'] = [];
                 $g_bets[$type][$score]['count'] = 0;
             }
-            $_tmp = array('ID' => $bet['userID'], 'NAME' => $bet['username']);
+            $_tmp = ['ID' => $bet['userID'], 'NAME' => $bet['username']];
             $g_bets[$type][$score]['users'][] = $_tmp;
             $g_bets[$type][$score]['count']++;
         }
@@ -472,8 +470,8 @@ class Bets {
         if (!$userID) {
             $userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : 0;
         }
-        prepare_numeric_data(array(&$userID));
-        prepare_alphanumeric_data(array(&$pool));
+        prepare_numeric_data([&$userID]);
+        prepare_alphanumeric_data([&$pool]);
 
         // Main Query
         $req = 'SELECT m.matchID, m.scoreA as scoreMatchA, m.scoreB as scoreMatchB, b.scoreA as scoreBetA, b.scoreB as scoreBetB, tA.teamID as teamAid, tB.teamID as teamBid, tA.name as teamAname, tB.name as teamBname, tA.fifaRank as teamAfifaRank, tB.fifaRank as teamBfifaRank, tA.pool as teamPool, b.teamW,';

@@ -81,6 +81,7 @@ class Teams
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'teams';
         $req .= ' WHERE name = \'' . $name . '\'';
 
+        $nb_teams = 0;
         $teams = $this->parent->db->select_line($req, $nb_teams);
 
         if ($this->parent->debug) array_show($teams);
@@ -144,7 +145,7 @@ class Teams
 
     function get_ranking($teams, $bets, $libScore)
     {
-        $array_teams = array();
+        $array_teams = [];
         foreach ($teams as $team) {
             $team['points'] = 0;
             $team['diff'] = 0;
@@ -152,31 +153,33 @@ class Teams
             $team['goals_conceded'] = 0;
             $array_teams[$team['teamID']] = $team;
         }
+        $scoreLabelA = $libScore . 'A';
+        $scoreLabelB = $libScore . 'B';
 
         foreach ($bets as $bet) {
             $match = $this->parent->matches->get($bet['matchID']);
-            if ($match['scoreA'] != "") $bet[$libScore . 'A'] = $match['scoreA'];
-            if ($match['scoreB'] != "") $bet[$libScore . 'B'] = $match['scoreB'];
-            if ($bet[$libScore . 'A'] > $bet[$libScore . 'B']) {
+            if ($match['scoreA'] !== null) $bet[$scoreLabelA] = $match['scoreA'];
+            if ($match['scoreB'] !== null) $bet[$scoreLabelB] = $match['scoreB'];
+
+            if ($bet[$scoreLabelA] > $bet[$scoreLabelB]) {
                 $array_teams[$bet['teamAid']]['points'] += 3;
-                $array_teams[$bet['teamAid']]['diff'] += ($bet[$libScore . 'A'] - $bet[$libScore . 'B']);
-                $array_teams[$bet['teamBid']]['diff'] -= ($bet[$libScore . 'A'] - $bet[$libScore . 'B']);
+                $array_teams[$bet['teamAid']]['diff'] += ($bet[$scoreLabelA] - $bet[$scoreLabelB]);
+                $array_teams[$bet['teamBid']]['diff'] -= ($bet[$scoreLabelA] - $bet[$scoreLabelB]);
             }
-            if ($bet[$libScore . 'A'] < $bet[$libScore . 'B']) {
+            if ($bet[$scoreLabelA] < $bet[$scoreLabelB]) {
                 $array_teams[$bet['teamBid']]['points'] += 3;
-                $array_teams[$bet['teamAid']]['diff'] -= ($bet[$libScore . 'B'] - $bet[$libScore . 'A']);
-                $array_teams[$bet['teamBid']]['diff'] += ($bet[$libScore . 'B'] - $bet[$libScore . 'A']);
+                $array_teams[$bet['teamAid']]['diff'] -= ($bet[$scoreLabelB] - $bet[$scoreLabelA]);
+                $array_teams[$bet['teamBid']]['diff'] += ($bet[$scoreLabelB] - $bet[$scoreLabelA]);
             }
-            if ($bet[$libScore . 'A'] == $bet[$libScore . 'B'] && ($bet[$libScore . 'A'] != "")) {
+            if ($bet[$scoreLabelA] === $bet[$scoreLabelB] && ($bet[$scoreLabelA] !== null)) {
                 $array_teams[$bet['teamAid']]['points'] += 1;
                 $array_teams[$bet['teamBid']]['points'] += 1;
             }
-            $array_teams[$bet['teamAid']]['goals_scored'] += $bet[$libScore . 'A'];
-            $array_teams[$bet['teamBid']]['goals_scored'] += $bet[$libScore . 'B'];
-            $array_teams[$bet['teamAid']]['goals_conceded'] += $bet[$libScore . 'B'];
-            $array_teams[$bet['teamBid']]['goals_conceded'] += $bet[$libScore . 'A'];
+            $array_teams[$bet['teamAid']]['goals_scored'] += $bet[$scoreLabelA];
+            $array_teams[$bet['teamBid']]['goals_scored'] += $bet[$scoreLabelB];
+            $array_teams[$bet['teamAid']]['goals_conceded'] += $bet[$scoreLabelB];
+            $array_teams[$bet['teamBid']]['goals_conceded'] += $bet[$scoreLabelA];
         }
-
         usort($array_teams, "compare_teams");
 
         return $array_teams;
