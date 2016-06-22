@@ -1180,6 +1180,8 @@ class BetEngine
 
     function load_tags($groupID = false, $start = false)
     {
+        $nbTagsPerPage = 22;
+
         $this->template->set_filenames(array(
             'tags' => 'tags.tpl'
         ));
@@ -1188,14 +1190,14 @@ class BetEngine
 
         $tags = [];
         if (($groupID && $this->users->is_in_group($groupID) > 0) || ($groupID === 0)) {
-            $tags = $this->tags->get_by_group($groupID, $start, 10);
+            $tags = $this->tags->get_by_group($groupID, $start, $nbTagsPerPage);
         }
 
         $nb_tags = $this->tags->count_by_group($groupID);
-        $max = ceil($nb_tags / 10);
-        $page = ceil(($start + 1) / 10);
-        $prev = ($page - 2) * 10;
-        $next = $page * 10;
+        $max = ceil($nb_tags / $nbTagsPerPage);
+        $page = ceil(($start + 1) / $nbTagsPerPage);
+        $prev = ($page - 2) * $nbTagsPerPage;
+        $next = $page * $nbTagsPerPage;
 
         if ($max <= 1) {
             $navig = "";
@@ -1209,7 +1211,7 @@ class BetEngine
 
         foreach ($tags as $tag) {
             if ($tag['userID'] == $_SESSION['userID'] || $this->isadmin()) {
-                $del_img = "<a href=\"#\"><img src=\"" . $this->template_web_location . "images/del.png\" onclick=\"delTag(" . $tag['tagID'] . ", '" . $groupID . "');\" border=\"0\"/></a>";
+                $del_img = '<img src="' . $this->template_web_location . 'images/del.png" onclick="delTag(' . $tag['tagID'] . ', ' . $groupID . ');" alt="Supprimer" />';
             } else {
                 $del_img = "";
             }
