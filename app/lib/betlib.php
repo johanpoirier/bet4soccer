@@ -2008,45 +2008,39 @@ class BetEngine
         $adminEdit = ($userID != $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
 
         if ($edit) {
-            $this->template->set_filenames(array(
+            $this->template->set_filenames([
                 'edit_finals_bets' => 'edit_finals_bets.tpl'
-            ));
+            ]);
         } else {
-            $this->template->set_filenames(array(
+            $this->template->set_filenames([
                 'view_finals_bets' => 'view_finals_bets.tpl'
-            ));
+            ]);
         }
 
-        $this->template->assign_vars(array(
+        $this->template->assign_vars([
             'PAGE_TITLE' => $adminEdit ? "Phase finale de $current_user" : 'Ma phase finale',
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
-        ));
+        ]);
 
-        $array_template = [];
         $rounds = $this->config['rounds'];
-        $teams = array('A', 'B');
+        $teams = ['A', 'B'];
 
-        $array_template_extra = [];
         $this->template->assign_block_vars('finals', []);
 
         /* ROUND */
 
         foreach ($rounds as $round) {
-
             $round_name = $this->lang['LABEL_' . $round . '_FINAL'];
 
-            $this->template->assign_block_vars('finals.rounds', array(
+            $this->template->assign_block_vars('finals.rounds', [
                 'ROUND' => $round,
                 'NAME' => $round_name
-            ));
+            ]);
 
             /* Exception match 3ème place */
-            if ($round == 3)
-                $j = 1;
-            else
-                $j = $round;
+            $j = ($round == 3) ? 1 : $round;
 
             /* Structure */
 
@@ -2294,6 +2288,8 @@ class BetEngine
                     'YMIN' => 0,
                     'YMAX' => $maxPts + 1,
                     'YTICKS' => '[' . implode(',', $ticks) . ']',
+                    'TRANSFORM' => 'false',
+                    'INVERSE_TRANSFORM' => 'false',
                     'COLOR' => '#50BA50'
                 ));
             }
