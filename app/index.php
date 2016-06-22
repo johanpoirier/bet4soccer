@@ -87,7 +87,6 @@ define('JOIN_GROUP', (isset($_GET['act']) && ($_GET['act']) == "join_group"));
 define('LEAVE_GROUP', (isset($_GET['act']) && ($_GET['act']) == "leave_group"));
 define('CREATE_GROUP', (isset($_GET['act']) && ($_GET['act']) == "create_group"));
 define('INVITE_FRIENDS', (isset($_GET['act']) && ($_GET['act']) == "invite_friends"));
-define('MONEY', (isset($_GET['act']) && ($_GET['act']) == "money"));
 
 define('VIEW_AUDIT', isset($_GET['act']) && ($_GET['act'] == "audit") && $bet->isadmin());
 define('ADMIN', isset($_GET['act']) && ($_GET['act'] == "admin") && $bet->isadmin());
@@ -610,16 +609,17 @@ if (EDIT_RESULTS) {
         $w = $bet->lang['warning'][$_GET['w']];
     $bet->load_create_group($w);
 } elseif (INVITE_FRIENDS) {
-    if ($debug)
+    if ($debug){
         echo "INVITE_FRIENDS<br />";
+    }
     if (isset($_POST['type'])) {
         if ($_POST['type'] == 'OUT') {
-            $invitations = array();
-            $emails = array();
+            $invitations = [];
+            $emails = [];
             $nb_invitations = $bet->config['nb_invitations'];
             for ($i = 1; $i <= $nb_invitations; $i++) {
                 if ((isset($_POST['email' . $i])) && ($_POST['email' . $i] != "")) {
-                    $invitation = array();
+                    $invitation = [];
                     $invitation['email'] = $_POST['email' . $i];
                     $invitation['groupID'] = $_POST['groupID' . $i];
                     $invitations[] = $invitation;
@@ -628,16 +628,17 @@ if (EDIT_RESULTS) {
             }
             $codes = $bet->groups->create_uniq_invitations($invitations, $_POST['type']);
             $status = $bet->send_invitations($emails, $codes, $_POST['type']);
+            $bet->audit->add($_SESSION['userID'], 'invit', 'a invité de nouveaux utilisateurs : ' . implode(', ', $emails));
             redirect("/?act=invite_friends&w=" . $status . "");
         } elseif ($_POST['type'] == 'IN') {
-            $invitations = array();
-            $emails = array();
+            $invitations = [];
+            $emails = [];
             $nb_invitations = $bet->config['nb_invitations'];
             for ($i = 1; $i <= $nb_invitations; $i++) {
                 if ((isset($_POST['userID' . $i])) && ($_POST['userID' . $i] != "")) {
                     if ($_POST['userID' . $i] == 0)
                         continue;
-                    $invitation = array();
+                    $invitation = [];
                     $user = $bet->users->get($_POST['userID' . $i]);
                     if (!$user)
                         continue;
@@ -650,20 +651,20 @@ if (EDIT_RESULTS) {
             }
             $codes = $bet->groups->create_uniq_invitations($invitations, $_POST['type']);
             $status = $bet->send_invitations($emails, $codes, $_POST['type']);
+            $bet->audit->add($_SESSION['userID'], 'invit', 'a invité les utilisateurs : ' . implode(', ', $emails));
             redirect("/?act=invite_friends&w=" . $status . "");
-        } else
+        } else {
             redirect("/?act=invite_friends");
+        }
     }
     $user = $bet->users->get_current();
-    if (isset($_GET['w']) && $_GET['w'])
+    if (isset($_GET['w']) && $_GET['w']) {
         $w = $bet->lang['warning'][$_GET['w']];
-    elseif (($user['groupID'] == "") && ($user['groupID2'] == "") && ($user['groupID3'] == ""))
+    }
+    elseif (($user['groupID'] == "") && ($user['groupID2'] == "") && ($user['groupID3'] == "")) {
         $w = $bet->lang['warning'][INVITE_WITHOUT_GROUP];
+    }
     $bet->load_invite_friends($w);
-} elseif (MONEY) {
-    if ($debug)
-        echo "MONEY<br />";
-    $bet->load_money();
 } elseif (ADMIN) {
     if ($debug) {
         echo "ADMIN<br />";
