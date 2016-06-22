@@ -163,17 +163,23 @@ if (REGISTER) {
         }
         $groupID = $bet->groups->use_invitation($_POST['code']);
         $status = $bet->users->add($_POST['login'], $_POST['password1'], $_POST['name'], $_POST['firstname'], $_POST['email'], $groupID, 0);
-        if ($status < 0)
+        if ($status < 0) {
             redirect("?act=register&c=" . $_POST['code'] . "&w=" . $status);
-        else
+        }
+        else {
+            $bet->audit->add($status, 'register', 'a créé son compte');
             redirect("/?w=" . REGISTER_OK);
+        }
     }
-    if (isset($_GET['w']) && $_GET['w'])
+    if (isset($_GET['w']) && $_GET['w']) {
         $w = $bet->lang['warning'][$_GET['w']];
-    if (isset($_GET['c']))
+    }
+    if (isset($_GET['c'])) {
         $code = $_GET['c'];
-    else
+    }
+    else {
         $code = false;
+    }
     $bet->load_header();
     $bet->load_header_menu();
     $bet->load_register($w, $code);
