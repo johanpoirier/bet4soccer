@@ -14,43 +14,31 @@
         window.location.hash = '#user_form';
     }
 
-    function handleGetUserResponse(data) {
+    function handleGetUserResponse(user) {
         window.location.hash = '';
 
-        var results = data.split("|");
-        var IDuser = results[0];
-        var name = results[1];
-        var login = results[2];
-        var email = results[4];
-        var IDgroup = results[5];
-        var status = results[6];
+        $('#name').val(user.name);
+        $('#realname').val(user.name);
+        $('#login').val(user.login);
+        $('#email').val(user.email);
+        $('#idUser').val(user.userID);
 
-        var nameObj = document.getElementById('name');
-        var loginObj = document.getElementById('login');
-        var emailObj = document.getElementById('email');
         var groupObj = document.getElementById('group');
         var statusObj = document.getElementById('admin');
 
         var delButton = document.getElementById('del_user');
         var addButton = document.getElementById('add_user');
         var idUser = document.getElementById('idUser');
-        var realname = document.getElementById('realname');
-
-        nameObj.value = name;
-        realname.value = name;
-        loginObj.value = login;
-        emailObj.value = email;
 
         for (var i = 0; i < groupObj.options.length; i++) {
-            if (groupObj.options[i].value == IDgroup) {
+            if (groupObj.options[i].value == user.groupID) {
                 groupObj.options[i].selected = true;
             }
         }
 
-        statusObj.checked = (status == 1);
+        statusObj.checked = (parseInt(user.status, 10) === 1);
         addButton.value = "Ajouter / Modifier";
         delButton.style.display = "inline";
-        idUser.value = IDuser;
     }
 
     function saveUser() {
@@ -70,8 +58,8 @@
     }
 
     function delUser() {
-        var idUser = document.getElementById('idUser').value;
-        var realname = document.getElementById('realname').value;
+        var idUser = $('#idUser').val();
+        var realname = $('#realname').val();
         if (confirm('Etes-vous sûr de vouloir supprimer ' + realname + '?')) {
             $.ajax({
                 type: "GET",
@@ -91,38 +79,35 @@
         });
     }
 
-    function handleGetUsersResponse(data) {
-        var results = data.split("|");
-        var list = document.getElementById('list_users');
+    function handleGetUsersResponse(users) {
+        var list = $('#list_users tbody');
+        list.html('');
 
-        var HTML_list = '<table width="100%"><tr><th width="30%">Nom</th><th width="20%">Login</th><th width="20%">Groupe</th><th width="10%">Cnx</th><th width="10%">Vote</th><th width="10%">Paris</th></tr>';
-        for (var i = 0; i < (results.length - 1); i++) {
-            var result = results[i].split(";");
-            var IDuser = result[0];
-            var login = result[1];
-            var name = result[2];
-            var IDgroup = result[4];
-            var group_name = groups[IDgroup];
-            if (!group_name) {
-                group_name = "";
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            var groups = [];
+            if (user.groupName) {
+                groups.push(user.groupName);
             }
-            var status = result[5];
-            var lastCnx = result[6];
-            var lastBet = result[7];
+            if (user.groupName2) {
+                groups.push(user.groupName2);
+            }
+            if (user.groupName3) {
+                groups.push(user.groupName3);
+            }
 
-            HTML_list += "<tr id=\"user_" + IDuser + "\" onclick=\"getUser(" + IDuser + ");\">";
-            if (status == 1) {
-                HTML_list += "<td><strong>" + name + "</strong></td>";
+            var userLine = "<tr id=\"user_" + user.userID + "\" onclick=\"getUser(" + user.userID + ");\">";
+            if (parseInt(user.status, 10) === 1) {
+                userLine += "<td><strong>" + user.name + "</strong></td>";
             }
             else {
-                HTML_list += "<td>" + name + "</td>";
+                userLine += "<td>" + user.name + "</td>";
             }
-            HTML_list += "<td>" + login + "</td><td>" + group_name + "</td>";
-            HTML_list += "<td>" + lastCnx + "</td><td>" + lastBet + "</td><td></td>";
-            HTML_list += "</tr>";
+            userLine += "<td>" + user.login + "</td><td>" + groups.join(', ') + "</td>";
+            userLine += "<td>" + (user.last_connection ? user.last_connection : '') + "</td><td>" + (user.last_bet ? user.last_bet : '') + "</td><td></td>";
+            userLine += "</tr>";
+            list.append(userLine);
         }
-        HTML_list += "</table>";
-        list.innerHTML = HTML_list;
     }
 
 
@@ -269,34 +254,38 @@
 
         <div class="tag_cloud" id="list_users">
             <table width="100%">
-                <tr>
-                    <th width="30%">Nom</th>
-                    <th width="20%">Login</th>
-                    <th width="20%">Groupe</th>
-                    <th width="10%">Cnx</th>
-                    <th width="10%">Vote</th>
-                    <th width="10%">Paris</th>
-                </tr>
-                <!-- BEGIN users -->
-                <tr id="user_{users.ID}" onclick="getUser({users.ID})">
-                    <!-- BEGIN user -->
-                    <td>{users.user.NAME}</td>
-                    <td>{users.user.LOGIN}</td>
-                    <td>{users.user.GROUP_NAME}</td>
-                    <td>{users.user.LAST_CONNECTION}</td>
-                    <td>{users.user.LAST_BET}</td>
-                    <td>{users.user.BETS_COUNT}</td>
-                    <!-- END user -->
-                    <!-- BEGIN admin -->
-                    <td><b>{users.admin.NAME}</b></td>
-                    <td>{users.admin.LOGIN}</td>
-                    <td>{users.admin.GROUP_NAME}</td>
-                    <td>{users.admin.LAST_CONNECTION}</td>
-                    <td>{users.admin.LAST_BET}</td>
-                    <td>{users.admin.BETS_COUNT}</td>
-                    <!-- END admin -->
-                </tr>
-                <!-- END users -->
+                <thead>
+                    <tr>
+                        <th width="30%">Nom</th>
+                        <th width="20%">Login</th>
+                        <th width="20%">Groupes</th>
+                        <th width="10%">Cnx</th>
+                        <th width="10%">Vote</th>
+                        <th width="10%">Paris</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- BEGIN users -->
+                    <tr id="user_{users.ID}" onclick="getUser({users.ID})">
+                        <!-- BEGIN user -->
+                        <td>{users.user.NAME}</td>
+                        <td>{users.user.LOGIN}</td>
+                        <td>{users.user.GROUP_NAME}</td>
+                        <td>{users.user.LAST_CONNECTION}</td>
+                        <td>{users.user.LAST_BET}</td>
+                        <td>{users.user.BETS_COUNT}</td>
+                        <!-- END user -->
+                        <!-- BEGIN admin -->
+                        <td><b>{users.admin.NAME}</b></td>
+                        <td>{users.admin.LOGIN}</td>
+                        <td>{users.admin.GROUP_NAME}</td>
+                        <td>{users.admin.LAST_CONNECTION}</td>
+                        <td>{users.admin.LAST_BET}</td>
+                        <td>{users.admin.BETS_COUNT}</td>
+                        <!-- END admin -->
+                    </tr>
+                    <!-- END users -->
+                </tbody>
             </table>
         </div>
 

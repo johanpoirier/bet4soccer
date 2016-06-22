@@ -120,21 +120,12 @@ class Users
         $users = $this->get($userID);
 
         // Return results
-        if (intval($userID) > 0) {
-            $user = $users;
-            echo $user['userID'] . "|" . $user['name'] . "|" . $user['login'] . "|" . $user['password'] . "|" . $user['email'] . "|" . $user['groupID'] . "|" . $user['status'];
-            return $user;
-        } else {
-            foreach ($users as $user) {
-                echo $user['userID'] . ";" . $user['login'] . ";" . $user['name'] . ";" . $user['email'] . ";" . $user['groupID'] . ";" . $user['status'] . ";" . $user['last_connection'] .  ";" . $user['last_bet'] . "|";
-            }
-            return $users;
-        }
+        $this->parent->setJsonHeader();
+        echo json_encode($users);
     }
 
     function get($userID = null)
     {
-        $nb_args = func_num_args();
         $params = [];
 
         // Main Query
@@ -148,7 +139,7 @@ class Users
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t2 ON (u.groupID2 = t2.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'groups t3 ON (u.groupID3 = t3.groupID)';
         $req .= ' LEFT JOIN ' . $this->parent->config['db_prefix'] . 'bets b ON (u.userID = b.userID AND b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL)';
-        if ($nb_args == 1) {
+        if ($userID !== null) {
             $params = ['userID' => $userID];
             $req .= ' WHERE u.userID = :userID';
         }
@@ -163,7 +154,7 @@ class Users
         }
 
         // Return results
-        if ($nb_args > 0 && isset($users[0])) {
+        if ($userID !== null && isset($users[0])) {
             return $users[0];
         } else {
             return $users;

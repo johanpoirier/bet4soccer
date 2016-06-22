@@ -2718,6 +2718,7 @@ class BetEngine
             if ($userToken && hash_equals($userToken, $token)) {
                 $user = $this->users->get($userID);
                 $this->log_user_in($user);
+
                 return true;
             }
         }

@@ -7,9 +7,9 @@
 		</div>
 
 		<div class="register">
-			<span style="color:red;text-align:center;"><strong>{WARNING}</strong></span>
-
 			<form method="post" action="/?act=register">
+				<span class="register-warning">{WARNING}</span>
+
 				<input type="hidden" name="redirect" value="" />
 				<input type="hidden" name="code" value="{CODE}" />
 
