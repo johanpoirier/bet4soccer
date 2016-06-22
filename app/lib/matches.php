@@ -329,7 +329,7 @@ class Matches
         $req .= ' tA.name as teamAname,';
         $req .= ' tB.name as teamBname,';
         $req .= ' tA.pool as teamPool,';
-        $req .= ' DATE_FORMAT(date,\'le %d/%m à %Hh%i\') as date_str,';
+        $req .= ' DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str,';
         $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
         $req .= ' DATEDIFF(date,NOW()) as delay_days';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'matches m';
@@ -339,10 +339,12 @@ class Matches
         $req .= ' AND m.rank = ' . $rank;
         $req .= ' ORDER BY date, teamAname';
 
-        $match = $this->parent->db->select_line($req, $null);
+        $nb_games = 0;
+        $match = $this->parent->db->select_line($req, $nb_games);
 
-        if ($this->parent->debug)
+        if ($this->parent->debug) {
             array_show($match);
+        }
 
         return $match;
     }
