@@ -49,9 +49,7 @@
         $('.update-ranking').html('<button onclick="updateRanking(0)">Classement obsolète.</button>');
     }
 
-    function changePhase(action) {
-        window.location.assign('/?act=' + action);
-    }
+    $(document).ready(headlineButtonsInit);
 </script>
 
 <section id="mainarea">
@@ -61,10 +59,7 @@
                 <h1>Résultats</h1>
             </div>
             <div class="headline-menu">
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option selected="selected" value="edit_results">Poules</option>
-                    <option value="edit_finals_results">Phase finale</option>
-                </select>
+                <button class="headline-button phase" data-value="edit_finals_results"><i class="icon-final"></i>Phase finale</button>
                 <span class="update-ranking">{UPDATE_RANK_LINK}</span>
                 <span class="update-stats"><button onclick="updateStats()">Générer les stats</button></span>
             </div>

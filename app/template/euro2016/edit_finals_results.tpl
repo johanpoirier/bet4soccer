@@ -100,9 +100,7 @@
         document.getElementById('update_ranking').innerHTML = "<a href='#' onclick='updateRanking();'></strong>Classement obsoléte.</strong></a>";
     }
 
-    function changePhase(action) {
-        window.location.assign('/?act=' + action);
-    }
+    $(document).ready(headlineButtonsInit);
 </script>
 <section id="mainarea">
     <div class="maincontent">
@@ -111,12 +109,9 @@
                 <h1>Resultats</h1>
             </div>
             <div class="headline-menu">
-                <select class="compact" onchange="changePhase(this.value)" name="sltPhase" style="float: right;">
-                    <option value="edit_results">Poules</option>
-                    <option selected="selected" value="edit_finals_results">Phase finale</option>
-                </select>
+                <button class="headline-button phase" data-value="edit_results"><i class="icon-pools"></i>Poules</button>
                 <span id="update_ranking">{UPDATE_RANK_LINK}</span>
-                <a href="#" onclick="updateStats()">Générer les stats.</a>
+                <span class="update-stats"><button onclick="updateStats()">Générer les stats</button></span>
             </div>
         </div>
 

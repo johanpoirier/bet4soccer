@@ -1175,7 +1175,11 @@ td.game-date {
 
 /*************** results *****************/
 .update-ranking button, .update-stats button {
+    background-color: white;
+    border-radius: 0.2rem;
+    border: 0;
     color: #d10016;
+    cursor: pointer;
     font-size: 0.8rem;
     font-weight: bold;
     padding: 0.2rem 0.4rem;

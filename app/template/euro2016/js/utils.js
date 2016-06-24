@@ -139,11 +139,19 @@ function globalInit(isPublic) {
 function headlineButtonsInit() {
 	$('button.headline-button.phase').click(function (el) {
 		var btn = $(el.target);
-		window.location.assign('/?act=' + btn.data('value') + '&user=' + btn.data('user'));
+		var url = '/?act=' + btn.data('value');
+		if (btn.data('user')) {
+			url += '&user=' + btn.data('user');
+		}
+		window.location.assign(url);
 	});
 	$('button.headline-button.order').click(function (el) {
 		var btn = $(el.target);
-		window.location.assign('/?act=bets&match_display=' + btn.data('value') + '&user=' + btn.data('user'));
+		var url = '/?act=bets&match_display=' + btn.data('value');
+		if (btn.data('user')) {
+			url += '&user=' + btn.data('user');
+		}
+		window.location.assign(url);
 	});
 }
 
