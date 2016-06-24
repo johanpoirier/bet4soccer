@@ -138,7 +138,8 @@ function globalInit(isPublic) {
 
 function headlineButtonsInit() {
 	$('button.headline-button.phase').click(function (el) {
-		window.location.assign('/?act=' + $(el.target).data('value'));
+		var btn = $(el.target);
+		window.location.assign('/?act=' + btn.data('value') + '&user=' + btn.data('user'));
 	});
 	$('button.headline-button.order').click(function (el) {
 		var btn = $(el.target);

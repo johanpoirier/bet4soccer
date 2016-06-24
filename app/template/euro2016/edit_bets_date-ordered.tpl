@@ -59,7 +59,7 @@
                 <h1>{PAGE_TITLE}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="finals_bets"><i class="icon-final"></i>Phase finale</button>
+                <button class="headline-button phase" data-value="finals_bets" data-user="{CURRENT_USER_ID}"><i class="icon-final"></i>Phase finale</button>
                 <button class="headline-button order" data-value="pool" data-user="{CURRENT_USER_ID}"><i class="icon-sort-name-up"></i> Trier par poule</button>
             </div>
         </div>

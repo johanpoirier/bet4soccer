@@ -130,10 +130,10 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Ma phase finale</h1>
+                <h1>{PAGE_TITLE}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="bets"><i class="icon-pools"></i>Poules</button>
+                <button class="headline-button phase" data-value="bets" data-user="{CURRENT_USER_ID}"><i class="icon-pools"></i>Poules</button>
             </div>
         </div>
 
