@@ -123,12 +123,12 @@
         <div class="tag_cloud">
             <!-- BEGIN finals -->
             <table border="0" cellpadding="0" cellspacing="0"
-                   style="font-size: 90%; margin-left: 20px; margin-right: 20px; width: 100%;">
+                   style="margin-left: 20px; margin-right: 20px; width: 100%;">
                 <tr>
                     <!-- BEGIN rounds -->
                     <td>
                         <!-- BEGIN merge_top -->
-                        <table border="0" cellpadding="0" cellspacing="0" style="font-size: 90%; margin:0; width: 100%;">
+                        <table border="0" cellpadding="0" cellspacing="0" style="margin:0; width: 100%;">
                             <!-- END merge_top -->
                             <tr height="25px">
                                 <td align="center" colspan="2" style="border:1px solid #999999;"
