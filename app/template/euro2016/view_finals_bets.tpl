@@ -6,10 +6,10 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Phase finale de {CURRENT_USER}</h1>
+                <h1>{PAGE_TITLE}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="bets"><i class="icon-pools"></i>Poules</button>
+                <button class="headline-button phase" data-value="bets"><i class="icon-pools" data-user="{CURRENT_USER_ID}"></i>Poules</button>
             </div>
         </div>
 

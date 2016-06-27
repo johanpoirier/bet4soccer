@@ -9,7 +9,7 @@
                 <h1>{PAGE_TITLE}</h1>
             </div>
             <div class="headline-menu">
-                <button class="headline-button phase" data-value="finals_bets"><i class="icon-final"></i>Phase finale</button>
+                <button class="headline-button phase" data-value="finals_bets" data-user="{CURRENT_USER_ID}"><i class="icon-final"></i>Phase finale</button>
             </div>
         </div>
 

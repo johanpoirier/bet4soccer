@@ -175,10 +175,6 @@
                     <!-- END edit -->
                     <!-- END bets -->
                 </table>
-
-                <div class="form-submit-zone">
-                    <input type="submit" value="Valider" />
-                </div>
             </form>
         </div>
     </div>

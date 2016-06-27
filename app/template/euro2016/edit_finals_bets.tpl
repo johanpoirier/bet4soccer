@@ -265,10 +265,6 @@
                 </table>
                 <!-- END finals -->
             </div>
-
-            <div class="form-submit-zone">
-                <input type="submit" {SUBMIT_STATE} value="Valider" />
-            </div>
         </form>
     </div>
 </section>
