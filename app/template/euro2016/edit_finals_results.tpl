@@ -174,7 +174,7 @@
                                     &nbsp;{finals.rounds.ranks.teams.NAME}</td>
                                 <td style="border:1px solid #999999; text-align:center;font-weight:600;font-size:15px;"
                                     bgcolor="{finals.rounds.ranks.teams.COLOR}">
-                                    <input type="number" min="0" max="99" size="1"
+                                    <input type="number" min="0" max="99" size="2"
                                            id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_SCORE"
                                            value="{finals.rounds.ranks.teams.SCORE}"
                                            onKeyUp="javascript:saveFinalResult(this.value,{finals.rounds.ranks.MATCH_ID},'{finals.rounds.ranks.teams.TEAM}',{finals.rounds.ROUND},{finals.rounds.ranks.RANK});"

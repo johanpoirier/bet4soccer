@@ -223,7 +223,7 @@
                                         &nbsp;{finals.rounds.ranks.teams.NAME}</td>
                                     <td style="border:1px solid #999999; text-align:center;font-weight:600;font-size:15px;"
                                         bgcolor="{finals.rounds.ranks.teams.COLOR}">
-                                        <input type="text" size="1"
+                                        <input ype="number" min="0" max="99" size="2"
                                                name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_SCORE"
                                                id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_SCORE"
                                                value="{finals.rounds.ranks.teams.SCORE}"
