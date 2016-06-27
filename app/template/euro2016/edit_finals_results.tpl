@@ -97,7 +97,7 @@
             team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + lost_team + '_NAME');
         }
 
-        document.getElementById('update_ranking').innerHTML = "<a href='#' onclick='updateRanking();'></strong>Classement obsoléte.</strong></a>";
+        $('.update-ranking').html('<button onclick="updateRanking(0)">Classement obsolète.</button>');
     }
 
     $(document).ready(headlineButtonsInit);
