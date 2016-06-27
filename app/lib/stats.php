@@ -27,10 +27,10 @@ class Stats
     {
         // Main Query
         $req = 'SELECT *, label FROM ' . $this->config['db_prefix'] . 'stats_user';
-        $req .= " WHERE userID = $userID";
+        $req .= ' WHERE userID = :userID';
 
         $nb_stats = 0;
-        $stats = $this->db->select_array($req, $nb_stats);
+        $stats = $this->db->selectArray($req, ['userID' => $userID], $nb_stats);
 
         return $stats;
     }

@@ -749,9 +749,9 @@ class BetEngine
                 }
             } else {
                 if ($last_pool_match['delay_sec'] > 0) {
-                    $user_url = '<a href="/?act=view_bets&user=' . $user['userID'] . '">';
+                    $user_url = '<a href="/?act=bets&user=' . $user['userID'] . '">';
                 } else {
-                    $user_url = '<a href="/?act=view_finals_bets&user=' . $user['userID'] . '">';
+                    $user_url = '<a href="/?act=finals_bets&user=' . $user['userID'] . '">';
                 }
             }
 
@@ -1993,7 +1993,7 @@ class BetEngine
 
     function load_finals_bets($edit = false, $userID = false)
     {
-        if ($userID != false) {
+        if ($userID !== false) {
             $user = $this->users->get($userID);
             $current_user = $user['name'];
             $all_bets = false;
@@ -2007,20 +2007,16 @@ class BetEngine
             $edit = false;
         }
 
-        $adminEdit = ($userID != $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
+        $adminEdit = ($userID !== $this->users->get_current_id()) && $this->users->is_admin($this->users->get_current_id());
 
         if ($edit) {
-            $this->template->set_filenames([
-                'edit_finals_bets' => 'edit_finals_bets.tpl'
-            ]);
+            $this->template->set_filenames(['edit_finals_bets' => 'edit_finals_bets.tpl']);
         } else {
-            $this->template->set_filenames([
-                'view_finals_bets' => 'view_finals_bets.tpl'
-            ]);
+            $this->template->set_filenames(['view_finals_bets' => 'view_finals_bets.tpl']);
         }
 
         $this->template->assign_vars([
-            'PAGE_TITLE' => $adminEdit ? "Phase finale de $current_user" : 'Ma phase finale',
+            'PAGE_TITLE' => ($userID == $this->users->get_current_id()) ? 'Ma phase finale' : "Phase finale de $current_user",
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""
@@ -2334,7 +2330,7 @@ class BetEngine
         ]);
 
         $this->template->assign_vars([
-            'PAGE_TITLE' => $adminEdit || !$edit ? "Pronostics de $current_user" : 'Ma phase de poules',
+            'PAGE_TITLE' => ($userID == $this->users->get_current_id()) ? 'Ma phase de poules' : "Pronostics de $current_user",
             'CURRENT_USER_ID' => $userID,
             'USER_URL' => ($userID) ? "&user=" . $userID : "",
             'SUBMIT_STATE' => $adminEdit ? "disabled" : ""

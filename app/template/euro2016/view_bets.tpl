@@ -43,7 +43,7 @@
                     <td id="{pools.bets.view.ID}_team_A" width="35%" rowspan="2"
                         style="text-align:right;background-color:{pools.bets.view.TEAM_COLOR_A};">
                         {pools.bets.view.TEAM_NAME_A}
-                        <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_A_URL}.png"/></td>
+                        <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_A}.png"/></td>
                     <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">
                         {pools.bets.view.SCORE_A}</td>
                     <td width="10%"
@@ -57,7 +57,7 @@
                         {pools.bets.view.SCORE_B}</td>
                     <td id="{pools.bets.view.ID}_team_B" width="35%" rowspan="2"
                         style="text-align:left;background-color:{pools.bets.view.TEAM_COLOR_B};">
-                        <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_B_URL}.png"/>
+                        <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_B}.png"/>
                         {pools.bets.view.TEAM_NAME_B}</td>
                 </tr>
                 <tr>

@@ -484,8 +484,9 @@ if (EDIT_RESULTS) {
         $userID = $_GET['user'];
     }
 
-    if ($debug)
+    if ($debug) {
         echo "EDIT_FINALS_BETS<br />";
+    }
     $bet->load_finals_bets(true, $userID);
 } elseif (VIEW_BETS_OF_USER) {
     if ($debug) {
