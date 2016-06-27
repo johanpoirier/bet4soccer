@@ -110,7 +110,7 @@
             </div>
             <div class="headline-menu">
                 <button class="headline-button phase" data-value="edit_results"><i class="icon-pools"></i>Poules</button>
-                <span id="update_ranking">{UPDATE_RANK_LINK}</span>
+                <span class="update-ranking">{UPDATE_RANK_LINK}</span>
                 <span class="update-stats"><button onclick="updateStats()">Générer les stats</button></span>
             </div>
         </div>
