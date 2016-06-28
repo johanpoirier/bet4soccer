@@ -2087,7 +2087,7 @@ class BetEngine
                 $matchB_is_set = (isset($match['teamBid']) && (strlen($match['teamBid']) != 0));
                 $match_is_set = (isset($match['teamA']) && isset($match['teamB']) && ($match['teamA'] !== null) && ($match['teamB'] !== null) && ($match['teamA'] != 0) && ($match['teamB'] != 0));
                 $result_is_set = (isset($match['scoreA'])) && (isset($match['scoreB'])) && ($match['scoreA'] !== null) && ($match['scoreB'] !== null);
-                $match_playing_soon = $match['delay_sec'] <  36 * 60 * 60;
+                $match_playing_soon = ($match['delay_sec'] > 0) && ($match['delay_sec'] <  36 * 60 * 60);
 
                 // Priorité à l'équipe du résultat
                 if ($matchA_is_set) {
