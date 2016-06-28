@@ -2246,7 +2246,8 @@ class BetEngine
                     'YTICKS' => "[ 1, 50, 100, 150, 200, 250, " . $this->users->count_active() . " ]",
                     'TRANSFORM' => 'function (v) { return -v; }',
                     'INVERSE_TRANSFORM' => 'function (v) { return -v; }',
-                    'COLOR' => '#5166ED'
+                    'COLOR' => '#5166ED',
+                    'STYLE' => 'line'
                 ));
             } else if ($id == 2) {
                 $xSerie = "[";
@@ -2293,7 +2294,8 @@ class BetEngine
                     'YTICKS' => '[' . implode(',', $ticks) . ']',
                     'TRANSFORM' => 'false',
                     'INVERSE_TRANSFORM' => 'false',
-                    'COLOR' => '#50BA50'
+                    'COLOR' => '#50BA50',
+                    'STYLE' => 'bar'
                 ));
             }
         }
@@ -2395,7 +2397,8 @@ class BetEngine
                     'YTICKS' => "[ 1, 50, 100, 150, 200, 250, " . $this->users->count_active() . " ]",
                     'TRANSFORM' => 'function (v) { return -v; }',
                     'INVERSE_TRANSFORM' => 'function (v) { return -v; }',
-                    'COLOR' => '#5166ED'
+                    'COLOR' => '#5166ED',
+                    'STYLE' => 'line'
                 ));
             } else if ($id == 2) {
                 $xSerie = "[";
@@ -2442,7 +2445,8 @@ class BetEngine
                     'YTICKS' => '[' . implode(',', $ticks) . ']',
                     'COLOR' => '#50BA50',
                     'TRANSFORM' => 'false',
-                    'INVERSE_TRANSFORM' => 'false'
+                    'INVERSE_TRANSFORM' => 'false',
+                    'STYLE' => 'bar'
                 ));
             }
         }

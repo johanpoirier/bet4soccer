@@ -182,7 +182,7 @@ function showTooltip(x, y, contents) {
 	}).appendTo('body').fadeIn(200);
 }
 
-function displayChart(id, data, color, xSerie, yTicks, yMin, yMax, transformFunc, inverseTransformFunc) {
+function displayChart(id, data, style, color, xSerie, yTicks, yMin, yMax, transformFunc, inverseTransformFunc) {
 	var elId = '#stats_' + id;
 	var options = {
 		colors: [ color ],
@@ -200,6 +200,18 @@ function displayChart(id, data, color, xSerie, yTicks, yMin, yMax, transformFunc
 			hoverable: true
 		}
 	};
+	if (style === "bar") {
+		options.series = {
+			lines: {
+				show: false
+			},
+			bars: {
+				show: true,
+				barWidth: 1,
+				align: 'left'
+			}
+		}
+	}
 	if (transformFunc) {
 		options.yaxis.transform = transformFunc;
 	}
