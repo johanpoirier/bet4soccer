@@ -2063,32 +2063,33 @@ class BetEngine
                 $height_bottom = 34;
             }
 
-            if (($round != 3) || (!in_array(3, $rounds)))
+            if (($round != 3) || (!in_array(3, $rounds))) {
                 $this->template->assign_block_vars('finals.rounds.merge_top', []);
-            if (($round != 1) || (!in_array(3, $rounds)))
+            }
+            if (($round != 1) || (!in_array(3, $rounds))) {
                 $this->template->assign_block_vars('finals.rounds.merge_bottom', []);
+            }
 
-            /* RANK */
+            // RANK
 
             for ($i = 1; $i <= $j; $i++) {
-
                 $match = $this->matches->get_final($round, $i);
-                if (!$match)
+                if (!$match) {
                     continue;
+                }
 
                 $bet = $this->bets->get_by_match_and_user($match['matchID'], $userID);
-                //if(!$bet) continue;
 
-                /* Tests */
+                // Tests
                 $betA_is_null = (!isset($bet['teamBetA']) || (strlen($bet['teamBetA']) != 0));
                 $matchA_is_set = (isset($match['teamAid']) && (strlen($match['teamAid']) != 0));
                 $betB_is_null = (!isset($bet['teamBetB']) || (strlen($bet['teamBetB']) != 0));
                 $matchB_is_set = (isset($match['teamBid']) && (strlen($match['teamBid']) != 0));
                 $match_is_set = (isset($match['teamA']) && isset($match['teamB']) && ($match['teamA'] !== null) && ($match['teamB'] !== null) && ($match['teamA'] != 0) && ($match['teamB'] != 0));
                 $result_is_set = (isset($match['scoreA'])) && (isset($match['scoreB'])) && ($match['scoreA'] !== null) && ($match['scoreB'] !== null);
+                $match_playing_soon = $match['delay_sec'] <  36 * 60 * 60;
 
-
-                /* Priorité à l'équipe du résultat */
+                // Priorité à l'équipe du résultat
                 if ($matchA_is_set) {
                     $bet['teamAname'] = (isset($match['teamAname'])) ? $match['teamAname'] : "";
                     $bet['teamBetA'] = (isset($match['teamAid'])) ? $match['teamAid'] : "";
@@ -2099,7 +2100,7 @@ class BetEngine
                     $bet['teamBetB'] = (isset($match['teamBid'])) ? $match['teamBid'] : "";
                 }
 
-                /* Calcul des points */
+                // Calcul des points
                 if ($result_is_set) {
                     $points = "0pt";
                     $color = "red";
@@ -2123,15 +2124,15 @@ class BetEngine
                     $diff = "";
                 }
 
-                /* Si on visualise les score d'un autre joueur et que les paris sont encore ouverts, on les mets �  null */
+                // Si on visualise les score d'un autre joueur et que les paris sont encore ouverts, on les mets à null
                 if (!$edit && !$all_bets && $this->matches->is_open($match['matchID'])) {
                     $bet['scoreBetA'] = null;
                     $bet['scoreBetB'] = null;
                     $bet['teamW'] = null;
                 }
 
-                /* Attribution des variables  de rang */
-                $this->template->assign_block_vars('finals.rounds.ranks', array(
+                // Attribution des variables  de rang
+                $this->template->assign_block_vars('finals.rounds.ranks', [
                     'RANK' => $i,
                     'DATE' => "<i>" . $match['date_str'] . "</i>",
                     'MATCH_ID' => $match['matchID'],
@@ -2141,7 +2142,8 @@ class BetEngine
                     'POINTS' => $points,
                     'COLOR' => $color,
                     'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
-                ));
+                    'HIGHLIGHT' =>  $match_playing_soon ? 'font-weight: bold;' : ''
+                ]);
 
                 if (!$betA_is_null && !$matchA_is_set) {
                     $teamA = (isset($bet['teamBetA']) && $bet['teamBetA'] != "" && $bet['teamBetA'] !== null) ? $this->teams->get($bet['teamBetA']) : "";
@@ -2152,10 +2154,12 @@ class BetEngine
                     $teamB = (isset($bet['teamBetB']) && $bet['teamBetB'] != "" && $bet['teamBetB'] !== null) ? $this->teams->get($bet['teamBetB']) : "";
                     $bet['teamBname'] = (isset($teamB['name'])) ? $teamB['name'] : "";
                 }
-                if (!isset($bet['scoreBetA']))
+                if (!isset($bet['scoreBetA'])) {
                     $bet['scoreBetA'] = NULL;
-                if (!isset($bet['scoreBetB']))
+                }
+                if (!isset($bet['scoreBetB'])) {
                     $bet['scoreBetB'] = NULL;
+                }
                 $color = [];
                 $color['A'] = (isset($bet['teamW']) && $bet['teamW'] == 'A') ? "#99FF99" : "#F9F9F9";
                 $color['B'] = (isset($bet['teamW']) && $bet['teamW'] == 'B') ? "#99FF99" : "#F9F9F9";
@@ -2167,13 +2171,14 @@ class BetEngine
                 }
 
                 foreach ($teams as $team) {
-                    if ($team == 'A')
+                    if ($team == 'A') {
                         $prev_rank = ($i * 2) - 1;
-                    elseif ($team == 'B')
+                    }
+                    elseif ($team == 'B') {
                         $prev_rank = ($i * 2);
+                    }
                     $prev_round = $round * 2;
                     $prev_match = $this->matches->get_final($prev_round, $prev_rank);
-                    $prev_bet = $this->matches->get_final($prev_round, $prev_rank);
 
                     $teamName = (isset($bet['team' . $team . 'name'])) ? $bet['team' . $team . 'name'] : "";
                     if (!$this->matches->is_open($match['matchID']) || $edit) {

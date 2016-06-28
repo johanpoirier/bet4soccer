@@ -169,7 +169,7 @@
                             <!-- BEGIN merge_top -->
                             <table border="0" cellpadding="0" cellspacing="0" style="margin:0;">
                                 <!-- END merge_top -->
-                                <tr height="25px">
+                                <tr style="height:25px;">
                                     <td align="center" colspan="2" style="border:1px solid #999999;"
                                         bgcolor="#CFCFCF">{finals.rounds.NAME}</td>
                                     <td colspan="3"></td>
@@ -187,7 +187,7 @@
                                 </tr>
                                 <!-- BEGIN ranks -->
                                 <tr>
-                                    <td colspan="2" height="{finals.rounds.ranks.HEIGHT_TOP}">&#160;</td>
+                                    <td colspan="2" style="height:{finals.rounds.ranks.HEIGHT_TOP}px;">&#160;</td>
                                     <!-- BEGIN bottom_line -->
                                     <td rowspan="3"
                                         style="border-width:0 3px 2px 0; border-style: solid;border-color:black;">
@@ -198,7 +198,7 @@
                                     <!-- END bottom_line -->
                                 </tr>
                                 <tr>
-                                    <td colspan="2">{finals.rounds.ranks.DATE}</td>
+                                    <td colspan="2" style="{finals.rounds.ranks.HIGHLIGHT}">{finals.rounds.ranks.DATE}</td>
                                 </tr>
                                 <input type="hidden" name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_MATCH_ID"
                                        id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_MATCH_ID"
@@ -207,15 +207,15 @@
                                        id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_W"
                                        value="{finals.rounds.ranks.TEAM_W}"/>
                                 <!-- BEGIN teams -->
-                                <input type="hidden"
-                                       name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_ID"
-                                       id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_ID"
-                                       value="{finals.rounds.ranks.teams.ID}"/>
-                                <input type="hidden"
-                                       name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_TEAM_REAL"
-                                       id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_TEAM_REAL"
-                                       value="{finals.rounds.ranks.teams.TEAM_REAL}"/>
-                                <tr height="25px">
+                                <tr style="height: 25px;{finals.rounds.ranks.HIGHLIGHT}">
+                                    <input type="hidden"
+                                           name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_ID"
+                                           id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_ID"
+                                           value="{finals.rounds.ranks.teams.ID}"/>
+                                    <input type="hidden"
+                                           name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_TEAM_REAL"
+                                           id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_TEAM_REAL"
+                                           value="{finals.rounds.ranks.teams.TEAM_REAL}"/>
                                     <!-- BEGIN edit -->
                                     <td style="border:1px solid #999999;" bgcolor="{finals.rounds.ranks.teams.COLOR}"
                                         id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_NAME"
@@ -253,7 +253,7 @@
                                 </tr>
                                 <!-- END teams -->
                                 <tr>
-                                    <td colspan="2" height="{finals.rounds.ranks.HEIGHT_BOTTOM}">&#160;</td>
+                                    <td colspan="2" style="height: {finals.rounds.ranks.HEIGHT_BOTTOM}px;">&#160;</td>
                                 </tr>
                                 <!-- END ranks -->
                                 <!-- BEGIN merge_bottom -->
