@@ -1617,16 +1617,16 @@ class BetEngine
                     $height_bottom = 0;
                 }
                 if ($round == 4) {
-                    $height_top = 88;
-                    $height_bottom = 88;
+                    $height_top = 102;
+                    $height_bottom = 116;
                 }
                 if ($round == 2) {
-                    $height_top = 237;
-                    $height_bottom = 237;
+                    $height_top = 275;
+                    $height_bottom = 289;
                 }
                 if ($round == 1) {
-                    $height_top = 525;
-                    $height_bottom = (in_array(3, $rounds)) ? 335 : 525;
+                    $height_top = 621;
+                    $height_bottom = (in_array(3, $rounds)) ? 335 : 635;
                 }
                 if ($round == 3) {
                     $height_top = 0;
@@ -2046,16 +2046,16 @@ class BetEngine
                 $height_bottom = 0;
             }
             if ($round == 4) {
-                $height_top = 61;
-                $height_bottom = 61;
+                $height_top = 56;
+                $height_bottom = 70;
             }
             if ($round == 2) {
-                $height_top = 154;
-                $height_bottom = 154;
+                $height_top = 151;
+                $height_bottom = 167;
             }
             if ($round == 1) {
-                $height_top = 334;
-                $height_bottom = (in_array(3, $rounds)) ? 190 : 334;
+                $height_top = 344;
+                $height_bottom = (in_array(3, $rounds)) ? 190 : 358;
             }
             if ($round == 3) {
                 $height_top = 0;

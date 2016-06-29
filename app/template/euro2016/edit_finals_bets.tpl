@@ -161,20 +161,17 @@
         <form name="save_finals_bets" action="/?act=save_finals_bets" method="post">
             <div class="tag_cloud">
                 <!-- BEGIN finals -->
-                <table border="0" cellpadding="0" cellspacing="0"
-                       style="margin-left: 20px; margin-right: 20px; width: 100%;">
+                <table border="0" cellpadding="0" cellspacing="0" style="margin-left: 20px; margin-right: 20px; width: 100%;">
                     <tr>
                         <!-- BEGIN rounds -->
                         <td>
                             <!-- BEGIN merge_top -->
                             <table border="0" cellpadding="0" cellspacing="0" style="margin:0;">
                                 <!-- END merge_top -->
-                                <tr style="height:25px;">
-                                    <td align="center" colspan="2" style="border:1px solid #999999;"
-                                        bgcolor="#CFCFCF">{finals.rounds.NAME}</td>
+                                <tr style="height: 25px;">
+                                    <td align="center" colspan="2" style="border:1px solid #999999;" bgcolor="#CFCFCF">{finals.rounds.NAME}</td>
                                     <td colspan="3"></td>
                                 </tr>
-
                                 <tr>
                                     <td align="center" colspan="2" style="border:1px solid #999999;"></td>
                                     <td colspan="3"></td>
@@ -185,19 +182,16 @@
                                     <td width="10">&#160;</td>
                                     <td width="30">&#160;</td>
                                 </tr>
+
                                 <!-- BEGIN ranks -->
                                 <tr>
                                     <td colspan="2" style="height:{finals.rounds.ranks.HEIGHT_TOP}px;">&#160;</td>
                                     <!-- BEGIN bottom_line -->
-                                    <td rowspan="3"
-                                        style="border-width:0 3px 2px 0; border-style: solid;border-color:black;">
-                                        &#160;</td>
-                                    <td rowspan="3"
-                                        style="border-width:2px 0 0 0; border-style: solid;border-color:black;">
-                                        &#160;</td>
+                                    <td rowspan="3" style="border-width:0 3px 2px 0; border-style: solid;border-color:black;"> &#160;</td>
+                                    <td rowspan="3" style="border-width:2px 0 0 0; border-style: solid;border-color:black;">&#160;</td>
                                     <!-- END bottom_line -->
                                 </tr>
-                                <tr>
+                                <tr style="height:16px;">
                                     <td colspan="2" style="{finals.rounds.ranks.HIGHLIGHT}">{finals.rounds.ranks.DATE}</td>
                                 </tr>
                                 <input type="hidden" name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_MATCH_ID"
@@ -221,8 +215,7 @@
                                         id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_NAME"
                                         onClick="javascript:setWinner({finals.rounds.ranks.MATCH_ID},'{finals.rounds.ranks.teams.TEAM}',{finals.rounds.ROUND},{finals.rounds.ranks.RANK});">{finals.rounds.ranks.teams.IMG}
                                         &nbsp;{finals.rounds.ranks.teams.NAME}</td>
-                                    <td style="border:1px solid #999999; text-align:center;font-weight:600;font-size:15px;"
-                                        bgcolor="{finals.rounds.ranks.teams.COLOR}">
+                                    <td style="border:1px solid #999999; text-align:center;font-weight:600;font-size:15px;" bgcolor="{finals.rounds.ranks.teams.COLOR}">
                                         <input type="number" min="0" max="99" size="2"
                                                name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_SCORE"
                                                id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_SCORE"
