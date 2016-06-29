@@ -294,11 +294,11 @@ class Bets {
         $req .= ' WHERE matchID = :matchID';
         if ($teamA != null) {
             $params ['teamA'] = $teamA;
-            $req .= ' AND teamA = :teamA' . $teamA;
+            $req .= ' AND teamA = :teamA';
         }
         if ($teamB != null) {
             $params ['teamB'] = $teamB;
-            $req .= ' AND teamB = :teamB' . $teamB;
+            $req .= ' AND teamB = :teamB';
         }
 
         $nb_bets = 0;

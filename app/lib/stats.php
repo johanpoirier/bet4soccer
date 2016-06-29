@@ -98,10 +98,14 @@ class Stats
                 if ((($user['nbbets'] / $nbMatchesPlayed) < $this->config['min_ratio_played_matches_for_rank']) && (!$user['lastmatch'])) {
                     $user['points'] = 0;
                 }
-                if (compare_users($user, $last_user) != 0) $rank = $j;
+                if (compare_users($user, $last_user) != 0) {
+                    $rank = $j;
+                }
                 $req = $reqBase . " (" . $user['userID'] . ", '" . $dateTime->format('m/d') . "', $rank, 0, " . $user['points'] . ", " . $user['nbresults'] . ", " . $user['nbscores'] . ")";
                 $this->db->insert($req);
-                if ($date == $yesterday) $this->users->set_last_rank($user['userID'], $rank);
+                if ($date == $yesterday) {
+                    $this->users->set_last_rank($user['userID'], $rank);
+                }
                 $last_user = $user;
                 $j++;
             }
@@ -110,8 +114,12 @@ class Stats
             $rank = $j = 1;
             $last_group = (isset($globalGroupsRanking[0])) ? $globalGroupsRanking[0] : false;
             foreach ($globalGroupsRanking as $group) {
-                if (compare_groups($group, $last_group) != 0) $rank = $j;
-                if ($date == $yesterday) $this->groups->set_last_rank($group['groupID'], $rank);
+                if (compare_groups($group, $last_group) != 0) {
+                    $rank = $j;
+                }
+                if ($date == $yesterday) {
+                    $this->groups->set_last_rank($group['groupID'], $rank);
+                }
                 $last_group = $group;
                 $j++;
             }

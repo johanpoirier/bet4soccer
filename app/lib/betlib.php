@@ -76,7 +76,7 @@ class BetEngine
         $this->users = new Users($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->bets = new Bets($this, $this->db, $this->config, $this->lang, $this->debug);
         $this->groups = new Groups($this, $this->db, $this->config, $this->lang, $this->debug);
-        
+
         $this->audit = new Audit($this->db, $this->config);
         $this->stats = new Stats($this->db, $this->config, $this->lang, $this->users, $this->groups, $this->matches, $this->bets);
         $this->tokens = new Tokens($this->db, $this->config);
@@ -130,7 +130,7 @@ class BetEngine
     {
         $this->setHtmlHeader();
 
-        $this->template->set_filenames([ 'head' => 'header.tpl' ]);
+        $this->template->set_filenames(['head' => 'header.tpl']);
 
         if ($title) {
             $title = $this->config['blog_title'] . " - " . $title;
@@ -470,23 +470,23 @@ class BetEngine
 
     function load_forgot_password()
     {
-        $this->template->set_filenames([ 'forgot_password' => 'forgot_password.tpl' ]);
+        $this->template->set_filenames(['forgot_password' => 'forgot_password.tpl']);
 
-        $this->template->assign_vars([ 'LABEL_FORGOTTEN_PASSWORD' => $this->lang['LABEL_FORGOTTEN_PASSWORD'] ]);
+        $this->template->assign_vars(['LABEL_FORGOTTEN_PASSWORD' => $this->lang['LABEL_FORGOTTEN_PASSWORD']]);
         $this->blocks_loaded[] = 'forgot_password';
     }
 
     function load_forgot_login()
     {
-        $this->template->set_filenames([ 'forgot_login' => 'forgot_login.tpl' ]);
+        $this->template->set_filenames(['forgot_login' => 'forgot_login.tpl']);
 
-        $this->template->assign_vars([ 'LABEL_FORGOTTEN_LOGIN' => $this->lang['LABEL_FORGOTTEN_LOGIN'] ]);
+        $this->template->assign_vars(['LABEL_FORGOTTEN_LOGIN' => $this->lang['LABEL_FORGOTTEN_LOGIN']]);
         $this->blocks_loaded[] = 'forgot_login';
     }
 
     function load_change_account($warning = "")
     {
-        $this->template->set_filenames([ 'change_account' => 'change_account.tpl' ]);
+        $this->template->set_filenames(['change_account' => 'change_account.tpl']);
 
         $user = $this->users->get_current();
 
@@ -589,7 +589,7 @@ class BetEngine
 
     function load_audit_logs($logs)
     {
-        $this->template->set_filenames([ 'audit' => 'audit.tpl' ]);
+        $this->template->set_filenames(['audit' => 'audit.tpl']);
 
         $users = $this->users->get();
         foreach ($users as $user) {
@@ -601,9 +601,9 @@ class BetEngine
 
         $categories = $this->audit->get_categories();
         foreach ($categories as $category) {
-            $this->template->assign_block_vars('categories', [ 'CATEGORY' => $category ]);
+            $this->template->assign_block_vars('categories', ['CATEGORY' => $category]);
         }
-        
+
         foreach ($logs as $log) {
             $this->template->assign_block_vars('logs', [
                 'DATE' => $log['date'],
@@ -1573,15 +1573,11 @@ class BetEngine
 
     function load_finals_odds()
     {
-        $this->template->set_filenames(array(
-            'view_finals_odds' => 'view_finals_odds.tpl'
-        ));
+        $this->template->set_filenames(['view_finals_odds' => 'view_finals_odds.tpl']);
 
-        $array_template = [];
         $rounds = $this->config['rounds'];
         $teams = array('A', 'B');
 
-        $array_template_extra = [];
         $this->template->assign_block_vars('finals', []);
 
         $odds_teams = [];
@@ -1612,8 +1608,9 @@ class BetEngine
             /* RANK */
             for ($rank = 1; $rank <= $j; $rank++) {
                 $match = $this->matches->get_final($round, $rank);
-                if (!$match)
+                if (!$match) {
                     continue;
+                }
 
                 if ($round == 8) {
                     $height_top = 0;
@@ -1636,36 +1633,38 @@ class BetEngine
                     $height_bottom = 35;
                 }
 
-                $bets = $this->bets->get_by_match($match['matchID']);
                 if (isset($odds_teams[$round][$rank]['A']) && isset($odds_teams[$round][$rank]['B'])) {
                     $odds = $this->bets->get_odds_by_match($match['matchID'], $odds_teams[$round][$rank]['A'], $odds_teams[$round][$rank]['B']);
                 } else {
                     $odds = $this->bets->get_odds_by_match($match['matchID']);
                 }
 
-                /* Resultats du match, si joué */
+                // Resultats du match, si joué
                 $match_result = "";
-                if ($match['scoreA'] > $match['scoreB'] || $match['teamW'] == 'A')
+                if ($match['scoreA'] > $match['scoreB'] || $match['teamW'] == 'A') {
                     $match_result = 'A';
-                elseif ($match['scoreA'] < $match['scoreB'] || $match['teamW'] == 'B')
+                } elseif ($match['scoreA'] < $match['scoreB'] || $match['teamW'] == 'B') {
                     $match_result = 'B';
-                elseif ($match['scoreA'] == $match['scoreB'] && $match['teamW'] == 'A')
+                } elseif ($match['scoreA'] == $match['scoreB'] && $match['teamW'] == 'A') {
                     $match_result = 'A';
-                elseif ($match['scoreA'] == $match['scoreB'] && $match['teamW'] == 'B')
+                } elseif ($match['scoreA'] == $match['scoreB'] && $match['teamW'] == 'B') {
                     $match_result = 'B';
-                if (($match['scoreA'] === null) && ($match['scoreB'] === null))
+                }
+                if (($match['scoreA'] === null) && ($match['scoreB'] === null)) {
                     $match_result = "";
+                }
 
-                /* Resultats des paris */
+                // Resultats des paris
                 $bets_result = '';
-                if ($odds['B_WINS'] > $odds['A_WINS'])
+                if ($odds['B_WINS'] > $odds['A_WINS']) {
                     $bets_result = 'A';
-                elseif ($odds['B_WINS'] < $odds['A_WINS'])
+                } elseif ($odds['B_WINS'] < $odds['A_WINS']) {
                     $bets_result = 'B';
-                elseif ($odds['B_WINS'] == $odds['A_WINS'] && $odds['A_AVG'] > $odds['B_AVG'])
+                } elseif ($odds['B_WINS'] == $odds['A_WINS'] && $odds['A_AVG'] > $odds['B_AVG']) {
                     $bets_result = 'A';
-                elseif ($odds['B_WINS'] == $odds['A_WINS'] && $odds['A_AVG'] < $odds['B_AVG'])
+                } elseif ($odds['B_WINS'] == $odds['A_WINS'] && $odds['A_AVG'] < $odds['B_AVG']) {
                     $bets_result = 'B';
+                }
 
                 if (($match_result != "") && ($round != 1 && $round != 3)) {
                     $next_round = ceil($round / 2);
@@ -2087,7 +2086,7 @@ class BetEngine
                 $matchB_is_set = (isset($match['teamBid']) && (strlen($match['teamBid']) != 0));
                 $match_is_set = (isset($match['teamA']) && isset($match['teamB']) && ($match['teamA'] !== null) && ($match['teamB'] !== null) && ($match['teamA'] != 0) && ($match['teamB'] != 0));
                 $result_is_set = (isset($match['scoreA'])) && (isset($match['scoreB'])) && ($match['scoreA'] !== null) && ($match['scoreB'] !== null);
-                $match_playing_soon = ($match['delay_sec'] > 0) && ($match['delay_sec'] <  36 * 60 * 60);
+                $match_playing_soon = ($match['delay_sec'] > 0) && ($match['delay_sec'] < 36 * 60 * 60);
 
                 // Priorité à l'équipe du résultat
                 if ($matchA_is_set) {
@@ -2142,7 +2141,7 @@ class BetEngine
                     'POINTS' => $points,
                     'COLOR' => $color,
                     'DIFF' => ($diff != "") ? "(" . $diff . ")" : "",
-                    'HIGHLIGHT' =>  $match_playing_soon ? 'font-weight: bold;' : ''
+                    'HIGHLIGHT' => $match_playing_soon ? 'font-weight: bold;' : ''
                 ]);
 
                 if (!$betA_is_null && !$matchA_is_set) {
@@ -2173,8 +2172,7 @@ class BetEngine
                 foreach ($teams as $team) {
                     if ($team == 'A') {
                         $prev_rank = ($i * 2) - 1;
-                    }
-                    elseif ($team == 'B') {
+                    } elseif ($team == 'B') {
                         $prev_rank = ($i * 2);
                     }
                     $prev_round = $round * 2;
@@ -2302,13 +2300,12 @@ class BetEngine
 
         if ($edit) {
             $this->blocks_loaded[] = 'edit_finals_bets';
-        }
-        else {
+        } else {
             $this->blocks_loaded[] = 'view_finals_bets';
         }
     }
 
-    function load_bets($options = [ 'edit' => false, 'userID' => null, 'orderByDate' => false ])
+    function load_bets($options = ['edit' => false, 'userID' => null, 'orderByDate' => false])
     {
         $edit = isset($options['edit']) ? $options['edit'] : false;
         $userID = isset($options['userID']) ? $options['userID'] : null;
@@ -2703,13 +2700,15 @@ class BetEngine
         $_SESSION['match_display'] = $user['match_display'];
     }
 
-    function generate_random_token() {
+    function generate_random_token()
+    {
         $factory = new RandomLib\Factory;
         $generator = $factory->getMediumStrengthGenerator();
         return $generator->generateString(128);
     }
 
-    function remember_me() {
+    function remember_me()
+    {
         $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : '';
         $deviceUuid = isset($_COOKIE['device']) ? $_COOKIE['device'] : '';
         if ($cookie) {
@@ -2798,9 +2797,9 @@ class BetEngine
 
     function load_admin()
     {
-        $this->template->set_filenames([ 'admin' => 'admin.tpl' ]);
+        $this->template->set_filenames(['admin' => 'admin.tpl']);
 
-        $this->template->assign_vars([ 'TPL_WEB_PATH' => $this->template_web_location ]);
+        $this->template->assign_vars(['TPL_WEB_PATH' => $this->template_web_location]);
 
         $this->blocks_loaded[] = 'admin';
     }
@@ -3025,8 +3024,7 @@ class BetEngine
 
         if ($user) {
             return utf8_mail($user['email'], "Euro2016 - Oubli de votre login", "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-        }
-        else {
+        } else {
             utf8_mail($this->config['email'], "Euro2016 - Utilisateur '" . $email . "' inconnu", "L'utilisateur avec l'email '" . $email . "' a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
         }
@@ -3039,8 +3037,7 @@ class BetEngine
 
         if ($user) {
             return utf8_mail($user['email'], "Euro2016 - Oubli de mot de passe", "Bonjour,\n\nVotre nouveau mot de passe est : " . $new_pass . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-        }
-        else {
+        } else {
             utf8_mail($this->config['email'], "Euro2016 - Utilisateur " . $login . " inconnu", "L'utilisateur " . $login . " a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
         }
@@ -3060,7 +3057,7 @@ class BetEngine
             "DELETE FROM " . $this->config['db_prefix'] . "tags;",
             "DELETE FROM " . $this->config['db_prefix'] . "invitations;",
             "DELETE FROM " . $this->config['db_prefix'] . "stats_user;",
-         ];
+        ];
 
         foreach ($requests as $req) {
             $this->db->exec_query($req);
