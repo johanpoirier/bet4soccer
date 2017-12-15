@@ -70,7 +70,7 @@ class MySQL_DB
         $elapsed_time = get_elapsed_time($startTime, get_moment());
 
         if ($this->debug) {
-            echo $elapsed_time . "s<br/>";
+            echo $elapsed_time . 's<br/>';
         }
 
         $this->exec_time += $elapsed_time;

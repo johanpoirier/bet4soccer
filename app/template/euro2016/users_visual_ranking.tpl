@@ -14,7 +14,7 @@
 
         <table class="ranking">
             <tr>
-                <th width="10%">Rang</b></th>
+                <th width="10%">Rang</th>
                 <th width="70%" class="aligned">Parieurs</th>
                 <th width="30%">Points</th>
             </tr>

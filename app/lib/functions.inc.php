@@ -115,11 +115,18 @@ function array_show($array)
 	echo "</PRE>";
 }
 
-// The function get_elapsed_time returns the number of seconds (with 3
-// decimals precision) between the start time and the end time given.
-function get_elapsed_time( $start, $end )
+
+/**
+ * The function get_elapsed_time returns the number of seconds (with 3 decimals precision)
+ * between the start time and the end time given.
+ *
+ * @param $start
+ * @param $end
+ * @return float
+ */
+function get_elapsed_time($start, $end)
 {
-  return number_format( $end - $start, 3, '.', ' ').' s';
+  return (float) number_format( $end - $start, 3, '.', ' ');
 }
 
 function array_vreduce($tab,$k)
