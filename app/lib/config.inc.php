@@ -6,8 +6,8 @@ $config = [];
 $config['blog_title'] = 'FIFA Coupe du Monde 2018';
 $config['blog_description'] = 'Pariez sur la coupe du Monde 2018.';
 $config['lang'] = 'fr';
-$config['url'] = 'https://euro2016.jops-dev.com/';
-$config['template_default'] = 'euro2016';
+$config['url'] = 'https://cdm2018.jops-dev.com/';
+$config['template_default'] = 'cdm2018';
 $config['templates'] = ['cdm2018' => 'FIFA'];
 $config['tag_separator'] = '<br />';
 $config['show_all_users_in_team'] = true;
@@ -23,7 +23,7 @@ $config['DB'] = 'MySQL';
 $config['db_prefix'] = 'cdm2018__';
 
 $config['auth'] = 'md5';
-$config['secret_key'] = 'this is a secret';
+$config['secret_key'] = 'this is a secret world cup';
 
 $config['min_ratio_played_matches_for_group'] = 0.65;
 $config['min_ratio_played_matches_for_rank'] = 0.60;

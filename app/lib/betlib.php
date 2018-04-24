@@ -484,31 +484,31 @@ class BetEngine
         $this->blocks_loaded[] = 'forgot_login';
     }
 
-    function load_change_account($warning = "")
+    function load_change_account($warning = '')
     {
         $this->template->set_filenames(['change_account' => 'change_account.tpl']);
 
         $user = $this->users->get_current();
 
         $themes = $this->config['templates'];
-        if ($user['theme'] == "")
+        if ($user['theme'] === '')
             $user['theme'] = $this->config['template_default'];
         foreach ($themes as $theme_id => $theme_name) {
             $this->template->assign_block_vars('themes', array(
                 'ID' => $theme_id,
                 'NAME' => $theme_name,
-                'SELECTED' => ($user['theme'] == $theme_id) ? " selected=\"selected\"" : ""
+                'SELECTED' => ($user['theme'] === $theme_id) ? ' selected="selected"' : ''
             ));
         }
 
-        $match_display_options = array("pool" => "par poule", "date" => "par date");
-        if ($user['match_display'] == "")
+        $match_display_options = array('pool' => 'par poule', 'date' => 'par date');
+        if ($user['match_display'] === '')
             $user['match_display'] = $this->config['match_display_default'];
         foreach ($match_display_options as $id => $label) {
             $this->template->assign_block_vars('match_display', array(
                 'ID' => $id,
                 'LABEL' => $label,
-                'SELECTED' => ($user['match_display'] == $id) ? " selected=\"selected\"" : ""
+                'SELECTED' => ($user['match_display'] == $id) ? ' selected="selected"' : ''
             ));
         }
 
@@ -2680,8 +2680,9 @@ class BetEngine
             $this->audit->add($user['userID'], 'auth', 's\'est loggué via le formulaire de login');
 
             return true;
-        } else
-            return $ret;
+        }
+
+        return $ret;
     }
 
     function log_user_in($user)
@@ -3023,9 +3024,9 @@ class BetEngine
         $user = $this->users->get_by_email($email);
 
         if ($user) {
-            return utf8_mail($user['email'], "Euro2016 - Oubli de votre login", "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de votre login', "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         } else {
-            utf8_mail($this->config['email'], "Euro2016 - Utilisateur '" . $email . "' inconnu", "L'utilisateur avec l'email '" . $email . "' a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            utf8_mail($this->config['email'], $this->config['blog_title'] . " - Utilisateur $email inconnu", "L’utilisateur avec l'email $email a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
         }
     }
@@ -3036,11 +3037,11 @@ class BetEngine
         $new_pass = $this->users->set_new_password($user['userID']);
 
         if ($user) {
-            return utf8_mail($user['email'], "Euro2016 - Oubli de mot de passe", "Bonjour,\n\nVotre nouveau mot de passe est : " . $new_pass . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-        } else {
-            utf8_mail($this->config['email'], "Euro2016 - Utilisateur " . $login . " inconnu", "L'utilisateur " . $login . " a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-            return false;
+            return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de mot de passe', "Bonjour,\n\nVotre nouveau mot de passe est : $new_pass \n\nCordialement,\n" . $this->config['support_team'] . "\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         }
+
+        utf8_mail($this->config['email'], $this->config['blog_title'] . " - Utilisateur $login inconnu", "L’utilisateur $login a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+        return false;
     }
 
     /*     * **************** */

@@ -542,38 +542,45 @@ class Users
         if (!$user) {
             return false;
         }
+
         $new_pass = new_password(8);
+        $mac = hash_hmac('sha256', $new_pass, $this->parent->config['secret_key']);
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' SET password = \'' . md5($new_pass) . '\'';
-        $req .= ' WHERE userID = ' . $userID . '';
+        $req .= " SET password = '$mac'";
+        $req .= " WHERE userID = $userID";
 
         if ($this->parent->db->exec_query($req)) {
             return $new_pass;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     function set_password($userID, $old_password, $new_password1, $new_password2)
     {
-        if ($new_password1 != $new_password2)
-            return PASSWORD_MISMATCH;
+        if ($new_password1 !== $new_password2) {
+          return PASSWORD_MISMATCH;
+        }
+
         $user = $this->get($userID);
-        if (!$user)
-            return false;
-        if ($user['password'] != md5($old_password))
-            return INCORRECT_PASSWORD;
+        if (!$user) {
+          return false;
+        }
+
+        if ($user['password'] !== md5($old_password)) {
+          return INCORRECT_PASSWORD;
+        }
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' SET password = \'' . md5($new_password1) . '\'';
-        $req .= ' WHERE userID = ' . $userID . '';
+        $req .= " WHERE userID = $userID";
 
         if ($this->parent->db->exec_query($req)) {
             return CHANGE_PASSWORD_OK;
-        } else {
-            return INCORRECT_PASSWORD;
         }
+
+        return INCORRECT_PASSWORD;
     }
 
     function is_authentificate($login, $pass, &$user)
@@ -582,15 +589,15 @@ class Users
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' WHERE lower(login) = \'' . strtolower($login) . '\'';
-        $req .= ' AND password = \'' . md5($pass) . '\'';
+        $req .= ' AND password = \'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\'';
 
         $nb_user = 0;
         $user = $this->parent->db->select_line($req, $nb_user);
-        if ($nb_user == 1) {
+        if ($nb_user === 1) {
             return true;
-        } else {
-            return INCORRECT_PASSWORD;
         }
+
+        return INCORRECT_PASSWORD;
     }
 
     function get_active_users_who_have_not_bet($nbDays, $nbGames)

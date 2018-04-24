@@ -165,7 +165,7 @@ CREATE TABLE `cdm2018__users` (
   `userID` int(9) UNSIGNED NOT NULL,
   `name` varchar(40) COLLATE utf8_general_ci NOT NULL,
   `login` varchar(30) COLLATE utf8_general_ci NOT NULL,
-  `password` varchar(32) COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(64) COLLATE utf8_general_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `points` int(9) UNSIGNED DEFAULT '0',
   `nbresults` int(9) UNSIGNED DEFAULT '0',
@@ -374,7 +374,7 @@ INSERT INTO `cdm2018__settings` (`name`, `value`, `date`, `status`) VALUES
   ('RANK_UPDATE', NULL, '2014-07-13 23:36:34', 0);
 
 INSERT INTO `cdm2018__users` (`userID`, `name`, `login`, `password`, `email`, `status`) VALUES
-  (1, 'John Foo', 'admin', 'f71dbe52628a3f83a77ab494817525c6', 'admin@bet4soccer.fr', 1);
+  (1, 'John Foo', 'admin', 'c87a9050eb2f1734881f89e638770e4317abb184eb69a9fbdb35d24d11d14254', 'admin@bet4soccer.fr', 1);
 
 INSERT INTO `cdm2018__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) VALUES
   (1, 'Russie', '17', 'A', 1),

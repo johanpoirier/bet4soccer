@@ -97,13 +97,14 @@ define('CODE', (isset($_GET['c']) && !isset($_GET['act'])));
 define('AUTHENTIFICATION', (!isset($_SESSION['userID']) && !LOGIN && !CODE));
 
 if (FORGOT_PASSWORD) {
-    if ($debug)
-        echo "FORGOT_PASSWORD<br />";
-    if (isset($_POST['login']) && $_POST['login']) {
+    if ($debug) {
+      echo 'FORGOT_PASSWORD<br />';
+    }
+    if (!empty($_POST['login'])) {
         if ($bet->send_password($_POST['login'])) {
-            redirect("/?w=" . FORGOT_PASSWORD_OK);
+            redirect('/?w=' . FORGOT_PASSWORD_OK);
         } else {
-            redirect("/?w=" . USER_UNKNOWN);
+            redirect('/?w=' . USER_UNKNOWN);
         }
     } else {
         $bet->load_header();
