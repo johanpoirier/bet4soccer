@@ -3,24 +3,24 @@ unset($config);
 $config = array();
 
 /* MAIN INFORMATIONS */
-$config['blog_title'] = 'UEFA Euro 2016';
-$config['blog_description'] = 'Pariez sur l\'Euro 2016.';
+$config['blog_title'] = 'FIFA Coupe du Monde 2018';
+$config['blog_description'] = 'Pariez sur la coupe du Monde 2018.';
 $config['lang'] = 'fr';
 $config['url'] = 'https://euro2016.jops-dev.com/';
 $config['template_default'] = 'euro2016';
-$config['templates'] = array('euro2016' => 'UEFA', 'cdm2014' => 'FIFA');
+$config['templates'] = ['cdm2018' => 'FIFA'];
 $config['tag_separator'] = '<br />';
 $config['show_all_users_in_team'] = true;
 
 $config['encoding'] = 'UTF8';
 $config['force_encoding_fs'] = false;
 
-$config['support_team'] = 'UEFA Euro 2016';
-$config['email'] = 'johan.poirier+euro2016@gmail.com';
+$config['support_team'] = 'FIFA Coupe du Monde 2018';
+$config['email'] = 'johan.poirier+cdm2018@gmail.com';
 $config['email_simulation'] = false;
 
 $config['DB'] = 'MySQL';
-$config['db_prefix'] = 'euro2016__';
+$config['db_prefix'] = 'cdm2018__';
 
 $config['auth'] = 'md5';
 $config['secret_key'] = 'this is a secret';
@@ -59,5 +59,5 @@ $config['points_1_exact_score'] = 9;
 $config['points_1_qualify'] = 6;
 
 $config['rss_feed_url'] = 'http://www.matchendirect.fr/rss/foot-championnat-europeen-c25.xml';
-$config['rss_feed_title'] = 'EURO 2016';
+$config['rss_feed_title'] = 'FIFA 2018';
 $config['rss_feed_simulate'] = true;

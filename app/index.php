@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 session_start();
 
-define('WEB_PATH', "/");
-define('BASE_PATH', dirname(realpath(__FILE__)) . "/");
-define('URL_PATH', "/");
+define('WEB_PATH', '/');
+define('BASE_PATH', dirname(realpath(__FILE__)) . '/');
+define('URL_PATH', '/');
 require('lib/betlib.php');
 $debug = false;
 $bet = new BetEngine(false, $debug);
-$w = "";
+$w = '';
 
 // keep me logged in
 if (!$bet->islogin()) {
