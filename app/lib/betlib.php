@@ -3034,9 +3034,9 @@ class BetEngine
     function send_password($login)
     {
         $user = $this->users->get_by_login($login);
-        $new_pass = $this->users->set_new_password($user['userID']);
 
         if ($user) {
+            $new_pass = $this->users->set_new_password($user['userID']);
             return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de mot de passe', "Bonjour,\n\nVotre nouveau mot de passe est : $new_pass \n\nCordialement,\n" . $this->config['support_team'] . "\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         }
 
