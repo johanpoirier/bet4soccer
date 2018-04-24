@@ -1,6 +1,6 @@
 <?php
 unset($config);
-$config = array();
+$config = [];
 
 /* MAIN INFORMATIONS */
 $config['blog_title'] = 'FIFA Coupe du Monde 2018';
@@ -35,9 +35,9 @@ $config['display_unactive_group'] = true;
 $config['money_group_name'] = 'Cagnotte';
 $config['bets_open_limit_minutes'] = 15;
 
-$config['pools'] = array('A', 'B', 'C', 'D', 'E', 'F');
+$config['pools'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-$config['rounds'] = array('8', '4', '2', '1');
+$config['rounds'] = ['8', '4', '2', '3', '1'];
 
 $config['points_pool_good_result'] = 10;
 $config['points_pool_exact_score'] = 4;
@@ -53,6 +53,10 @@ $config['points_4_qualify'] = 3;
 $config['points_2_good_result'] = 16;
 $config['points_2_exact_score'] = 7;
 $config['points_2_qualify'] = 4;
+
+$config['points_3_good_result'] = 16;
+$config['points_3_exact_score'] = 7;
+$config['points_3_qualify'] = 4;
 
 $config['points_1_good_result'] = 20;
 $config['points_1_exact_score'] = 9;
