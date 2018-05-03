@@ -30,7 +30,7 @@ class Users
         }
 
         $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,groupID,status)';
-        $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . md5($pass) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
+        $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
 
         return $this->parent->db->insert($req);
     }
@@ -47,15 +47,16 @@ class Users
             return FIELDS_EMPTY;
         }
         if ($this->is_exist($login)) {
-            if (strlen($pass) > 1)
-                $passwordReq = ' password=\'' . md5($pass) . '\',';
+            if (strlen($pass) > 1) {
+              $passwordReq = ' password=\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',';
+            }
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
             $req .= ' SET name=\'' . addslashes($name) . '\',' . $passwordReq . ' email=\'' . addslashes($email) . '\',';
             $req .= ' groupID=' . (($groupID != '') ? addslashes($groupID) : 'NULL') . ', status=' . addslashes($status) . ' WHERE login=\'' . addslashes($login) . '\'';
             return $this->parent->db->exec_query($req);
         } else {
             $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,groupID,status)';
-            $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . md5($pass) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
+            $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
             return $this->parent->db->insert($req);
         }
     }
@@ -156,9 +157,9 @@ class Users
         // Return results
         if ($userID !== null && isset($users[0])) {
             return $users[0];
-        } else {
-            return $users;
         }
+
+        return $users;
     }
 
     /*     * **************** */
@@ -276,6 +277,22 @@ class Users
         }
 
         return $user;
+    }
+
+    function get_password($id)
+    {
+      // Main Query
+      $req = 'SELECT password';
+      $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
+      $req .= " WHERE userID = $id";
+
+      $password = $this->parent->db->select_one($req);
+
+      if ($this->parent->debug) {
+        echo $password;
+      }
+
+      return $password;
     }
 
     function count_by_group($groupID)
@@ -563,17 +580,17 @@ class Users
           return PASSWORD_MISMATCH;
         }
 
-        $user = $this->get($userID);
-        if (!$user) {
+        $userPassword = $this->get_password($userID);
+        if (empty($userPassword)) {
           return false;
         }
 
-        if ($user['password'] !== md5($old_password)) {
+        if ($userPassword !== hash_hmac('sha256', $old_password, $this->parent->config['secret_key'])) {
           return INCORRECT_PASSWORD;
         }
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' SET password = \'' . md5($new_password1) . '\'';
+        $req .= ' SET password = \'' . hash_hmac('sha256', $new_password1, $this->parent->config['secret_key']) . '\'';
         $req .= " WHERE userID = $userID";
 
         if ($this->parent->db->exec_query($req)) {

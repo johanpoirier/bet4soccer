@@ -550,7 +550,7 @@ if (EDIT_RESULTS) {
 } elseif (CHANGE_PASSWORD) {
     if ($debug)
         echo "CHANGE_PASSWORD<br />";
-    if (isset($_POST['old_password']) && $_POST['old_password']) {
+    if (!empty($_POST['old_password'])) {
         $userId = $_SESSION['userID'];
         $ret = $bet->users->set_password($userId, $_POST['old_password'], $_POST['new_password1'], $_POST['new_password2']);
         redirect("/?act=change_account&w=" . $ret . "");
