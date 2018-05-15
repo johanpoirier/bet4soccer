@@ -15,29 +15,38 @@ class Bets {
     {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
-		if(!$this->parent->users->is_admin($this->parent->users->get_current_id())) {
-			if ($userID != $this->parent->users->get_current_id()) {
-				return false;
-			}
-			if (!$this->parent->matches->is_open($matchID)) {
-				return false;
-			}
-		}
-        if (!$this->parent->matches->is_exist($matchID))
+        if(!$this->parent->users->is_admin($this->parent->users->get_current_id())) {
+          if ($userID !== $this->parent->users->get_current_id()) {
             return false;
+          }
+          if (!$this->parent->matches->is_open($matchID)) {
+            return false;
+          }
+        }
+
+        if (!$this->parent->matches->is_exist($matchID)) {
+          return false;
+        }
         
         $this->parent->users->update_last_bet($_SESSION['userID']);
         $match = $this->parent->matches->get($matchID);
 
-        if ($score == "")
-            $score = 'NULL';
+        if ($score === '') {
+          $score = 'NULL';
+        }
+        if ((int) $score > 20) {
+          $score = 20;
+        }
+
         if ($final) {
-            if ($final_teamID == "")
-                $final_teamID = 'NULL';
+            if ($final_teamID === '') {
+              $final_teamID = 'NULL';
+            }
+
             /* Set score */
             if ($this->is_exist($userID, $matchID)) {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
-                $req .= ' SET score' . $team . ' =  ' . $score . ',';
+                $req .= ' SET score' . $team . ' = ' . $score . ',';
                 $req .= ' team' . $team . ' = ' . $final_teamID . ',';
                 $req .= ' teamW = \'' . $final_teamW . '\'';
                 $req .= ' WHERE userID = ' . $userID . '';
@@ -145,9 +154,10 @@ class Bets {
     function add_HTTP_final($userID, $matchID, $team, $score, $final_teamID, $final_teamW) {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
-        if ($final_teamW == "" || $final_teamW === null) {
+        if ($final_teamW === '' || $final_teamW === null) {
             $final_teamW = 'A';
         }
+
         if ($ret = $this->add($userID, $matchID, $team, $score, true, $final_teamID, $final_teamW)) {
             $match = $this->parent->matches->get($matchID);
             $round = $match['round'];
