@@ -282,3 +282,13 @@ function prepare_alphanumeric_data($args)
     $args[$i] = addslashes($args[$i]);
   }
 }
+
+function median($arr){
+  if($arr){
+    $count = count($arr);
+    sort($arr);
+    $mid = floor(($count-1)/2);
+    return ($arr[$mid]+$arr[$mid+1-$count%2])/2;
+  }
+  return 0;
+}

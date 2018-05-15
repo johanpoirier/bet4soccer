@@ -305,8 +305,6 @@ class Bets {
         $bets = $this->parent->db->selectArray($req, $params, $nb_bets);
 
         $odds = [];
-        $odds['A_AVG'] = 0;
-        $odds['B_AVG'] = 0;
         $odds['A_WINS'] = 0;
         $odds['B_WINS'] = 0;
         $odds['NUL'] = 0;
@@ -318,13 +316,11 @@ class Bets {
                 $odds['B_WINS']++;
             if (($bet['scoreA'] == $bet['scoreB']) && ($bet['scoreA'] !== null) && ($bet['scoreB'] !== null))
                 $odds['NUL']++;
-            $odds['A_AVG'] += $bet['scoreA'];
-            $odds['B_AVG'] += $bet['scoreB'];
             if (($bet['scoreA'] === null) && ($bet['scoreB'] === null))
                 $nb_bets--;
         }
-        $odds['A_AVG'] = ($nb_bets > 0) ? (round($odds['A_AVG'] / $nb_bets, 2)) : null;
-        $odds['B_AVG'] = ($nb_bets > 0) ? (round($odds['B_AVG'] / $nb_bets, 2)) : null;
+        $odds['A_AVG'] = median(array_map(function($bet) { return $bet['scoreA'];}, $bets));
+        $odds['B_AVG'] = median(array_map(function($bet) { return $bet['scoreB'];}, $bets));
         $odds['A_WINS'] = ($nb_bets > 0) ? (round(($nb_bets + 1) / ($odds['A_WINS'] + 1), 2)) : null;
         $odds['B_WINS'] = ($nb_bets > 0) ? (round(($nb_bets + 1) / ($odds['B_WINS'] + 1), 2)) : null;
         $odds['NUL'] = ($nb_bets > 0) ? (round(($nb_bets + 1) / ($odds['NUL'] + 1), 2)) : null;
