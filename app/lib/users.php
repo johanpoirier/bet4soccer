@@ -47,6 +47,7 @@ class Users
             return FIELDS_EMPTY;
         }
         if ($this->is_exist($login)) {
+            $passwordReq = '';
             if (strlen($pass) > 1) {
               $passwordReq = ' password=\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',';
             }

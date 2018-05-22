@@ -839,7 +839,9 @@ class BetEngine
             'LABEL_TEAMS_RANKING' => $this->lang['LABEL_TEAMS_RANKING']
         ));
 
-        if (sizeof($users) > 0) {
+        $users_view = [];
+
+        if (count($users) > 0) {
             usort($users, "compare_users");
 
             $i = 1;
@@ -867,14 +869,14 @@ class BetEngine
                     }
                 }
 
-                $users_view[$k++] = array(
+                $users_view[$k++] = [
                     'RANK' => $i,
                     'ID' => $user['userID'],
                     'NAME' => $user['name'],
                     'LOGIN' => $user['login'],
                     'POINTS' => $user['points'],
                     'CLASS' => $class
-                );
+                ];
                 $last_user = $user;
                 $j++;
             }
@@ -888,12 +890,12 @@ class BetEngine
                 'CLASS' => ""
             );
 
-            $users_points_gap = $users_view[0]['POINTS'] - $users_view[$k - 1]['POINTS'];
             $index_user = 0;
             for ($i = $users_view[0]['POINTS']; $i >= $users_view[$k - 1]['POINTS']; $i--) {
                 $user = null;
                 $nb_users_same_pts = 0;
-                for ($j = $index_user; $j < sizeof($users_view); $j++) {
+                $userViewCount = count($users_view);
+                for ($j = $index_user; $j < $userViewCount; $j++) {
                     while ($users_view[$j]['POINTS'] == $i) {
                         $nb_users_same_pts++;
                         if ($user == null) {
@@ -902,7 +904,7 @@ class BetEngine
                             $user['NAME'] .= ', ' . $users_view[$j]['NAME'];
                         }
                         $j++;
-                        if ($j >= sizeof($users_view)) {
+                        if ($j >= $userViewCount) {
                             break;
                         }
                         $index_user = $j;
@@ -913,7 +915,7 @@ class BetEngine
                     $user['POINTS'] = $i;
                 }
                 if ($nb_users_same_pts > 1) {
-                    $user['NB'] = "<u>" . $nb_users_same_pts . " parieurs</u> : ";
+                    $user['NB'] = "<u>$nb_users_same_pts parieurs</u> : ";
                 }
                 $this->template->assign_block_vars('users', $user);
             }

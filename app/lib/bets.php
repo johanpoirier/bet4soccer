@@ -15,8 +15,9 @@ class Bets {
     {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
+
         if(!$this->parent->users->is_admin($this->parent->users->get_current_id())) {
-          if ($userID !== $this->parent->users->get_current_id()) {
+          if ($userID != $this->parent->users->get_current_id()) {
             return false;
           }
           if (!$this->parent->matches->is_open($matchID)) {
@@ -67,10 +68,12 @@ class Bets {
                 if ($next_match) {
                     $next_matchID = $next_match['matchID'];
                     $next_team = (is_float($rank / 2)) ? "A" : "B";
-                    if ($round == 8)
-                        $next_teamID = $match["team" . $final_teamW];
-                    else
-                        $next_teamID = (isset($bet["team" . $final_teamW])) ? $bet["team" . $final_teamW] : $match["team" . $final_teamW];
+                    if ($round === 8) {
+                      $next_teamID = $match["team" . $final_teamW];
+                    }
+                    else {
+                      $next_teamID = (isset($bet["team" . $final_teamW])) ? $bet["team" . $final_teamW] : $match["team" . $final_teamW];
+                    }
                     $this->add_next_final_team($userID, $next_matchID, $next_team, $next_teamID);
                 }
             }
