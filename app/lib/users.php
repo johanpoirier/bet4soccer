@@ -642,7 +642,7 @@ class Users
         $users = $this->get();
         $nb_bets = $this->parent->bets->count_by_users();
         $ranks = [];
-        usort($users, "compare_users");
+        usort($users, 'compare_users');
         $i = 1;
         $j = 0;
         $max_val = 0;

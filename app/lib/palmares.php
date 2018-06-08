@@ -92,7 +92,7 @@ class Palmares
     $params = ['competitionId' => $competitionId];
 
     // Main Query
-    $req = 'SELECT *';
+    $req = 'SELECT id, userName as name, userPoints as points, userScores as nbscores, userResults as nbresults, userDiff as diff';
     $req .= ' FROM ' . $this->config['db_common_prefix'] . 'palmares';
     $req .= ' WHERE competitionId = :competitionId';
     $req .= ' ORDER BY userPoints DESC';
@@ -101,5 +101,38 @@ class Palmares
     $userCount = 0;
 
     return $this->db->selectArray($req, $params, $userCount);
+  }
+
+  /**
+   * @param $competitionId
+   * @return array
+   */
+  public function get_competition_ranking($competitionId)
+  {
+    $users = $this->list_users_by_competition($competitionId);
+    usort($users, 'compare_users');
+
+    $ranks = [];
+    usort($users, 'compare_users');
+    $rank = 1;
+    $last_rank = 0;
+
+
+    if (count($users) > 0) {
+      $last_user = $users[0];
+      foreach ($users as $ID => $user) {
+        $ranks[$user['id']] = $user;
+        if (compare_users($user, $last_user) !== 0) {
+          $rank = $last_rank + 1;
+        }
+
+        $ranks[$user['id']]['rank'] = $rank;
+
+        $last_rank++;
+        $last_user = $user;
+      }
+    }
+
+    return $ranks;
   }
 }

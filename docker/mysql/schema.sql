@@ -204,7 +204,8 @@ CREATE TABLE `bet4soccer__palmares` (
   `userName` varchar(255) COLLATE utf8_general_ci NOT NULL,
   `userPoints` smallint(6) NOT NULL,
   `userResults` smallint(6) NOT NULL,
-  `userScores` smallint(6) NOT NULL
+  `userScores` smallint(6) NOT NULL,
+  `userDiff` smallint(6) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --

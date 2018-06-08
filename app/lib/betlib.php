@@ -418,14 +418,14 @@ class BetEngine
         $competition = $this->palmares->get_last_competition_for_domain($domain);
       }
 
-      $users = $this->palmares->list_users_by_competition($competition['id']);
+      $users = $this->palmares->get_competition_ranking($competition['id']);
       foreach ($users as $index => $user) {
         $this->template->assign_block_vars('users', [
-          'RANK' => $index + 1,
-          'NAME' => $user['userName'],
-          'POINTS' => $user['userPoints'],
-          'RESULTS' => $user['userResults'],
-          'SCORES' => $user['userScores']
+          'RANK' => $user['rank'],
+          'NAME' => $user['name'],
+          'POINTS' => $user['points'],
+          'RESULTS' => $user['nbresults'],
+          'SCORES' => $user['nbscores']
         ]);
       }
 
