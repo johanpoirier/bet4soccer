@@ -30,7 +30,7 @@ class Users
         }
 
         $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,groupID,status)';
-        $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . md5($pass) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
+        $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
 
         return $this->parent->db->insert($req);
     }
@@ -47,15 +47,17 @@ class Users
             return FIELDS_EMPTY;
         }
         if ($this->is_exist($login)) {
-            if (strlen($pass) > 1)
-                $passwordReq = ' password=\'' . md5($pass) . '\',';
+            $passwordReq = '';
+            if (strlen($pass) > 1) {
+              $passwordReq = ' password=\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',';
+            }
             $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
             $req .= ' SET name=\'' . addslashes($name) . '\',' . $passwordReq . ' email=\'' . addslashes($email) . '\',';
             $req .= ' groupID=' . (($groupID != '') ? addslashes($groupID) : 'NULL') . ', status=' . addslashes($status) . ' WHERE login=\'' . addslashes($login) . '\'';
             return $this->parent->db->exec_query($req);
         } else {
             $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'users (login,password,name,email,groupID,status)';
-            $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . md5($pass) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
+            $req .= ' VALUES (\'' . addslashes($login) . '\',\'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\',\'' . addslashes($name) . '\',\'' . addslashes($email) . '\',' . (($groupID != '') ? '\'' . addslashes($groupID) . '\'' : 'NULL') . ',\'' . addslashes($status) . '\')';
             return $this->parent->db->insert($req);
         }
     }
@@ -156,9 +158,9 @@ class Users
         // Return results
         if ($userID !== null && isset($users[0])) {
             return $users[0];
-        } else {
-            return $users;
         }
+
+        return $users;
     }
 
     /*     * **************** */
@@ -276,6 +278,22 @@ class Users
         }
 
         return $user;
+    }
+
+    function get_password($id)
+    {
+      // Main Query
+      $req = 'SELECT password';
+      $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
+      $req .= " WHERE userID = $id";
+
+      $password = $this->parent->db->select_one($req);
+
+      if ($this->parent->debug) {
+        echo $password;
+      }
+
+      return $password;
     }
 
     function count_by_group($groupID)
@@ -542,38 +560,45 @@ class Users
         if (!$user) {
             return false;
         }
+
         $new_pass = new_password(8);
+        $mac = hash_hmac('sha256', $new_pass, $this->parent->config['secret_key']);
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' SET password = \'' . md5($new_pass) . '\'';
-        $req .= ' WHERE userID = ' . $userID . '';
+        $req .= " SET password = '$mac'";
+        $req .= " WHERE userID = $userID";
 
         if ($this->parent->db->exec_query($req)) {
             return $new_pass;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     function set_password($userID, $old_password, $new_password1, $new_password2)
     {
-        if ($new_password1 != $new_password2)
-            return PASSWORD_MISMATCH;
-        $user = $this->get($userID);
-        if (!$user)
-            return false;
-        if ($user['password'] != md5($old_password))
-            return INCORRECT_PASSWORD;
+        if ($new_password1 !== $new_password2) {
+          return PASSWORD_MISMATCH;
+        }
+
+        $userPassword = $this->get_password($userID);
+        if (empty($userPassword)) {
+          return false;
+        }
+
+        if ($userPassword !== hash_hmac('sha256', $old_password, $this->parent->config['secret_key'])) {
+          return INCORRECT_PASSWORD;
+        }
 
         $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' SET password = \'' . md5($new_password1) . '\'';
-        $req .= ' WHERE userID = ' . $userID . '';
+        $req .= ' SET password = \'' . hash_hmac('sha256', $new_password1, $this->parent->config['secret_key']) . '\'';
+        $req .= " WHERE userID = $userID";
 
         if ($this->parent->db->exec_query($req)) {
             return CHANGE_PASSWORD_OK;
-        } else {
-            return INCORRECT_PASSWORD;
         }
+
+        return INCORRECT_PASSWORD;
     }
 
     function is_authentificate($login, $pass, &$user)
@@ -582,15 +607,15 @@ class Users
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
         $req .= ' WHERE lower(login) = \'' . strtolower($login) . '\'';
-        $req .= ' AND password = \'' . md5($pass) . '\'';
+        $req .= ' AND password = \'' . hash_hmac('sha256', $pass, $this->parent->config['secret_key']) . '\'';
 
         $nb_user = 0;
         $user = $this->parent->db->select_line($req, $nb_user);
-        if ($nb_user == 1) {
+        if ($nb_user === 1) {
             return true;
-        } else {
-            return INCORRECT_PASSWORD;
         }
+
+        return INCORRECT_PASSWORD;
     }
 
     function get_active_users_who_have_not_bet($nbDays, $nbGames)
@@ -617,7 +642,7 @@ class Users
         $users = $this->get();
         $nb_bets = $this->parent->bets->count_by_users();
         $ranks = [];
-        usort($users, "compare_users");
+        usort($users, 'compare_users');
         $i = 1;
         $j = 0;
         $max_val = 0;

@@ -23,5 +23,5 @@ CONTAINER_ID=$(cat "$CID_FILE")
 CONTAINER_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $CONTAINER_ID)
 
 echo "bet4soccer will be available at http://${CONTAINER_IP}"
-echo " -> admin access: admin@bet4soccer.fr / toto"
+echo " -> admin access: admin / toto"
 echo ""

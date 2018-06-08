@@ -39,7 +39,7 @@ class MySQL_DB
         $this->debug = $debug;
     }
 
-    function exec_query($req, $params = []) {
+    public function exec_query($req, $params = []) {
         // Start Time
         $startTime = get_moment();
         $this->nb_queries++;
@@ -99,7 +99,7 @@ class MySQL_DB
         return $statement->fetch();
     }
 
-    function selectLine($req, $params = [], &$nbLines) {
+    public function selectLine($req, $params = [], &$nbLines) {
         $statement = $this->exec_query($req, $params);
         if ($this->test_error($statement)) {
             return $statement;
@@ -128,8 +128,7 @@ class MySQL_DB
         $resultSet = [];
         if ($this->test_error($statement)) {
             return $statement;
-        }
-        else {
+        } else {
             $nbLines = $statement->rowCount();
             for ($i = 0; $i < $nbLines; $i++) {
                 $resultSet[$i] = $statement->fetch();
@@ -139,13 +138,12 @@ class MySQL_DB
         return $resultSet;
     }
 
-    function selectArray($req, $params = [], &$nbLines) {
+    public function selectArray($req, $params = [], &$nbLines) {
         $statement = $this->exec_query($req, $params);
 
         if ($this->test_error($statement)) {
             return $statement;
-        }
-        else {
+        } else {
             $nbLines = $statement->rowCount();
             $resultSet = $statement->fetchAll(PDO::FETCH_ASSOC);
         }

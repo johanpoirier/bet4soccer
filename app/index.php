@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 session_start();
 
-define('WEB_PATH', "/");
-define('BASE_PATH', dirname(realpath(__FILE__)) . "/");
-define('URL_PATH', "/");
+define('WEB_PATH', '/');
+define('BASE_PATH', dirname(realpath(__FILE__)) . '/');
+define('URL_PATH', '/');
 require('lib/betlib.php');
 $debug = false;
 $bet = new BetEngine(false, $debug);
-$w = "";
+$w = '';
 
 // keep me logged in
 if (!$bet->islogin()) {
@@ -55,6 +55,7 @@ define('VIEW_USERS_RANKING_BY_GROUP', (isset($_GET['act']) && ($_GET['act']) == 
 define('VIEW_STATS', (isset($_GET['act']) && ($_GET['act']) == "view_stats"));
 define('VIEW_MATCH_STATS', (isset($_GET['act']) && ($_GET['act']) == "view_match_stats"));
 define('RULES', (isset($_GET['act']) && ($_GET['act']) == "rules"));
+define('PALMARES', (isset($_GET['act']) && ($_GET['act']) == "palmares"));
 
 define('EDIT_BETS', (isset($_GET['act']) && ($_GET['act']) == "bets"));
 define('EDIT_FINALS_BETS', (isset($_GET['act']) && ($_GET['act']) == "finals_bets"));
@@ -97,13 +98,14 @@ define('CODE', (isset($_GET['c']) && !isset($_GET['act'])));
 define('AUTHENTIFICATION', (!isset($_SESSION['userID']) && !LOGIN && !CODE));
 
 if (FORGOT_PASSWORD) {
-    if ($debug)
-        echo "FORGOT_PASSWORD<br />";
-    if (isset($_POST['login']) && $_POST['login']) {
+    if ($debug) {
+      echo 'FORGOT_PASSWORD<br />';
+    }
+    if (!empty($_POST['login'])) {
         if ($bet->send_password($_POST['login'])) {
-            redirect("/?w=" . FORGOT_PASSWORD_OK);
+            redirect('/?w=' . FORGOT_PASSWORD_OK);
         } else {
-            redirect("/?w=" . USER_UNKNOWN);
+            redirect('/?w=' . USER_UNKNOWN);
         }
     } else {
         $bet->load_header();
@@ -535,6 +537,14 @@ if (EDIT_RESULTS) {
     if ($debug)
         echo "RULES<br />";
     $bet->load_rules();
+} elseif (PALMARES) {
+    $competitionId = null;
+    if (isset($_REQUEST['id'])) {
+      $competitionId = $_REQUEST['id'];
+    }
+    if ($debug)
+        echo 'PALMARES<br />';
+    $bet->load_palmares($competitionId);
 } elseif (CHANGE_ACCOUNT) {
     if ($debug)
         echo "CHANGE_ACCOUNT<br />";
@@ -549,7 +559,7 @@ if (EDIT_RESULTS) {
 } elseif (CHANGE_PASSWORD) {
     if ($debug)
         echo "CHANGE_PASSWORD<br />";
-    if (isset($_POST['old_password']) && $_POST['old_password']) {
+    if (!empty($_POST['old_password'])) {
         $userId = $_SESSION['userID'];
         $ret = $bet->users->set_password($userId, $_POST['old_password'], $_POST['new_password1'], $_POST['new_password2']);
         redirect("/?act=change_account&w=" . $ret . "");

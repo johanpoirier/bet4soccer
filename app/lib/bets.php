@@ -15,29 +15,39 @@ class Bets {
     {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
-		if(!$this->parent->users->is_admin($this->parent->users->get_current_id())) {
-			if ($userID != $this->parent->users->get_current_id()) {
-				return false;
-			}
-			if (!$this->parent->matches->is_open($matchID)) {
-				return false;
-			}
-		}
-        if (!$this->parent->matches->is_exist($matchID))
+
+        if(!$this->parent->users->is_admin($this->parent->users->get_current_id())) {
+          if ($userID != $this->parent->users->get_current_id()) {
             return false;
+          }
+          if (!$this->parent->matches->is_open($matchID)) {
+            return false;
+          }
+        }
+
+        if (!$this->parent->matches->is_exist($matchID)) {
+          return false;
+        }
         
         $this->parent->users->update_last_bet($_SESSION['userID']);
         $match = $this->parent->matches->get($matchID);
 
-        if ($score == "")
-            $score = 'NULL';
+        if ($score === '') {
+          $score = 'NULL';
+        }
+        if ((int) $score > 20) {
+          $score = 20;
+        }
+
         if ($final) {
-            if ($final_teamID == "")
-                $final_teamID = 'NULL';
+            if ($final_teamID === '') {
+              $final_teamID = 'NULL';
+            }
+
             /* Set score */
             if ($this->is_exist($userID, $matchID)) {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
-                $req .= ' SET score' . $team . ' =  ' . $score . ',';
+                $req .= ' SET score' . $team . ' = ' . $score . ',';
                 $req .= ' team' . $team . ' = ' . $final_teamID . ',';
                 $req .= ' teamW = \'' . $final_teamW . '\'';
                 $req .= ' WHERE userID = ' . $userID . '';
@@ -58,10 +68,12 @@ class Bets {
                 if ($next_match) {
                     $next_matchID = $next_match['matchID'];
                     $next_team = (is_float($rank / 2)) ? "A" : "B";
-                    if ($round == 8)
-                        $next_teamID = $match["team" . $final_teamW];
-                    else
-                        $next_teamID = (isset($bet["team" . $final_teamW])) ? $bet["team" . $final_teamW] : $match["team" . $final_teamW];
+                    if ($round === 8) {
+                      $next_teamID = $match["team" . $final_teamW];
+                    }
+                    else {
+                      $next_teamID = (isset($bet["team" . $final_teamW])) ? $bet["team" . $final_teamW] : $match["team" . $final_teamW];
+                    }
                     $this->add_next_final_team($userID, $next_matchID, $next_team, $next_teamID);
                 }
             }
@@ -145,9 +157,10 @@ class Bets {
     function add_HTTP_final($userID, $matchID, $team, $score, $final_teamID, $final_teamW) {
         prepare_numeric_data(array(&$userID, &$matchID, &$score, &$final_teamID));
         prepare_alphanumeric_data(array(&$team, &$final_teamW));
-        if ($final_teamW == "" || $final_teamW === null) {
+        if ($final_teamW === '' || $final_teamW === null) {
             $final_teamW = 'A';
         }
+
         if ($ret = $this->add($userID, $matchID, $team, $score, true, $final_teamID, $final_teamW)) {
             $match = $this->parent->matches->get($matchID);
             $round = $match['round'];
@@ -305,8 +318,6 @@ class Bets {
         $bets = $this->parent->db->selectArray($req, $params, $nb_bets);
 
         $odds = [];
-        $odds['A_AVG'] = 0;
-        $odds['B_AVG'] = 0;
         $odds['A_WINS'] = 0;
         $odds['B_WINS'] = 0;
         $odds['NUL'] = 0;
@@ -318,13 +329,11 @@ class Bets {
                 $odds['B_WINS']++;
             if (($bet['scoreA'] == $bet['scoreB']) && ($bet['scoreA'] !== null) && ($bet['scoreB'] !== null))
                 $odds['NUL']++;
-            $odds['A_AVG'] += $bet['scoreA'];
-            $odds['B_AVG'] += $bet['scoreB'];
             if (($bet['scoreA'] === null) && ($bet['scoreB'] === null))
                 $nb_bets--;
         }
-        $odds['A_AVG'] = ($nb_bets > 0) ? (round($odds['A_AVG'] / $nb_bets, 2)) : null;
-        $odds['B_AVG'] = ($nb_bets > 0) ? (round($odds['B_AVG'] / $nb_bets, 2)) : null;
+        $odds['A_AVG'] = median(array_map(function($bet) { return $bet['scoreA'];}, $bets));
+        $odds['B_AVG'] = median(array_map(function($bet) { return $bet['scoreB'];}, $bets));
         $odds['A_WINS'] = ($nb_bets > 0) ? (round(($nb_bets + 1) / ($odds['A_WINS'] + 1), 2)) : null;
         $odds['B_WINS'] = ($nb_bets > 0) ? (round(($nb_bets + 1) / ($odds['B_WINS'] + 1), 2)) : null;
         $odds['NUL'] = ($nb_bets > 0) ? (round(($nb_bets + 1) / ($odds['NUL'] + 1), 2)) : null;

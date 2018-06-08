@@ -17,6 +17,7 @@ include_once(BASE_PATH . 'lib/bets.php');
 include_once(BASE_PATH . 'lib/groups.php');
 include_once(BASE_PATH . 'lib/audit.php');
 include_once(BASE_PATH . 'lib/tokens.php');
+include_once(BASE_PATH . 'lib/palmares.php');
 include_once(BASE_PATH . 'lib/db.mysql.php');
 
 class BetEngine
@@ -42,6 +43,7 @@ class BetEngine
     var $groups;
     var $audit;
     var $tokens;
+    var $palmares;
 
     public function __construct($admin = false, $debug = false)
     {
@@ -80,6 +82,7 @@ class BetEngine
         $this->audit = new Audit($this->db, $this->config);
         $this->stats = new Stats($this->db, $this->config, $this->lang, $this->users, $this->groups, $this->matches, $this->bets);
         $this->tokens = new Tokens($this->db, $this->config);
+        $this->palmares = new Palmares($this->db, $this->config);
     }
 
     function islogin()
@@ -365,7 +368,7 @@ class BetEngine
             $this->template->assign_block_vars('rounds', array(
                 'NAME' => ($round == 'pool') ? $this->lang['LABEL_POOL'] : $this->lang['LABEL_' . $round . '_FINAL'],
                 'POINTS_GOOD_RESULT' => $this->config['points_' . $round . '_good_result'],
-                'POINTS_QUALIFY' => ($round == 'pool') ? "" : $this->config['points_' . $round . '_qualify'],
+                'POINTS_QUALIFY' => ($round == 'pool') ? '' : $this->config['points_' . $round . '_qualify'],
                 'POINTS_EXACT_SCORE' => $this->config['points_' . $round . '_exact_score'],
                 'POINTS_SUM' => $total_round / $nbmatches,
                 'POINTS_NB_MATCHES' => $nbmatches,
@@ -390,7 +393,52 @@ class BetEngine
         $this->blocks_loaded[] = 'rules';
     }
 
-    /*     * **************** */
+    /* **************** */
+
+    function load_palmares($competitionId = null)
+    {
+      $this->template->set_filenames([ 'palmares' => 'palmares.tpl' ]);
+
+      $domain = $this->config['palmares_domain'];
+      $competitions = $this->palmares->list_finished_competitions_by_domain($domain);
+
+      foreach ($competitions as $compet) {
+        $this->template->assign_block_vars('competitions', [
+          'ID' => $compet['id'],
+          'NAME' => $compet['name'],
+          'START_DATE' => $compet['startDate']
+        ]);
+      }
+
+      if (!empty($competitionId)) {
+        $competition = $this->palmares->get_competition_by_id_and_domain($competitionId, $domain);
+      }
+
+      if (empty($competition)) {
+        $competition = $this->palmares->get_last_competition_for_domain($domain);
+      }
+
+      $users = $this->palmares->get_competition_ranking($competition['id']);
+      foreach ($users as $index => $user) {
+        $this->template->assign_block_vars('users', [
+          'RANK' => $user['rank'],
+          'NAME' => $user['name'],
+          'POINTS' => $user['points'],
+          'RESULTS' => $user['nbresults'],
+          'SCORES' => $user['nbscores']
+        ]);
+      }
+
+      $this->template->assign_vars([
+        'TPL_WEB_PATH' => $this->template_web_location,
+        'COMPETITION_NAME' => $competition['name']
+      ]);
+
+      $this->blocks_loaded[] = 'palmares';
+    }
+
+
+    /* **************** */
 
     function load_menu()
     {
@@ -484,31 +532,31 @@ class BetEngine
         $this->blocks_loaded[] = 'forgot_login';
     }
 
-    function load_change_account($warning = "")
+    function load_change_account($warning = '')
     {
         $this->template->set_filenames(['change_account' => 'change_account.tpl']);
 
         $user = $this->users->get_current();
 
         $themes = $this->config['templates'];
-        if ($user['theme'] == "")
+        if ($user['theme'] === '')
             $user['theme'] = $this->config['template_default'];
         foreach ($themes as $theme_id => $theme_name) {
             $this->template->assign_block_vars('themes', array(
                 'ID' => $theme_id,
                 'NAME' => $theme_name,
-                'SELECTED' => ($user['theme'] == $theme_id) ? " selected=\"selected\"" : ""
+                'SELECTED' => ($user['theme'] === $theme_id) ? ' selected="selected"' : ''
             ));
         }
 
-        $match_display_options = array("pool" => "par poule", "date" => "par date");
-        if ($user['match_display'] == "")
+        $match_display_options = array('pool' => 'par poule', 'date' => 'par date');
+        if ($user['match_display'] === '')
             $user['match_display'] = $this->config['match_display_default'];
         foreach ($match_display_options as $id => $label) {
             $this->template->assign_block_vars('match_display', array(
                 'ID' => $id,
                 'LABEL' => $label,
-                'SELECTED' => ($user['match_display'] == $id) ? " selected=\"selected\"" : ""
+                'SELECTED' => ($user['match_display'] == $id) ? ' selected="selected"' : ''
             ));
         }
 
@@ -839,7 +887,9 @@ class BetEngine
             'LABEL_TEAMS_RANKING' => $this->lang['LABEL_TEAMS_RANKING']
         ));
 
-        if (sizeof($users) > 0) {
+        $users_view = [];
+
+        if (count($users) > 0) {
             usort($users, "compare_users");
 
             $i = 1;
@@ -867,14 +917,14 @@ class BetEngine
                     }
                 }
 
-                $users_view[$k++] = array(
+                $users_view[$k++] = [
                     'RANK' => $i,
                     'ID' => $user['userID'],
                     'NAME' => $user['name'],
                     'LOGIN' => $user['login'],
                     'POINTS' => $user['points'],
                     'CLASS' => $class
-                );
+                ];
                 $last_user = $user;
                 $j++;
             }
@@ -888,12 +938,12 @@ class BetEngine
                 'CLASS' => ""
             );
 
-            $users_points_gap = $users_view[0]['POINTS'] - $users_view[$k - 1]['POINTS'];
             $index_user = 0;
             for ($i = $users_view[0]['POINTS']; $i >= $users_view[$k - 1]['POINTS']; $i--) {
                 $user = null;
                 $nb_users_same_pts = 0;
-                for ($j = $index_user; $j < sizeof($users_view); $j++) {
+                $userViewCount = count($users_view);
+                for ($j = $index_user; $j < $userViewCount; $j++) {
                     while ($users_view[$j]['POINTS'] == $i) {
                         $nb_users_same_pts++;
                         if ($user == null) {
@@ -902,7 +952,7 @@ class BetEngine
                             $user['NAME'] .= ', ' . $users_view[$j]['NAME'];
                         }
                         $j++;
-                        if ($j >= sizeof($users_view)) {
+                        if ($j >= $userViewCount) {
                             break;
                         }
                         $index_user = $j;
@@ -913,7 +963,7 @@ class BetEngine
                     $user['POINTS'] = $i;
                 }
                 if ($nb_users_same_pts > 1) {
-                    $user['NB'] = "<u>" . $nb_users_same_pts . " parieurs</u> : ";
+                    $user['NB'] = "<u>$nb_users_same_pts parieurs</u> : ";
                 }
                 $this->template->assign_block_vars('users', $user);
             }
@@ -2680,8 +2730,9 @@ class BetEngine
             $this->audit->add($user['userID'], 'auth', 's\'est loggué via le formulaire de login');
 
             return true;
-        } else
-            return $ret;
+        }
+
+        return $ret;
     }
 
     function log_user_in($user)
@@ -3023,9 +3074,9 @@ class BetEngine
         $user = $this->users->get_by_email($email);
 
         if ($user) {
-            return utf8_mail($user['email'], "Euro2016 - Oubli de votre login", "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de votre login', "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         } else {
-            utf8_mail($this->config['email'], "Euro2016 - Utilisateur '" . $email . "' inconnu", "L'utilisateur avec l'email '" . $email . "' a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            utf8_mail($this->config['email'], $this->config['blog_title'] . " - Utilisateur $email inconnu", "L’utilisateur avec l'email $email a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             return false;
         }
     }
@@ -3033,14 +3084,14 @@ class BetEngine
     function send_password($login)
     {
         $user = $this->users->get_by_login($login);
-        $new_pass = $this->users->set_new_password($user['userID']);
 
         if ($user) {
-            return utf8_mail($user['email'], "Euro2016 - Oubli de mot de passe", "Bonjour,\n\nVotre nouveau mot de passe est : " . $new_pass . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-        } else {
-            utf8_mail($this->config['email'], "Euro2016 - Utilisateur " . $login . " inconnu", "L'utilisateur " . $login . " a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-            return false;
+            $new_pass = $this->users->set_new_password($user['userID']);
+            return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de mot de passe', "Bonjour,\n\nVotre nouveau mot de passe est : $new_pass \n\nCordialement,\n" . $this->config['support_team'] . "\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
         }
+
+        utf8_mail($this->config['email'], $this->config['blog_title'] . " - Utilisateur $login inconnu", "L’utilisateur $login a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+        return false;
     }
 
     /*     * **************** */

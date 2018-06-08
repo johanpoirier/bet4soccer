@@ -47,7 +47,7 @@ $lang['warning'][PASSWORD_MISMATCH] = "Les mots de passe ne correspondent pas.";
 $lang['warning'][INCORRECT_PASSWORD] = "Mot de passe incorrect.";
 $lang['warning'][CHANGE_PASSWORD_OK] = "Votre mot de passe a bien été changé.";
 $lang['warning'][GROUP_ALREADY_EXISTS] = "Ce nom de groupe existe déjà.";
-$lang['warning'][CREATE_GROUP_OK] = "Le groupe a bien été crée.<br/>Vous pouvez à présent vous le <a href='/?act=join_group'>rejoindre</a>, ou <a href='invite_friends'>inviter des amis.</a>";
+$lang['warning'][CREATE_GROUP_OK] = "Le groupe a bien été crée.<br/>Vous pouvez à présent vous le <a href='/?act=join_group'>rejoindre</a>, ou <a href='?act=invite_friends'>inviter des amis.</a>";
 $lang['warning'][JOIN_GROUP_FORBIDDEN] = "Vous n'êtes pas autorisé à rejoindre ce groupe.";
 $lang['warning'][JOIN_GROUP_OK] = "Vous faites désormais parti du groupe demandé.";
 $lang['warning'][INCORRECT_EMAIL] = "L'adresse email saisie est incorrecte.";
