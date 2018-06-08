@@ -1224,6 +1224,11 @@ td.game-date {
 }
 
 
+/************** palmares ************/
+.competition {
+    padding: 1em 0;
+}
+
 /************* media queries ******************/
 @media (min-width: 1200px) {
     body {

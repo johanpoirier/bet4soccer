@@ -36,11 +36,11 @@
             </div>
         </div>
         <div class="tag_cloud">
-            <div class="rightcolumn_headline">
-                <!-- BEGIN competitions -->
-                <a href="?act=palmares&id={competitions.ID}">{competitions.NAME}</a><br>
-                <!-- END competitions -->
+            <!-- BEGIN competitions -->
+            <div class="competition">
+                <a href="?act=palmares&id={competitions.ID}">{competitions.NAME}</a>
             </div>
+            <!-- END competitions -->
         </div>
     </aside>
 </section>
