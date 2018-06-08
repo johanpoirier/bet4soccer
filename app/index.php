@@ -55,6 +55,7 @@ define('VIEW_USERS_RANKING_BY_GROUP', (isset($_GET['act']) && ($_GET['act']) == 
 define('VIEW_STATS', (isset($_GET['act']) && ($_GET['act']) == "view_stats"));
 define('VIEW_MATCH_STATS', (isset($_GET['act']) && ($_GET['act']) == "view_match_stats"));
 define('RULES', (isset($_GET['act']) && ($_GET['act']) == "rules"));
+define('PALMARES', (isset($_GET['act']) && ($_GET['act']) == "palmares"));
 
 define('EDIT_BETS', (isset($_GET['act']) && ($_GET['act']) == "bets"));
 define('EDIT_FINALS_BETS', (isset($_GET['act']) && ($_GET['act']) == "finals_bets"));
@@ -536,6 +537,14 @@ if (EDIT_RESULTS) {
     if ($debug)
         echo "RULES<br />";
     $bet->load_rules();
+} elseif (PALMARES) {
+    $competitionId = null;
+    if (isset($_REQUEST['id'])) {
+      $competitionId = $_REQUEST['id'];
+    }
+    if ($debug)
+        echo 'PALMARES<br />';
+    $bet->load_palmares($competitionId);
 } elseif (CHANGE_ACCOUNT) {
     if ($debug)
         echo "CHANGE_ACCOUNT<br />";

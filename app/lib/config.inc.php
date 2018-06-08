@@ -19,8 +19,11 @@ $config['support_team'] = 'FIFA Coupe du Monde 2018';
 $config['email'] = 'johan.poirier+cdm2018@gmail.com';
 $config['email_simulation'] = false;
 
+$config['palmares_domain'] = 'Public';
+
 $config['DB'] = 'MySQL';
 $config['db_prefix'] = 'cdm2018__';
+$config['db_common_prefix'] = 'bet4soccer__';
 
 $config['auth'] = 'md5';
 $config['secret_key'] = 'this is a secret world cup';
