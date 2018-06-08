@@ -39,7 +39,7 @@ class MySQL_DB
         $this->debug = $debug;
     }
 
-    protected function exec_query($req, $params = []) {
+    public function exec_query($req, $params = []) {
         // Start Time
         $startTime = get_moment();
         $this->nb_queries++;
