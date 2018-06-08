@@ -17,6 +17,7 @@ include_once(BASE_PATH . 'lib/bets.php');
 include_once(BASE_PATH . 'lib/groups.php');
 include_once(BASE_PATH . 'lib/audit.php');
 include_once(BASE_PATH . 'lib/tokens.php');
+include_once(BASE_PATH . 'lib/palmares.php');
 include_once(BASE_PATH . 'lib/db.mysql.php');
 
 class BetEngine
@@ -42,6 +43,7 @@ class BetEngine
     var $groups;
     var $audit;
     var $tokens;
+    var $palmares;
 
     public function __construct($admin = false, $debug = false)
     {
@@ -80,6 +82,7 @@ class BetEngine
         $this->audit = new Audit($this->db, $this->config);
         $this->stats = new Stats($this->db, $this->config, $this->lang, $this->users, $this->groups, $this->matches, $this->bets);
         $this->tokens = new Tokens($this->db, $this->config);
+        $this->palmares = new Palmares($this->db, $this->config);
     }
 
     function islogin()
@@ -365,7 +368,7 @@ class BetEngine
             $this->template->assign_block_vars('rounds', array(
                 'NAME' => ($round == 'pool') ? $this->lang['LABEL_POOL'] : $this->lang['LABEL_' . $round . '_FINAL'],
                 'POINTS_GOOD_RESULT' => $this->config['points_' . $round . '_good_result'],
-                'POINTS_QUALIFY' => ($round == 'pool') ? "" : $this->config['points_' . $round . '_qualify'],
+                'POINTS_QUALIFY' => ($round == 'pool') ? '' : $this->config['points_' . $round . '_qualify'],
                 'POINTS_EXACT_SCORE' => $this->config['points_' . $round . '_exact_score'],
                 'POINTS_SUM' => $total_round / $nbmatches,
                 'POINTS_NB_MATCHES' => $nbmatches,
@@ -390,7 +393,52 @@ class BetEngine
         $this->blocks_loaded[] = 'rules';
     }
 
-    /*     * **************** */
+    /* **************** */
+
+    function load_palmares($competitionId = null)
+    {
+      $this->template->set_filenames([ 'palmares' => 'palmares.tpl' ]);
+
+      $domain = $this->config['palmares_domain'];
+      $competitions = $this->palmares->list_finished_competitions_by_domain($domain);
+
+      foreach ($competitions as $compet) {
+        $this->template->assign_block_vars('competitions', [
+          'ID' => $compet['id'],
+          'NAME' => $compet['name'],
+          'START_DATE' => $compet['startDate']
+        ]);
+      }
+
+      if (!empty($competitionId)) {
+        $competition = $this->palmares->get_competition_by_id_and_domain($competitionId, $domain);
+      }
+
+      if (empty($competition)) {
+        $competition = $this->palmares->get_last_competition_for_domain($domain);
+      }
+
+      $users = $this->palmares->list_users_by_competition($competition['id']);
+      foreach ($users as $index => $user) {
+        $this->template->assign_block_vars('users', [
+          'RANK' => $index + 1,
+          'NAME' => $user['userName'],
+          'POINTS' => $user['userPoints'],
+          'RESULTS' => $user['userResults'],
+          'SCORES' => $user['userScores']
+        ]);
+      }
+
+      $this->template->assign_vars([
+        'TPL_WEB_PATH' => $this->template_web_location,
+        'COMPETITION_NAME' => $competition['name']
+      ]);
+
+      $this->blocks_loaded[] = 'palmares';
+    }
+
+
+    /* **************** */
 
     function load_menu()
     {
