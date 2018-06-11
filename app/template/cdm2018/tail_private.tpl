@@ -4,7 +4,7 @@
           <!-- BEGIN menu_admin -->
           | <a href="https://github.com/johanpoirier/bet4soccer/issues" target="_blank" rel="noopener noreferrer">Github issues</a>
           <!-- END menu_admin -->
-          | <a href="/?act=palmares">Palmares</a>
+          | <a href="/?act=palmares">Palmarès</a>
           | <a href="/?act=rules">Règlement</a>
           | <a href="mailto:{CONTACT_EMAIL}">Contact</a>
           | <a href="/?act=logout">Déconnexion</a>

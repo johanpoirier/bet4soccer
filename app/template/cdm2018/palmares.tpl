@@ -2,7 +2,7 @@
     <div class="maincontent">
         <div class="headline">
             <div class="headline-title">
-                <h1>Palmares : {COMPETITION_NAME}</h1>
+                <h1>Palmarès : {COMPETITION_NAME}</h1>
             </div>
         </div>
 
