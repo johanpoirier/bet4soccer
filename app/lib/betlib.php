@@ -18,6 +18,7 @@ include_once(BASE_PATH . 'lib/groups.php');
 include_once(BASE_PATH . 'lib/audit.php');
 include_once(BASE_PATH . 'lib/tokens.php');
 include_once(BASE_PATH . 'lib/palmares.php');
+include_once(BASE_PATH . 'lib/emailer.php');
 include_once(BASE_PATH . 'lib/db.mysql.php');
 
 class BetEngine
@@ -44,6 +45,7 @@ class BetEngine
     var $audit;
     var $tokens;
     var $palmares;
+    var $emailer;
 
     public function __construct($admin = false, $debug = false)
     {
@@ -83,6 +85,7 @@ class BetEngine
         $this->stats = new Stats($this->db, $this->config, $this->lang, $this->users, $this->groups, $this->matches, $this->bets);
         $this->tokens = new Tokens($this->db, $this->config);
         $this->palmares = new Palmares($this->db, $this->config);
+        $this->emailer = new Emailer($this->config);
     }
 
     function islogin()
@@ -3034,19 +3037,22 @@ class BetEngine
         $ret = false;
         if ($type == 'OUT') {
             foreach ($emails as $email) {
-                if (isset($invitations[$email]))
-                    $code = $invitations[$email]['code'];
+                if (isset($invitations[$email])) {
+                  $code = $invitations[$email]['code'];
+                }
                 $subject = $current_user['name'] . " vous invite à venir pronostiquer avec lui sur les matches de la coupe du monde !";
                 $content = "Bonjour,\n\n";
                 $content .= $current_user['name'] . " a pensé que vous seriez intéressé pour venir pronostiquer avec lui sur les matches de la coupe du monde.\n";
                 $content .= "Pour cela, inscrivez-vous en cliquant sur le lien suivant :\n\n";
-                if (isset($code))
-                    $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?c=" . $code . "\n\n";
-                else
-                    $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?act=register\n\n";
+                if (isset($code)) {
+                  $content .= 'http://' . $_SERVER['HTTP_HOST'] . '/?c=' . $code . "\n\n";
+                }
+                else {
+                  $content .= 'http://' . $_SERVER['HTTP_HOST'] . "/?act=register\n\n";
+                }
                 $content .= "Cordialement,\n";
                 $content .= 'L’équipe ' . $this->config['support_team'] . "\n";
-                $ret = utf8_mail($email, $subject, $content, $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+                $ret = $this->emailer->send($email, $email, $subject, $content);
             }
         } elseif ($type == 'IN') {
             foreach ($emails as $email) {
@@ -3060,13 +3066,11 @@ class BetEngine
                 $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?c=" . $code . "\n\n";
                 $content .= "Cordialement,\n";
                 $content .= 'L’équipe ' . $this->config['support_team'] . "\n";
-                $ret = utf8_mail($email, $subject, $content, $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+                $ret = $this->emailer->send($email, $email, $subject, $content);
             }
         }
-        if ($ret)
-            return SEND_INVITATIONS_OK;
-        else
-            SEND_INVITATIONS_ERROR;
+
+        return $ret ? SEND_INVITATIONS_OK : SEND_INVITATIONS_ERROR;
     }
 
     function send_login($email)
@@ -3074,10 +3078,10 @@ class BetEngine
         $user = $this->users->get_by_email($email);
 
         if ($user) {
-            return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de votre login', "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL'équipe Euro2016\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            return $this->emailer->send($user['email'], $user['name'], $this->config['blog_title'] . ' - Oubli de votre login', "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL’équipe " . $config['support_team'] . "\n");
         } else {
-            utf8_mail($this->config['email'], $this->config['blog_title'] . " - Utilisateur $email inconnu", "L’utilisateur avec l'email $email a tenté de récupérer son login.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
-            return false;
+          $this->emailer->send($this->config['email'], $this->config['support_team'],$this->config['blog_title'] . " - Utilisateur $email inconnu", "L’utilisateur avec l'email $email a tenté de récupérer son login.\n");
+          return false;
         }
     }
 
@@ -3087,10 +3091,10 @@ class BetEngine
 
         if ($user) {
             $new_pass = $this->users->set_new_password($user['userID']);
-            return utf8_mail($user['email'], $this->config['blog_title'] . ' - Oubli de mot de passe', "Bonjour,\n\nVotre nouveau mot de passe est : $new_pass \n\nCordialement,\n" . $this->config['support_team'] . "\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+            return $this->emailer->send($user['email'], $user['name'], $this->config['blog_title'] . ' - Oubli de mot de passe', "Bonjour " . $user['name'] . ",\n\nVotre nouveau mot de passe est : $new_pass \n\nCordialement,\n" . $this->config['support_team'] . "\n");
         }
 
-        utf8_mail($this->config['email'], $this->config['blog_title'] . " - Utilisateur $login inconnu", "L’utilisateur $login a tenté de récupérer son mot de passe.\n", $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
+        $this->emailer->send($this->config['email'], $this->config['support_team'],$this->config['blog_title'] . " - Utilisateur $login inconnu", "L’utilisateur $login a tenté de récupérer son mot de passe.\n");
         return false;
     }
 

@@ -15,8 +15,10 @@ $config['show_all_users_in_team'] = true;
 $config['encoding'] = 'UTF8';
 $config['force_encoding_fs'] = false;
 
+$config['mailjet_apikey_public'] = 'your api key';
+$config['mailjet_apikey_private'] = 'your api secret';
 $config['support_team'] = 'FIFA Coupe du Monde 2018';
-$config['email'] = 'johan.poirier+cdm2018@gmail.com';
+$config['email'] = 'cdm2018@jops-dev.com';
 $config['email_simulation'] = false;
 
 $config['palmares_domain'] = 'Public';

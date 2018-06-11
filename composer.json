@@ -1,4 +1,6 @@
 {
+  "name": "Bet4Soccer",
+  "description": "Bets for international soccer competitions.",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
@@ -6,6 +8,7 @@
   },
   "require": {
     "debril/feed-io": "*",
-    "ircmaxell/random-lib": "^1.1"
+    "ircmaxell/random-lib": "^1.1",
+    "mailjet/mailjet-apiv3-php": "^1.2"
   }
 }
