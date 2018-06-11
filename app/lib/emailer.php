@@ -20,13 +20,19 @@ class Emailer
       'Messages' => [
         [
           'From' => [
-            'Email' => $this->config['email'],
+            'Email' => $this->config['email_address_sender'],
             'Name' => $this->config['support_team']
           ],
           'To' => [
             [
               'Email' => $recipientEmail,
               'Name' => $recipientName
+            ]
+          ],
+          'ReplyTo' => [
+            [
+              'Email' => $this->config['email_address_replyto'],
+              'Name' => $this->config['support_team']
             ]
           ],
           'Subject' => $subject,

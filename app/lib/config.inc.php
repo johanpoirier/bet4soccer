@@ -18,7 +18,8 @@ $config['force_encoding_fs'] = false;
 $config['mailjet_apikey_public'] = 'your api key';
 $config['mailjet_apikey_private'] = 'your api secret';
 $config['support_team'] = 'FIFA Coupe du Monde 2018';
-$config['email'] = 'cdm2018@jops-dev.com';
+$config['email_address_sender'] = 'cdm2018@jops-dev.com';
+$config['email_address_replyto'] = 'cdm2018@jops-dev.com';
 $config['email_simulation'] = false;
 
 $config['palmares_domain'] = 'Public';
