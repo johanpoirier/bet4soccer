@@ -3039,13 +3039,13 @@ class BetEngine
                 $subject = $current_user['name'] . " vous invite à venir pronostiquer avec lui sur les matches de la coupe du monde !";
                 $content = "Bonjour,\n\n";
                 $content .= $current_user['name'] . " a pensé que vous seriez intéressé pour venir pronostiquer avec lui sur les matches de la coupe du monde.\n";
-                $content .= "Pour cela, inscrivez-vous sur Euro2016 en cliquant sur le lien suivant :\n\n";
+                $content .= "Pour cela, inscrivez-vous en cliquant sur le lien suivant :\n\n";
                 if (isset($code))
                     $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?c=" . $code . "\n\n";
                 else
                     $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?act=register\n\n";
                 $content .= "Cordialement,\n";
-                $content .= "L'équipe de Euro2016\n";
+                $content .= 'L’équipe ' . $this->config['support_team'] . "\n";
                 $ret = utf8_mail($email, $subject, $content, $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             }
         } elseif ($type == 'IN') {
@@ -3059,7 +3059,7 @@ class BetEngine
                 $content .= "Pour accepter cette invitation, cliquez sur le lien suivant :\n\n";
                 $content .= "http://" . $_SERVER['HTTP_HOST'] . "/?c=" . $code . "\n\n";
                 $content .= "Cordialement,\n";
-                $content .= "L'équipe de Euro2016\n";
+                $content .= 'L’équipe ' . $this->config['support_team'] . "\n";
                 $ret = utf8_mail($email, $subject, $content, $this->config['blog_title'], $this->config['email'], $this->config['email_simulation']);
             }
         }
