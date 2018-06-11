@@ -317,7 +317,7 @@ class BetEngine
             'NB_QUERIES' => $this->get_nb_queries(),
             'EXEC_TIME' => get_elapsed_time($this->start_time, get_moment()),
             'TPL_WEB_PATH' => $this->template_web_location,
-            'CONTACT_EMAIL' => $this->config['email_address_sender']
+            'CONTACT_EMAIL' => $this->config['email_address_replyto']
         ));
 
         if ($this->isadmin()) {
