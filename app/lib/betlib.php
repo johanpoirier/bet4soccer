@@ -317,7 +317,7 @@ class BetEngine
             'NB_QUERIES' => $this->get_nb_queries(),
             'EXEC_TIME' => get_elapsed_time($this->start_time, get_moment()),
             'TPL_WEB_PATH' => $this->template_web_location,
-            'CONTACT_EMAIL' => $this->config['email']
+            'CONTACT_EMAIL' => $this->config['email_address_sender']
         ));
 
         if ($this->isadmin()) {
@@ -3077,12 +3077,12 @@ class BetEngine
     {
         $user = $this->users->get_by_email($email);
 
-        if ($user) {
-            return $this->emailer->send($user['email'], $user['name'], $this->config['blog_title'] . ' - Oubli de votre login', "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL’équipe " . $config['support_team'] . "\n");
-        } else {
-          $this->emailer->send($this->config['email'], $this->config['support_team'],$this->config['blog_title'] . " - Utilisateur $email inconnu", "L’utilisateur avec l'email $email a tenté de récupérer son login.\n");
+        if (!$user) {
+          $this->emailer->send($this->config['email_address_sender'], $this->config['support_team'],$this->config['blog_title'] . " - Utilisateur $email inconnu", "L’utilisateur avec l'email $email a tenté de récupérer son login.\n");
           return false;
         }
+
+        return $this->emailer->send($user['email'], $user['name'], $this->config['blog_title'] . ' - Oubli de votre login', "Bonjour,\n\nVotre login est : " . $user['login'] . "\n\nCordialement,\nL’équipe " . $this->config['support_team'] . "\n");
     }
 
     function send_password($login)
@@ -3094,7 +3094,7 @@ class BetEngine
             return $this->emailer->send($user['email'], $user['name'], $this->config['blog_title'] . ' - Oubli de mot de passe', "Bonjour " . $user['name'] . ",\n\nVotre nouveau mot de passe est : $new_pass \n\nCordialement,\n" . $this->config['support_team'] . "\n");
         }
 
-        $this->emailer->send($this->config['email'], $this->config['support_team'],$this->config['blog_title'] . " - Utilisateur $login inconnu", "L’utilisateur $login a tenté de récupérer son mot de passe.\n");
+        $this->emailer->send($this->config['email_address_sender'], $this->config['support_team'],$this->config['blog_title'] . " - Utilisateur $login inconnu", "L’utilisateur $login a tenté de récupérer son mot de passe.\n");
         return false;
     }
 

@@ -30,10 +30,8 @@ class Emailer
             ]
           ],
           'ReplyTo' => [
-            [
-              'Email' => $this->config['email_address_replyto'],
-              'Name' => $this->config['support_team']
-            ]
+            'Email' => $this->config['email_address_replyto'],
+            'Name' => $this->config['support_team']
           ],
           'Subject' => $subject,
           'TextPart' => $content
