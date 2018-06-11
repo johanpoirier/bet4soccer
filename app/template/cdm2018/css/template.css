@@ -1334,6 +1334,7 @@ td.game-date {
         background-image: url('../images/logo-oneline.png');
         background-repeat: no-repeat;
         background-position: center;
+        background-size: contain;
         height: 2rem;
         width: 100%;
     }
