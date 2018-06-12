@@ -1331,7 +1331,7 @@ td.game-date {
         min-height: 3rem;
     }
     header .block.logo {
-        background-image: url('../images/logo-oneline.png');
+        background-image: url('../images/logo-horizontal.png');
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
