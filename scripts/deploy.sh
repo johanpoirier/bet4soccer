@@ -22,6 +22,9 @@ then
     rm -f "$targetPath/versions/$version/web/lib/protect/params.inc"
     ln -s "$targetPath/conf/params.inc" "$targetPath/versions/$version/web/lib/protect/params.inc"
 
+    rm -rf "$targetPath/versions/$version/web/data/"
+    ln -s "$targetPath/data" "$targetPath/versions/$version/web/data"
+
     chgrp -R www-data "$targetPath/versions/$version/"
     cd --
 
