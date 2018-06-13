@@ -398,10 +398,8 @@ class BetEngine
 
     /* **************** */
 
-    function load_palmares($competitionId = null)
+    public function load_palmares($competitionId = null)
     {
-      $this->template->set_filenames([ 'palmares' => 'palmares.tpl' ]);
-
       $domain = $this->config['palmares_domain'];
       $competitions = $this->palmares->list_finished_competitions_by_domain($domain);
 
@@ -411,6 +409,19 @@ class BetEngine
           'NAME' => $compet['name'],
           'START_DATE' => $compet['startDate']
         ]);
+      }
+
+      $illustration = $this->config['palmares_illustration'];
+      if (!empty($illustration) && empty($competitionId)) {
+        $this->template->set_filenames([ 'palmares' => 'palmares_static.tpl' ]);
+        $this->template->assign_vars([
+          'TPL_WEB_PATH' => $this->template_web_location,
+          'ILLUSTRATION' => $illustration
+        ]);
+
+        $this->blocks_loaded[] = 'palmares';
+
+        return;
       }
 
       if (!empty($competitionId)) {
@@ -431,6 +442,8 @@ class BetEngine
           'SCORES' => $user['nbscores']
         ]);
       }
+
+      $this->template->set_filenames([ 'palmares' => 'palmares.tpl' ]);
 
       $this->template->assign_vars([
         'TPL_WEB_PATH' => $this->template_web_location,

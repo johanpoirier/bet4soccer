@@ -23,6 +23,7 @@ $config['email_address_replyto'] = 'cdm2018@jops-dev.com';
 $config['email_simulation'] = false;
 
 $config['palmares_domain'] = 'Public';
+$config['palmares_illustration'] = null;
 
 $config['DB'] = 'MySQL';
 $config['db_prefix'] = 'cdm2018__';

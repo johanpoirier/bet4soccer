@@ -1229,6 +1229,16 @@ td.game-date {
     padding: 1em 0;
 }
 
+.palmares-illustration {
+    margin-top: 2em;
+    text-align: center  ;
+}
+
+.palmares-illustration img {
+    max-width: 100%;
+}
+
+
 /************* media queries ******************/
 @media (min-width: 1200px) {
     body {
