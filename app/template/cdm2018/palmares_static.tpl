@@ -17,12 +17,10 @@
                 <h2>Compétitions</h2>
             </div>
         </div>
-        <div class="tag_cloud">
-            <!-- BEGIN competitions -->
-            <div class="competition">
-                <a href="?act=palmares&id={competitions.ID}">{competitions.NAME}</a>
-            </div>
-            <!-- END competitions -->
+        <!-- BEGIN competitions -->
+        <div class="competition">
+            <a href="?act=palmares&id={competitions.ID}">{competitions.NAME}</a>
         </div>
+        <!-- END competitions -->
     </aside>
 </section>
