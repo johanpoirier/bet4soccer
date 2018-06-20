@@ -89,18 +89,12 @@
 
                 <table width="100%">
                     <!-- BEGIN bets -->
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+
                     <!-- BEGIN view -->
                     <tr>
                         <td colspan="6" style="text-align:center;">
-                            <i>{pools.bets.view.DATE}</i></td>
+                            <i>{pools.bets.view.DATE}</i>
+                        </td>
                     </tr>
                     <tr>
                         <td id="{pools.bets.view.ID}_team_A" width="35%" rowspan="2"

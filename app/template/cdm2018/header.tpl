@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
 	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/bet4soccer.css?v=201806120923" />
-	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/template.css?v=201806131350" />
+	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/template.css?v=201806201350" />
 	<link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="/icon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-icon-72x72.png">
@@ -24,7 +24,7 @@
 	<meta name="msapplication-TileImage" content="/icon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 	<script type="text/javascript" src="{TPL_WEB_PATH}js/jquery-2.2.3.min.js"> </script>
-	<script type="text/javascript" src="{TPL_WEB_PATH}js/utils.js?v=201806120917"> </script>
+	<script type="text/javascript" src="{TPL_WEB_PATH}js/utils.js?v=201806200917"> </script>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

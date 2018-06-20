@@ -1051,6 +1051,84 @@ td.game-date {
     text-align: center;
 }
 
+.bets-list {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2em;
+}
+
+.bets-list-date {
+    font-style: italic;
+    margin-top: 2em;
+}
+
+.bets-list-game {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.bets-list-game-pool {
+    left: -2em;
+    padding: 0.5em 0;
+    position: absolute;
+}
+
+.bets-list-game-team {
+    align-items: center;
+    display: flex;
+    flex-basis: 40%;
+    justify-content: flex-end;
+    padding: 0.5em;
+}
+
+.bets-list-game-team.team-b {
+    justify-content: flex-start;
+}
+
+.bets-list-game-score, .bets-list-game-bet {
+    flex-basis: 8%;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0.5em;
+    position: relative;
+    text-align: right;
+}
+
+.bets-list-game-bet {
+    flex-basis: 12%;
+    margin: 0.3em 0.5em;
+}
+
+.bets-list-game-score.team-b, .bets-list-game-bet.team-b {
+    text-align: left;
+}
+
+.bets-list-game-result {
+    bottom: -1.3em;
+    color: blue;
+    font-size: 9px;
+    font-weight: 300;
+    position: absolute;
+    text-align: center;
+}
+.team-a .bets-list-game-result {
+    right: 0.2em;
+}
+.team-b .bets-list-game-result {
+    left: 0.2em;
+}
+
+.bets-list-game-points {
+    flex-basis: 8%;
+    font-size: 9px;
+    text-align: center;
+    font-weight: 300;
+    padding: 0.5em;
+}
+
 
 /************* tag board ******************/
 .tagboard {

@@ -84,70 +84,44 @@
 
         <div class="tag_cloud uniq">
             <form name="save_bets" action="/?act=save_bets" method="post">
-                <table width="100%">
+                <div class="bets-list">
                     <!-- BEGIN bets -->
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
                     <!-- BEGIN view -->
-                    <tr>
-                        <td colspan="7" style="text-align:center;">
-                            <i>{bets.view.DATE}</i></td>
-                    </tr>
-                    <tr>
-                        <td><i>({bets.view.POOL})</i></td>
-                        <td id="{bets.view.ID}_team_A" width="35%" rowspan="2"
-                            style="text-align:right;background-color:{bets.view.TEAM_COLOR_A};">
-                            {bets.view.TEAM_NAME_A}
+                    <div class="bets-list-date">{bets.view.DATE}</div>
+                    <div class="bets-list-game">
+                        <div class="bets-list-game-pool">({bets.view.POOL})</div>
+                        <div id="{bets.view.ID}_team_A" class="bets-list-game-team team-a" style="background-color:{bets.view.TEAM_COLOR_A};">
+                            {bets.view.TEAM_NAME_A}&nbsp;
                             <img src="{TPL_WEB_PATH}images/flag/{bets.view.TEAM_NAME_A}.png"/>
-                        </td>
-                        <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">
-                            {bets.view.SCORE_A}</td>
-                        <td width="10%"
-                            style="text-align:center;font-weight:300;font-size:9px;color:{bets.view.COLOR};"
-                            rowspan="2" colspan="2">
+                        </div>
+                        <div class="bets-list-game-score team-a">
+                            {bets.view.SCORE_A}
+                            <div class="bets-list-game-result">{bets.view.RESULT_A}</div>
+                        </div>
+                        <div class="bets-list-game-points" style="color:{bets.view.COLOR};">
                             {bets.view.POINTS}<br/>
                             <span style="color:black;">{bets.view.DIFF}</span>
-                        </td>
-                        <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">
-                            {bets.view.SCORE_B}</td>
-                        <td id="{bets.view.ID}_team_B" width="35%" rowspan="2"
-                            style="text-align:left;background-color:{bets.view.TEAM_COLOR_B};">
+                        </div>
+                        <div class="bets-list-game-score team-b">
+                            {bets.view.SCORE_B}
+                            <div class="bets-list-game-result">{bets.view.RESULT_B}</div>
+                        </div>
+                        <div id="{bets.view.ID}_team_B" width="35%" class="bets-list-game-team team-b" style="background-color:{bets.view.TEAM_COLOR_B};">
                             <img src="{TPL_WEB_PATH}images/flag/{bets.view.TEAM_NAME_B}.png"/>
-                            {bets.view.TEAM_NAME_B}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td style="text-align:center;color:blue;font-weight:300;font-size:9px;">
-                            {bets.view.RESULT_A}</td>
-                        <td style="text-align:center;color:blue;font-weight:300;font-size:9px;">
-                            {bets.view.RESULT_B}</td>
-                        <td></td>
-                    </tr>
+                            &nbsp;{bets.view.TEAM_NAME_B}
+                        </div>
+                    </div>
                     <!-- END view -->
                     <!-- BEGIN edit -->
-                    <tr>
-                        <td></td>
-                        <td colspan="6" class="game-date">{bets.edit.DATE}</td>
-                    </tr>
-                    <tr>
-                        <td><i>({bets.edit.POOL})</i></td>
-                        <td id="{bets.edit.ID}_team_A" width="35%"
-                            style="text-align:right;background-color:{bets.edit.TEAM_COLOR_A};">
-                            <div class="team">
-                                {bets.edit.TEAM_NAME_A}
-                                <img src="{TPL_WEB_PATH}images/flag/{bets.edit.TEAM_NAME_A}.png"/>
-                                <span class="fifaRankTip">Classement FIFA : {bets.edit.TEAM_RANK_A}</span>
-                            </div>
-                        </td>
-                        <td style="text-align:right;padding-right:10px;" colspan="2">
+                    <div class="bets-list-date">{bets.edit.DATE}</div>
+                    <div class="bets-list-game">
+                        <div class="bets-list-game-pool">({bets.edit.POOL})</div>
+                        <div id="{bets.edit.ID}_team_A" class="bets-list-game-team team-a" style="background-color:{bets.edit.TEAM_COLOR_A};">
+                            {bets.edit.TEAM_NAME_A}&nbsp;
+                            <img src="{TPL_WEB_PATH}images/flag/{bets.edit.TEAM_NAME_A}.png"/>
+                            <span class="fifaRankTip">Classement FIFA : {bets.edit.TEAM_RANK_A}</span>
+                        </div>
+                        <div class="bets-list-game-bet team-a">
                             <input type="number" min="0"
                                    max="99" size="2"
                                    id="{bets.edit.ID}_score_team_A"
@@ -155,8 +129,8 @@
                                    value="{bets.edit.SCORE_A}"
                                    onChange="saveBet(this.value,{bets.edit.ID},'A')"
                                    onKeyUp="saveBet(this.value,{bets.edit.ID},'A')" {bets.edit.DISABLED}/>
-                        </td>
-                        <td style="text-align:left;padding-left:10px;" colspan="2">
+                        </div>
+                        <div class="bets-list-game-bet team-b">
                             <input type="number" min="0" max="99"
                                    size="2"
                                    id="{bets.edit.ID}_score_team_B"
@@ -164,19 +138,16 @@
                                    value="{bets.edit.SCORE_B}"
                                    onChange="saveBet(this.value,{bets.edit.ID},'B')"
                                    onKeyUp="saveBet(this.value,{bets.edit.ID},'B')" {bets.edit.DISABLED}/>
-                        </td>
-                        <td id="{bets.edit.ID}_team_B" width="35%"
-                            style="text-align:left;background-color:{bets.edit.TEAM_COLOR_B};">
-                            <div class="team">
-                                <img src="{TPL_WEB_PATH}images/flag/{bets.edit.TEAM_NAME_B}.png"/>
-                                {bets.edit.TEAM_NAME_B}
-                                <span class="fifaRankTip">Classement FIFA : {bets.edit.TEAM_RANK_B}</span>
-                            </div>
-                        </td>
-                    </tr>
+                        </div>
+                        <div id="{bets.edit.ID}_team_B" class="bets-list-game-team team-b" style="background-color:{bets.edit.TEAM_COLOR_B};">
+                            <img src="{TPL_WEB_PATH}images/flag/{bets.edit.TEAM_NAME_B}.png"/>
+                            &nbsp;{bets.edit.TEAM_NAME_B}
+                            <span class="fifaRankTip">Classement FIFA : {bets.edit.TEAM_RANK_B}</span>
+                        </div>
+                    </div>
                     <!-- END edit -->
                     <!-- END bets -->
-                </table>
+                </div>
             </form>
         </div>
     </div>
