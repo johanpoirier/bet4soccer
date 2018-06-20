@@ -237,3 +237,22 @@ function displayChart(id, data, style, color, xSerie, yTicks, yMin, yMax, transf
 		}
 	});
 }
+
+function checkGameBets(matchID) {
+    var scoreA = getBet(matchID, 'A');
+    var scoreB = getBet(matchID, 'B');
+
+    if (scoreA === '' && scoreB !== '') {
+        setBet(matchID, 'A', 0);
+    } else if (scoreA !== '' && scoreB === '') {
+        setBet(matchID, 'B', 0);
+    }
+}
+
+function getBet(matchID, team) {
+    return $('#' + matchID + '_score_team_' + team).val();
+}
+
+function setBet(matchID, team, score) {
+    $('#' + matchID + '_score_team_' + team).val(score);
+}

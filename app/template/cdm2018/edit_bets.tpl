@@ -2,18 +2,20 @@
 <script type="text/javascript">
     function saveBet(score, matchID, team) {
         var data = {
-            'act': 'save_HTTP_bet',
-            'userID': {CURRENT_USER_ID},
-            'matchID': matchID,
-            'team': team,
-            'score': score
+            act: 'save_HTTP_bet',
+            userID: {CURRENT_USER_ID},
+            matchID: matchID,
+            team: team,
+            score: score
         };
         $.ajax({
-            'type': 'POST',
-            'url': '/',
-            'data': arrayToDataQuery(data),
-            'success': handleHttpResponse
+            type: 'POST',
+            url: '/',
+            data: arrayToDataQuery(data),
+            success: handleHttpResponse
         });
+
+        checkGameBets(matchID);
     }
 
     function handleHttpResponse(response) {

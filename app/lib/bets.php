@@ -49,9 +49,9 @@ class Bets {
                 $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
                 $req .= ' SET score' . $team . ' = ' . $score . ',';
                 $req .= ' team' . $team . ' = ' . $final_teamID . ',';
-                $req .= ' teamW = \'' . $final_teamW . '\'';
-                $req .= ' WHERE userID = ' . $userID . '';
-                $req .= ' AND matchID = ' . $matchID . '';
+                $req .= " teamW = '$final_teamW'";
+                $req .= " WHERE userID = $userID";
+                $req .= " AND matchID = $matchID";
                 $this->parent->db->exec_query($req);
             } else {
                 $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,score' . $team . ',team' . $team . ',teamW)';
