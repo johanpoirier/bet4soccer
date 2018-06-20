@@ -92,12 +92,15 @@
                     <!-- BEGIN teams -->
                     <tr>
                         <td id="{pools.teams.ID}_team">
-                            <img width="15px" src="{TPL_WEB_PATH}/images/flag/{pools.teams.NAME_URL}.png"/>
-                            {pools.teams.NAME}</td>
+                            <img width="15px" src="{TPL_WEB_PATH}/images/flag/{pools.teams.NAME}.png" alt="{pools.teams.NAME}" />
+                            {pools.teams.NAME}
+                        </td>
                         <td>
-                            {pools.teams.POINTS}</td>
+                            {pools.teams.POINTS}
+                        </td>
                         <td>
-                            {pools.teams.DIFF}</td>
+                            {pools.teams.DIFF}
+                        </td>
                     </tr>
                     <!-- END teams -->
                 </table>
