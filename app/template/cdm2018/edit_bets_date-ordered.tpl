@@ -119,7 +119,7 @@
                         <div id="{bets.edit.ID}_team_A" class="bets-list-game-team team-a" style="background-color:{bets.edit.TEAM_COLOR_A};">
                             {bets.edit.TEAM_NAME_A}&nbsp;
                             <img src="{TPL_WEB_PATH}images/flag/{bets.edit.TEAM_NAME_A}.png"/>
-                            <span class="fifaRankTip">Classement FIFA : {bets.edit.TEAM_RANK_A}</span>
+                            <span class="fifa-rank-tip">Classement FIFA : {bets.edit.TEAM_RANK_A}</span>
                         </div>
                         <div class="bets-list-game-bet team-a">
                             <input type="number" min="0"
@@ -142,7 +142,7 @@
                         <div id="{bets.edit.ID}_team_B" class="bets-list-game-team team-b" style="background-color:{bets.edit.TEAM_COLOR_B};">
                             <img src="{TPL_WEB_PATH}images/flag/{bets.edit.TEAM_NAME_B}.png"/>
                             &nbsp;{bets.edit.TEAM_NAME_B}
-                            <span class="fifaRankTip">Classement FIFA : {bets.edit.TEAM_RANK_B}</span>
+                            <span class="fifa-rank-tip">Classement FIFA : {bets.edit.TEAM_RANK_B}</span>
                         </div>
                     </div>
                     <!-- END edit -->

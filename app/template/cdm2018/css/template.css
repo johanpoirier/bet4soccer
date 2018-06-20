@@ -982,25 +982,6 @@ a.nolink:active {
     color: black;
 }
 
-.team {
-    position: relative;
-}
-
-span.fifaRankTip {
-    display: none;
-    font-size: 0.8em;
-}
-
-.team:hover span.fifaRankTip {
-    background-color: white;
-    box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.7);
-    display: block;
-    left: 27px;
-    padding: 8px;
-    position: absolute;
-    top: 24px;
-    z-index: 999;
-}
 
 /************* *****************/
 td.win, tr.first {
@@ -1082,10 +1063,38 @@ td.game-date {
     flex-basis: 40%;
     justify-content: flex-end;
     padding: 0.5em;
+    position: relative;
 }
 
 .bets-list-game-team.team-b {
     justify-content: flex-start;
+}
+
+.team {
+    position: relative;
+}
+
+.fifa-rank-tip {
+    display: none;
+    font-size: 0.8em;
+}
+
+.bets-list-game-team:hover .fifa-rank-tip, .team:hover .fifa-rank-tip {
+    background-color: white;
+    box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.7);
+    display: block;
+    padding: 8px;
+    position: absolute;
+    top: 24px;
+    z-index: 999;
+}
+
+.team-a:hover .fifa-rank-tip {
+    right: 4em;
+}
+
+.team-b:hover .fifa-rank-tip {
+    left: 4em;
 }
 
 .bets-list-game-score, .bets-list-game-bet {

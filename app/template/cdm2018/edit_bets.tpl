@@ -135,11 +135,11 @@
                     </tr>
                     <tr>
                         <td id="{pools.bets.edit.ID}_team_A" width="35%"
-                            style="text-align:right;background-color:{pools.bets.edit.TEAM_COLOR_A};">
+                            style="text-align:right;background-color:{pools.bets.edit.TEAM_COLOR_A};" class="team-a">
                             <div class="team">
                                 {pools.bets.edit.TEAM_NAME_A}
                                 <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_A}.png"/>
-                                <span class="fifaRankTip">Classement FIFA : {pools.bets.edit.TEAM_RANK_A}</span>
+                                <span class="fifa-rank-tip">Classement FIFA : {pools.bets.edit.TEAM_RANK_A}</span>
                             </div>
                         </td>
                         <td style="text-align:right;padding-right:10px;" colspan="2">
@@ -160,11 +160,11 @@
                                    onKeyUp="saveBet(this.value,{pools.bets.edit.ID},'B')" {pools.bets.edit.DISABLED}/>
                         </td>
                         <td id="{pools.bets.edit.ID}_team_B" width="35%"
-                            style="text-align:left;background-color:{pools.bets.edit.TEAM_COLOR_B};">
+                            style="text-align:left;background-color:{pools.bets.edit.TEAM_COLOR_B};" class="team-b">
                             <div class="team">
                                 <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_B}.png"/>
                                 {pools.bets.edit.TEAM_NAME_B}
-                                <span class="fifaRankTip">Classement FIFA : {pools.bets.edit.TEAM_RANK_B}</span>
+                                <span class="fifa-rank-tip">Classement FIFA : {pools.bets.edit.TEAM_RANK_B}</span>
                             </div>
                         </td>
                     </tr>
