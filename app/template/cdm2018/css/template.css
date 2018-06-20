@@ -1312,8 +1312,26 @@ td.game-date {
 
 
 /************** palmares ************/
+.palmares .headline {
+    margin-bottom: 2em;
+}
+
 .competition {
-    padding: 1em 0;
+    border: 2px solid #469fe0;
+    border-radius: 2px;
+    color: black;
+    font-size: 1.2em;
+    margin: 1em 0;
+    padding: 0.5em 0.2em;
+    text-align: center;
+}
+
+.competition a {
+    color: black;
+}
+
+.competition:hover, .competition.selected {
+    background-color: #c2e0f1;
 }
 
 .palmares-illustration {

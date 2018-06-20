@@ -1,5 +1,5 @@
 <section id="mainarea">
-    <div class="maincontent">
+    <div class="maincontent palmares">
         <div class="headline">
             <div class="headline-title">
                 <h1>Palmarès : {COMPETITION_NAME}</h1>
@@ -35,12 +35,10 @@
                 <h2>Compétitions</h2>
             </div>
         </div>
-        <div class="tag_cloud">
-            <!-- BEGIN competitions -->
-            <div class="competition">
-                <a href="?act=palmares&id={competitions.ID}">{competitions.NAME}</a>
-            </div>
-            <!-- END competitions -->
+        <!-- BEGIN competitions -->
+        <div class="competition {competitions.SELECTED}">
+            <a href="?act=palmares&id={competitions.ID}">{competitions.NAME}</a>
         </div>
+        <!-- END competitions -->
     </aside>
 </section>

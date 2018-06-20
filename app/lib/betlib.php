@@ -407,7 +407,8 @@ class BetEngine
         $this->template->assign_block_vars('competitions', [
           'ID' => $compet['id'],
           'NAME' => $compet['name'],
-          'START_DATE' => $compet['startDate']
+          'START_DATE' => $compet['startDate'],
+          'SELECTED' => $compet['id'] == $competitionId ? 'selected' : ''
         ]);
       }
 

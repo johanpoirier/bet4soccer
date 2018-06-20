@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
 	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/bet4soccer.css?v=201806120923" />
-	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/template.css?v=201806201703" />
+	<link type="text/css" rel="stylesheet" href="{TPL_WEB_PATH}css/template.css?v=201806201717" />
 	<link rel="apple-touch-icon" sizes="57x57" href="/icon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="/icon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="/icon/apple-icon-72x72.png">
