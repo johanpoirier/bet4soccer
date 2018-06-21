@@ -61,7 +61,7 @@ class BetEngine
         $this->db = new MySQL_DB();
         $this->db->set_debug($debug);
 
-        $this->msg = "";
+        $this->msg = '';
         $this->page_views = false;
         if (isset($_SESSION['theme'])) {
             $this->template_location = BASE_PATH . 'template/' . $_SESSION['theme'] . "/";
@@ -102,7 +102,7 @@ class BetEngine
     /*     LOADERS     */
     /*     * **************** */
 
-    function load_authentification($warning = "", $code = false)
+    function load_authentification($warning = '', $code = false)
     {
         $this->template->set_filenames(array(
             'connexion' => 'connexion.tpl'

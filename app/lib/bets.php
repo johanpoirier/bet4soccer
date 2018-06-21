@@ -109,6 +109,20 @@ class Bets {
         return true;
     }
 
+    public function force_add($userID, $matchID, $team, $score)
+    {
+      if ($this->is_exist($userID, $matchID)) {
+        $req = 'UPDATE ' . $this->parent->config['db_prefix'] . 'bets';
+        $req .= ' SET score' . $team . ' = ' . $score . '';
+        $req .= ' WHERE userID = ' . $userID . ' AND matchID = ' . $matchID . ';';
+        $this->parent->db->exec_query($req);
+      } else {
+        $req = 'INSERT INTO ' . $this->parent->config['db_prefix'] . 'bets (userID,matchID,score' . $team . ')';
+        $req .= ' VALUES (' . $userID . ',' . $matchID . ',' . $score . ');';
+        $this->parent->db->insert($req);
+      }
+    }
+
     function delete_by_match_and_user($matchID, $userID) {
         prepare_numeric_data(array(&$matchID, &$userID));
         $req = 'DELETE';
@@ -549,7 +563,7 @@ WHERE (scoreA is NULL and scoreB is NOT NULL)
 OR (scoreA is not NULL and scoreB is NULL)
 SQL;
         $betCount = 0;
-        return $this->parent->db->selectArray($req, $betCount);
+        return $this->parent->db->selectArray($req, [], $betCount);
     }
 
     function is_exist($userID, $matchID) {
