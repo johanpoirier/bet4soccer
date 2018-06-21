@@ -14,8 +14,6 @@
             'data': arrayToDataQuery(data),
             'success': handleHttpResponse
         });
-
-        checkGameBets(matchID);
     }
 
     function handleHttpResponse(response) {

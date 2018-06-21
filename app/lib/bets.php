@@ -541,6 +541,17 @@ class Bets {
         return $bets;
     }
 
+    public function get_incomplete_bets() {
+        $tableName = $this->parent->config['db_prefix'] . 'bets';
+        $req = <<<SQL
+SELECT * from $tableName
+WHERE (scoreA is NULL and scoreB is NOT NULL)
+OR (scoreA is not NULL and scoreB is NULL)
+SQL;
+        $betCount = 0;
+        return $this->parent->db->selectArray($req, $betCount);
+    }
+
     function is_exist($userID, $matchID) {
         prepare_numeric_data(array(&$userID, &$matchID));
         // Main Query
