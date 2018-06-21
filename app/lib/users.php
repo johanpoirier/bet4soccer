@@ -618,7 +618,7 @@ class Users
         return INCORRECT_PASSWORD;
     }
 
-    public function get_active_users_who_have_not_bet($dayCount)
+    public function get_active_users_who_have_not_bet($dayCount, $gameCount)
     {
         $usersTableName = $this->parent->config['db_prefix'] . 'users';
         $betsTableName = $this->parent->config['db_prefix'] . 'bets';
@@ -630,11 +630,12 @@ WHERE last_connection > (NOW() - INTERVAL 7 DAY) AND points is NOT NULL
 AND userID NOT IN
 (SELECT userID FROM $betsTableName b WHERE scoreA IS NOT NULL AND scoreB IS NOT NULL AND matchID IN
 (SELECT m.matchID FROM $matchesTableName AS m
-WHERE DATEDIFF(m.date, NOW()) >= 0 AND DATEDIFF(m.date, NOW()) <= :dayCount))
+WHERE DATEDIFF(m.date, NOW()) >= 0 AND DATEDIFF(m.date, NOW()) <= :dayCount)
+GROUP BY userID HAVING count(userID) = :gameCount)
 SQL;
 
         $userCount = 0;
-        $users = $this->parent->db->selectArray($req, ['dayCount' => $dayCount], $userCount);
+        $users = $this->parent->db->selectArray($req, ['dayCount' => $dayCount, 'gameCount' => $gameCount], $userCount);
         if ($this->parent->debug) {
             array_show($users);
         }

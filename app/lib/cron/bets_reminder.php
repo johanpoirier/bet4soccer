@@ -17,7 +17,7 @@ if ($gameCount === 0) {
   exit;
 }
 
-$users = $bet->users->get_active_users_who_have_not_bet($daysToCheck);
+$users = $bet->users->get_active_users_who_have_not_bet($daysToCheck, $gameCount);
 foreach ($users as $user) {
     echo $user['email'] . "\n";
     $bet->emailer->send($user['email'], $user['name'], $bet->config['blog_title'] . ' - Matchs à pronostiquer', 'Bonjour ' . $user['name'] . ",\n\nIl y a des matchs dans moins de 24H et vous n'avez toujours pas pronostiqué !\n\nRendez-vous sur " .$bet->config['url'] . " pour voter.\n\nCordialement,\nL'équipe " . $bet->config['support_team'] . "\n");
