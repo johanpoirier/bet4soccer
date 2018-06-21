@@ -41,7 +41,7 @@
             var team = response.teams[i];
 
             var line = $('<tr>');
-            line.append($('<td>').attr('id', team.teamID).append('<img width="15px" src="{TPL_WEB_PATH}/images/flag/' + team.name + '.png" alt="' + team.name + '" />' + team.name));
+            line.append($('<td>').attr('id', team.teamID).append('<img width="15px" src="{TPL_WEB_PATH}/images/flag/' + team.name + '.png" alt="' + team.name + '" />&nbsp;' + team.name));
             line.append($('<td>').html(team.points));
             line.append($('<td>').html((team.diff > 0 ? '+' : '') + team.diff));
 
@@ -85,90 +85,68 @@
             <div class="tag_cloud">
                 <span style="font-size: 150%">Groupe {pools.POOL}</span>
 
-                <table width="100%">
+                <div class="bets-list">
                     <!-- BEGIN bets -->
 
                     <!-- BEGIN view -->
-                    <tr>
-                        <td colspan="6" style="text-align:center;">
-                            <i>{pools.bets.view.DATE}</i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="{pools.bets.view.ID}_team_A" width="35%" rowspan="2"
-                            style="text-align:right;background-color:{pools.bets.view.TEAM_COLOR_A};">
-                            {pools.bets.view.TEAM_NAME_A}
-                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_A}.png"/>
-                        </td>
-                        <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">
+                    <div class="bets-list-date">{pools.bets.view.DATE}</div>
+                    <div class="bets-list-game">
+                        <div id="{pools.bets.view.ID}_team_A" class="bets-list-game-team team-a" style="background-color:{pools.bets.view.TEAM_COLOR_A};">
+                            {pools.bets.view.TEAM_NAME_A}&nbsp;
+                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_A}.png" alt="{bets.view.TEAM_NAME_A}" />
+                        </div>
+                        <div class="bets-list-game-score team-a">
                             {pools.bets.view.SCORE_A}
-                        </td>
-                        <td width="10%"
-                            style="text-align:center;font-weight:300;font-size:9px;color:{pools.bets.view.COLOR};"
-                            rowspan="2" colspan="2">
+                            <div class="bets-list-game-result">{pools.bets.view.RESULT_A}</div>
+                        </div>
+                        <div class="bets-list-game-points" style="color:{pools.bets.view.COLOR};">
                             {pools.bets.view.POINTS}<br/>
                             <span style="color:black;">{pools.bets.view.DIFF}</span>
-                        </td>
-                        <td width="10%" style="text-align:center;font-weight:600;font-size:15px;">
+                        </div>
+                        <div class="bets-list-game-score team-b">
                             {pools.bets.view.SCORE_B}
-                        </td>
-                        <td id="{pools.bets.view.ID}_team_B" width="35%" rowspan="2"
-                            style="text-align:left;background-color:{pools.bets.view.TEAM_COLOR_B};">
-                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_B}.png"/>
-                            {pools.bets.view.TEAM_NAME_B}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;color:blue;font-weight:300;font-size:9px;">
-                            {pools.bets.view.RESULT_A}
-                        </td>
-                        <td style="text-align:center;color:blue;font-weight:300;font-size:9px;">
-                            {pools.bets.view.RESULT_B}
-                        </td>
-                    </tr>
+                            <div class="bets-list-game-result">{pools.bets.view.RESULT_B}</div>
+                        </div>
+                        <div id="{pools.bets.view.ID}_team_B" class="bets-list-game-team team-b" style="background-color:{pools.bets.view.TEAM_COLOR_B};">
+                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.view.TEAM_NAME_B}.png" alt="{bets.view.TEAM_NAME_B}" />
+                            &nbsp;{pools.bets.view.TEAM_NAME_B}
+                        </div>
+                    </div>
                     <!-- END view -->
                     <!-- BEGIN edit -->
-                    <tr>
-                        <td colspan="6" class="game-date">{pools.bets.edit.DATE}</td>
-                    </tr>
-                    <tr>
-                        <td id="{pools.bets.edit.ID}_team_A" width="35%"
-                            style="text-align:right;background-color:{pools.bets.edit.TEAM_COLOR_A};" class="team-a">
-                            <div class="team">
-                                {pools.bets.edit.TEAM_NAME_A}
-                                <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_A}.png"/>
-                                <span class="fifa-rank-tip">Classement FIFA : {pools.bets.edit.TEAM_RANK_A}</span>
-                            </div>
-                        </td>
-                        <td style="text-align:right;padding-right:10px;" colspan="2">
-                            <input type="number" min="0" max="99" size="2"
+                    <div class="bets-list-date">{pools.bets.edit.DATE}</div>
+                    <div class="bets-list-game">
+                        <div id="{pools.bets.edit.ID}_team_A" class="bets-list-game-team team-a" style="background-color:{pools.bets.edit.TEAM_COLOR_A};">
+                            {pools.bets.edit.TEAM_NAME_A}&nbsp;
+                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_A}.png"/>
+                            <span class="fifa-rank-tip">Classement FIFA : {pools.bets.edit.TEAM_RANK_A}</span>
+                        </div>
+                        <div class="bets-list-game-bet team-a">
+                            <input type="number" min="0" max="25" size="2"
                                    id="{pools.bets.edit.ID}_score_team_A"
                                    name="{pools.bets.edit.ID}_score_team_A"
                                    value="{pools.bets.edit.SCORE_A}"
                                    onChange="saveBet(this.value,{pools.bets.edit.ID},'A')"
                                    onKeyUp="saveBet(this.value,{pools.bets.edit.ID},'A')" {pools.bets.edit.DISABLED}/>
-                        </td>
-                        <td style="text-align:left;padding-left:10px;" colspan="2">
-                            <input type="number" min="0" max="99"
+                        </div>
+                        <div class="bets-list-game-bet team-b">
+                            <input type="number" min="0" max="25"
                                    size="2"
                                    id="{pools.bets.edit.ID}_score_team_B"
                                    name="{pools.bets.edit.ID}_score_team_B"
                                    value="{pools.bets.edit.SCORE_B}"
                                    onChange="saveBet(this.value,{pools.bets.edit.ID},'B')"
                                    onKeyUp="saveBet(this.value,{pools.bets.edit.ID},'B')" {pools.bets.edit.DISABLED}/>
-                        </td>
-                        <td id="{pools.bets.edit.ID}_team_B" width="35%"
-                            style="text-align:left;background-color:{pools.bets.edit.TEAM_COLOR_B};" class="team-b">
-                            <div class="team">
-                                <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_B}.png"/>
-                                {pools.bets.edit.TEAM_NAME_B}
-                                <span class="fifa-rank-tip">Classement FIFA : {pools.bets.edit.TEAM_RANK_B}</span>
-                            </div>
-                        </td>
-                    </tr>
+                        </div>
+                        <div id="{pools.bets.edit.ID}_team_B" class="bets-list-game-team team-b" style="background-color:{pools.bets.edit.TEAM_COLOR_B};">
+                            <img src="{TPL_WEB_PATH}images/flag/{pools.bets.edit.TEAM_NAME_B}.png"/>
+                            &nbsp;{pools.bets.edit.TEAM_NAME_B}
+                            <span class="fifa-rank-tip">Classement FIFA : {pools.bets.edit.TEAM_RANK_B}</span>
+                        </div>
+                    </div>
                     <!-- END edit -->
                     <!-- END bets -->
-                </table>
+                </div>
 
             </div>
             <!-- END pools -->

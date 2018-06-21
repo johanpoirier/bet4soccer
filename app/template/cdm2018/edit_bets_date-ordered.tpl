@@ -90,7 +90,7 @@
                         <div class="bets-list-game-pool">({bets.view.POOL})</div>
                         <div id="{bets.view.ID}_team_A" class="bets-list-game-team team-a" style="background-color:{bets.view.TEAM_COLOR_A};">
                             {bets.view.TEAM_NAME_A}&nbsp;
-                            <img src="{TPL_WEB_PATH}images/flag/{bets.view.TEAM_NAME_A}.png"/>
+                            <img src="{TPL_WEB_PATH}images/flag/{bets.view.TEAM_NAME_A}.png" alt="{bets.view.TEAM_NAME_A}" />
                         </div>
                         <div class="bets-list-game-score team-a">
                             {bets.view.SCORE_A}
@@ -105,7 +105,7 @@
                             <div class="bets-list-game-result">{bets.view.RESULT_B}</div>
                         </div>
                         <div id="{bets.view.ID}_team_B" width="35%" class="bets-list-game-team team-b" style="background-color:{bets.view.TEAM_COLOR_B};">
-                            <img src="{TPL_WEB_PATH}images/flag/{bets.view.TEAM_NAME_B}.png"/>
+                            <img src="{TPL_WEB_PATH}images/flag/{bets.view.TEAM_NAME_B}.png" alt="{bets.view.TEAM_NAME_B}" />
                             &nbsp;{bets.view.TEAM_NAME_B}
                         </div>
                     </div>

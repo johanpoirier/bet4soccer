@@ -1041,7 +1041,7 @@ td.game-date {
 
 .bets-list-date {
     font-style: italic;
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 .bets-list-game {
@@ -1070,16 +1070,12 @@ td.game-date {
     justify-content: flex-start;
 }
 
-.team {
-    position: relative;
-}
-
 .fifa-rank-tip {
     display: none;
     font-size: 0.8em;
 }
 
-.bets-list-game-team:hover .fifa-rank-tip, .team:hover .fifa-rank-tip {
+.bets-list-game-team:hover .fifa-rank-tip {
     background-color: white;
     box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.7);
     display: block;
@@ -1216,6 +1212,45 @@ td.game-date {
 .user-stats-chart {
     min-height: 7rem;
 }
+
+
+/*************** Next game ****************/
+.user-account {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 2em 0;
+}
+
+.user-account .warning {
+    align-self: center;
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #3f3f3f;
+    font-size: 1.1em;
+    margin: 0 1em 1em;
+    padding: 2em;
+    min-width: 50%;
+    text-align: center;
+}
+
+.user-account ul {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.4em;
+    list-style: none;
+    margin: 1em 0 0;
+    min-width: 20rem;
+    padding: 0;
+}
+
+.user-account ul li {
+    padding: 0.4em 0;
+}
+
+.user-account ul a {
+    color: #3f3f3f;
+}
+
 
 /*************** Next game ****************/
 .nextGame {

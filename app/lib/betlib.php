@@ -2818,7 +2818,7 @@ class BetEngine
             return false;
     }
 
-    function load_account($warning = "")
+    function load_account($warning = '')
     {
         $this->template->set_filenames(array(
             'account' => 'account.tpl'
@@ -2833,6 +2833,7 @@ class BetEngine
         $this->template->assign_vars(array(
             'TPL_WEB_PATH' => $this->template_web_location,
             'WARNING' => $warning,
+            'WARNING_STYLE' => empty($warning) ? 'display: none;' : '',
         ));
 
         if ($group) {
