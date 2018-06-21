@@ -618,19 +618,23 @@ class Users
         return INCORRECT_PASSWORD;
     }
 
-    function get_active_users_who_have_not_bet($nbDays, $nbGames)
+    public function get_active_users_who_have_not_bet($dayCount)
     {
-        $req = "SELECT * FROM " . $this->parent->config['db_prefix'] . 'users';
-        $req .= " WHERE last_connection > (NOW() - INTERVAL 15 DAY) AND userID NOT IN (";
-        $req .= "SELECT b.userID FROM " . $this->parent->config['db_prefix'] . "users u";
-        $req .= " RIGHT JOIN " . $this->parent->config['db_prefix'] . "bets b ON(u.userID = b.userID)";
-        $req .= " WHERE b.scoreA IS NOT NULL AND b.scoreB IS NOT NULL and b.matchID IN (";
-        $req .= "SELECT m.matchID FROM " . $this->parent->config['db_prefix'] . "matches AS m";
-        $req .= " WHERE DATEDIFF(m.date, NOW()) >= 0  AND DATEDIFF(m.date, NOW()) <= " . $nbDays . ")";
-        $req .= " GROUP BY b.userID HAVING count(b.userID) = " . $nbGames . ")";
+        $usersTableName = $this->parent->config['db_prefix'] . 'users';
+        $betsTableName = $this->parent->config['db_prefix'] . 'bets';
+        $matchesTableName = $this->parent->config['db_prefix'] . 'matches';
 
-        $nbUsers = 0;
-        $users = $this->parent->db->select_array($req, $nbUsers);
+        $req = <<<SQL
+SELECT * FROM $usersTableName
+WHERE last_connection > (NOW() - INTERVAL 7 DAY) AND points is NOT NULL
+AND userID NOT IN
+(SELECT userID FROM $betsTableName b WHERE scoreA IS NOT NULL AND scoreB IS NOT NULL AND matchID IN
+(SELECT m.matchID FROM $matchesTableName AS m
+WHERE DATEDIFF(m.date, NOW()) >= 0 AND DATEDIFF(m.date, NOW()) <= :dayCount))
+SQL;
+
+        $userCount = 0;
+        $users = $this->parent->db->selectArray($req, ['dayCount' => $dayCount], $userCount);
         if ($this->parent->debug) {
             array_show($users);
         }
