@@ -12,8 +12,7 @@ $engine = new BetEngine(true, false);
 
 $bets = $engine->bets->get_incomplete_bets();
 foreach ($bets as $bet) {
-    echo 'User ' . $bet['userID'] . ' for game ' . $bet['matchID'] . ": set score 0 to team $team.\n";
     $team = $bet['scoreA'] === null ? 'A' : 'B';
     $engine->bets->force_add($bet['userID'], $bet['matchID'], $team, '0');
+    echo 'User ' . $bet['userID'] . ' for game ' . $bet['matchID'] . ": set score 0 to team $team.\n";
 }
-echo "\nOK\n";
