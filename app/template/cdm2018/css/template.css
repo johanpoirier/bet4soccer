@@ -1253,6 +1253,17 @@ td.game-date {
 
 
 /*************** Next game ****************/
+.nextGameHeader {
+    display: flex;
+    flex-direction: row;
+}
+
+.nextGames {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+}
+
 .nextGame {
     display: inline-block;
     position: relative;

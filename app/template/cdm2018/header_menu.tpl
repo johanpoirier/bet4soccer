@@ -2,18 +2,20 @@
     <header>
         <div class="block logo">
         </div>
-        <div class="block">
+        <div class="block nextGameHeader">
             <!-- BEGIN matches -->
             {matches.MATCH_STR}
             <!-- BEGIN ext_list -->
             <strong>{matches.ext_list.TEAM_NAME_A} - {matches.ext_list.TEAM_NAME_B}</strong>
             <!-- END ext_list -->
-            <!-- BEGIN list -->
-            <div class="nextGame" data-game-id="{matches.list.ID}">
-                <span class="nextGameLabel">{matches.list.TEAM_NAME_A} - {matches.list.TEAM_NAME_B}</span>
-                <div class="nextGameCard"></div>
+            <div class="nextGames">
+                <!-- BEGIN list -->
+                <div class="nextGame" data-game-id="{matches.list.ID}">
+                    <span class="nextGameLabel">{matches.list.TEAM_NAME_A} - {matches.list.TEAM_NAME_B}</span>
+                    <div class="nextGameCard"></div>
+                </div>
+                <!-- END list -->
             </div>
-            <!-- END list -->
             <!-- END matches -->
         </div>
         <!-- BEGIN logged_in -->

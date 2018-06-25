@@ -183,15 +183,15 @@ class BetEngine
             'header_menu' => 'header_menu.tpl'
         ));
 
-        $matches = $this->matches->get_next();
+        $matchs = $this->matches->get_next();
         $last_pool_match = $this->matches->get_last_pool();
 
-        $delay_str = "";
-        $match_str = "";
+        $delay_str = '';
+        $match_str = '';
 
-        if (isset($matches[0])) {
-            $delay = (isset($matches[0]['delay_sec'])) ? $matches[0]['delay_sec'] : 0;
-            $delay_days = (isset($matches[0]['delay_days'])) ? $matches[0]['delay_days'] : 0;
+        if (isset($matchs[0])) {
+            $delay = (isset($matchs[0]['delay_sec'])) ? $matchs[0]['delay_sec'] : 0;
+            $delay_days = (isset($matchs[0]['delay_days'])) ? $matchs[0]['delay_days'] : 0;
 
             if ($delay_days > 31) {
                 $delay = $delay_days * 60 * 60 * 24;
@@ -201,57 +201,55 @@ class BetEngine
                 $delay_days = floor($delay / (60 * 60 * 24));
                 $delay = $delay - $delay_days * 24 * 60 * 60;
                 if ($delay_days > 0) {
-                    $delay_str .= $delay_days . "j ";
+                    $delay_str .= $delay_days . 'j ';
                 }
 
                 $delay_hour = floor($delay / (60 * 60));
                 $delay = $delay - $delay_hour * 60 * 60;
                 if ($delay_hour > 0) {
-                    $delay_str .= $delay_hour . "h ";
+                    $delay_str .= $delay_hour . 'h ';
                 }
 
                 $delay_min = floor($delay / (60));
                 if ($delay_min > 0) {
-                    $delay_str .= $delay_min . "m";
+                    $delay_str .= $delay_min . 'm';
                 }
-                $match_str = "-> Prochain match <u>" . $matches[0]['date_str'] . "</u> (<i>dans " . $delay_str . "</i>) :";
+                $match_str = '-> ' . (count($matchs) === 1 ? 'Prochain match' : 'Prochains matchs') . '&nbsp;<u>' . $matchs[0]['date_str'] . '</u>&nbsp;(<i>dans ' . $delay_str . '</i>) :';
             } else {
                 $delay = abs($delay);
                 if ($delay > 0 && $delay < (45 * 60)) {
-                    $delay_str = "depuis " . floor($delay / 60) . "m";
+                    $delay_str = 'depuis ' . floor($delay / 60) . 'm';
                 } elseif ($delay > (60 * 45) && $delay < (60 * 60)) {
-                    $delay_str = "Mi-Temps";
+                    $delay_str = 'Mi-Temps';
                 } else {
-                    $delay_str = "depuis " . ((floor($delay / 60)) - 15) . "m";
+                    $delay_str = 'depuis ' . ((floor($delay / 60)) - 15) . 'm';
                 }
-                $match_str = "-> Match en cours (<i>" . $delay_str . "</i>):";
+                $match_str = '-> ' . (count($matchs) === 1 ? 'Match en cours' : 'Matchs en cours') . '&nbsp;(<i>' . $delay_str . '</i>):';
             }
         }
 
-        $this->template->assign_block_vars('matches', array(
-            'MATCH_STR' => $match_str
-        ));
+        $this->template->assign_block_vars('matches', [ 'MATCH_STR' => $match_str ]);
 
-        foreach ($matches as $match) {
+        foreach ($matchs as $match) {
             if ($this->islogin()) {
-                $this->template->assign_block_vars('matches.list', array(
+                $this->template->assign_block_vars('matches.list', [
                     'ID' => $match['matchID'],
                     'TEAM_NAME_A' => $match['teamAname'],
                     'TEAM_NAME_B' => $match['teamBname']
-                ));
+                ]);
             } else {
-                $this->template->assign_block_vars('matches.ext_list', array(
+                $this->template->assign_block_vars('matches.ext_list', [
                     'ID' => $match['matchID'],
                     'TEAM_NAME_A' => $match['teamAname'],
                     'TEAM_NAME_B' => $match['teamBname']
-                ));
+                ]);
             }
         }
 
-        $group_name = "";
-        $is_g1 = (isset($_SESSION['group_name']) && ($_SESSION['group_name'] != ""));
-        $is_g2 = (isset($_SESSION['group_name2']) && ($_SESSION['group_name2'] != ""));
-        $is_g3 = (isset($_SESSION['group_name3']) && ($_SESSION['group_name3'] != ""));
+        $group_name = '';
+        $is_g1 = (isset($_SESSION['group_name']) && ($_SESSION['group_name'] != ''));
+        $is_g2 = (isset($_SESSION['group_name2']) && ($_SESSION['group_name2'] != ''));
+        $is_g3 = (isset($_SESSION['group_name3']) && ($_SESSION['group_name3'] != ''));
 
         if ($is_g1 || $is_g2 || $is_g3) {
             $group_name .= "(";
