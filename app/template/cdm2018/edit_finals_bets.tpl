@@ -3,10 +3,10 @@
     function reloadMatch(matchID, team, round, rank) {
         var teamReal = document.getElementById(round + 'TH_' + rank + '_TEAM_' + team + '_TEAM_REAL').value;
         var prev_round = round * 2;
-        var prev_rank = 0
-        if (team == 'A') prev_rank = (rank * 2) - 1;
-        if (team == 'B') prev_rank = (rank * 2);
-        if (teamReal != '') {
+        var prev_rank = 0;
+        if (team === 'A') prev_rank = (rank * 2) - 1;
+        if (team === 'B') prev_rank = (rank * 2);
+        if (teamReal !== '') {
             document.getElementById(round + 'TH_' + rank + '_TEAM_' + team + '_ID').value = document.getElementById(prev_round + 'TH_' + prev_rank + '_TEAM_' + teamReal + '_ID').value;
             document.getElementById(round + 'TH_' + rank + '_TEAM_' + team + '_NAME').innerHTML = document.getElementById(prev_round + 'TH_' + prev_rank + '_TEAM_' + teamReal + '_NAME').innerHTML;
         }
@@ -14,7 +14,7 @@
 
     function setWinner(matchID, team, round, rank) {
         var score = document.getElementById(round + 'TH_' + rank + '_TEAM_' + team + '_SCORE').value;
-        document.getElementById(round + 'TH_' + rank + '_TEAM_W').value = team;
+        document.getElementById(round + 'TH_' + rank + '_TEAM_W').value = (score === '') ? '' : team;
         reloadMatch(matchID, team, round, rank);
         saveBet(score, matchID, team, round, rank);
     }
@@ -63,15 +63,15 @@
         // stocke l'équipe gagnante
         document.getElementById(round + 'TH_' + rank + '_TEAM_W').value = teamW;
 
-        // récupére les scores
+        // récupère les scores
         var scoreA = document.getElementById(round + 'TH_' + rank + '_TEAM_A_SCORE').value;
         var scoreB = document.getElementById(round + 'TH_' + rank + '_TEAM_B_SCORE').value;
 
-        // récupére les lignes des équipes
+        // récupère les lignes des équipes
         var teamA = document.getElementById(round + 'TH_' + rank + '_TEAM_A_NAME');
         var teamB = document.getElementById(round + 'TH_' + rank + '_TEAM_B_NAME');
 
-        // récupére la ligne de l'équipe gagnante
+        // récupère la ligne de l'équipe gagnante
         var team = document.getElementById(round + 'TH_' + rank + '_TEAM_' + teamW + '_NAME');
         var winner = team.innerHTML;
 
@@ -80,7 +80,9 @@
         teamB.style.backgroundColor = '#F9F9F9';
 
         // equipe gagnante en vert
-        team.style.backgroundColor = '#99FF99';
+        if (scoreA !== '' && scoreB !== '') {
+            team.style.backgroundColor = '#99FF99';
+        }
 
         // qualifie l'equipe gagnante pour la phase suivante (sauf pour la finale et le match de la 3ème place)
         if (round != 3 && round != 1) {
@@ -112,7 +114,7 @@
                 next_team = 'B';
             }
 
-            var lost_team = ''
+            var lost_team = '';
             if (teamW == 'A') {
                 lost_team = 'B';
             }
