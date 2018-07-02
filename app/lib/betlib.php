@@ -2244,77 +2244,79 @@ class BetEngine
                     $prev_match = $this->matches->get_final($prev_round, $prev_rank);
 
                     $teamName = (isset($bet['team' . $team . 'name'])) ? $bet['team' . $team . 'name'] : "";
-                    if (!$this->matches->is_open($match['matchID']) || $edit) {
+                    if ($edit || !$this->matches->is_open($match['matchID'])) {
                         $this->template->assign_block_vars('finals.rounds.ranks.teams', array(
                             'TEAM' => $team,
-                            'ID' => (isset($bet['teamBet' . $team])) ? $bet['teamBet' . $team] : "",
-                            'TEAM_REAL' => (isset($prev_match['teamW'])) ? $prev_match['teamW'] : "",
+                            'ID' => (isset($bet['teamBet' . $team])) ? $bet['teamBet' . $team] : '',
+                            'TEAM_REAL' => (isset($prev_match['teamW'])) ? $prev_match['teamW'] : '',
                             'NAME' => $teamName,
                             'COLOR' => $color[$team],
-                            'IMG' => ($teamName != "") ? "&nbsp;<img width=\"15px\" src=\"" . $this->template_web_location . "images/flag/" . ($this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($teamName)) : rawurlencode($teamName)) . ".png\" />" : "",
-                            'SCORE' => (isset($bet['scoreBet' . $team])) ? $bet['scoreBet' . $team] : "",
-                            'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : ""
+                            'IMG' => ($teamName !== '') ? '&nbsp;<img width="15px" src="' . $this->template_web_location . 'images/flag/' . ($this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($teamName)) : rawurlencode($teamName)) . '.png" />' : '',
+                            'SCORE' => (isset($bet['scoreBet' . $team])) ? $bet['scoreBet' . $team] : '',
+                            'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : ''
                         ));
 
                         if (((($team == 'A') && ($i % 2 == 1)) || (($team == 'B') && ($i % 2 == 0))) && ($match['scoreB'] !== null) && ($match['scoreA'] !== null)) {
                             $this->template->assign_block_vars('finals.rounds.ranks.teams.points', []);
                         }
                     } else {
-                        $this->template->assign_block_vars('finals.rounds.ranks.teams', array(
-                            'TEAM' => "",
-                            'ID' => (isset($bet['teamBet' . $team])) ? $bet['teamBet' . $team] : "",
-                            'TEAM_REAL' => "",
-                            'NAME' => "",
-                            'COLOR' => "#F9F9F9",
-                            'IMG' => "",
-                            'SCORE' => "",
-                            'RESULT' => ""
-                        ));
+                        $this->template->assign_block_vars('finals.rounds.ranks.teams', [
+                            'TEAM' => '',
+                            'ID' => (isset($bet['teamBet' . $team])) ? $bet['teamBet' . $team] : '',
+                            'TEAM_REAL' => '',
+                            'NAME' => $teamName,
+                            'COLOR' => '#F9F9F9',
+                            'IMG' => ($teamName !== '') ? '&nbsp;<img width="15px" src="' . $this->template_web_location . 'images/flag/' . ($this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($teamName)) : rawurlencode($teamName)) . '.png" />' : '',
+                            'SCORE' => '',
+                            'RESULT' => ''
+                        ]);
                     }
 
                     $this->template->assign_block_vars('finals.rounds.ranks.teams.' . $mode, []);
                     if ($team == 'B' && $round != 1 && $round != 3) {
-                        if ($i % 2 == 1)
-                            $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', []);
-                        else
-                            $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', []);
+                        if ($i % 2 === 1) {
+                          $this->template->assign_block_vars('finals.rounds.ranks.teams.top_line', []);
+                        }
+                        else {
+                          $this->template->assign_block_vars('finals.rounds.ranks.bottom_line', []);
+                        }
                     }
                 }
             }
         }
 
         // Stats
-        $types = array(1 => "Evolution au classement", 2 => "Nb de points par jour");
+        $types = [1 => 'Evolution au classement', 2 => 'Nb de points par jour'];
         $userStats = $this->stats->get_user_stats($userID);
         foreach ($types as $id => $type) {
             if ($id == 1) {
-                $xSerie = "[";
-                $data = "[";
+                $xSerie = '[';
+                $data = '[';
                 $nbJournee = 1;
                 foreach ($userStats as $stat) {
-                    $data .= " [ $nbJournee, " . $stat['rank'] . "], ";
+                    $data .= " [ $nbJournee, " . $stat['rank'] . '], ';
                     $xSerie .= " [ $nbJournee, ''], ";
                     $nbJournee++;
                 }
-                $data .= " ]";
-                $xSerie .= " ]";
+                $data .= ' ]';
+                $xSerie .= ' ]';
 
-                $this->template->assign_block_vars('stats', array(
+                $this->template->assign_block_vars('stats', [
                     'TYPE' => $type,
                     'ID' => $id,
                     'DATA' => '[ ' . $data . ' ]',
                     'XSERIE' => $xSerie,
                     'YMIN' => 1,
                     'YMAX' => $this->users->count_active(),
-                    'YTICKS' => "[ 1, 50, 100, 150, 200, 250, " . $this->users->count_active() . " ]",
+                    'YTICKS' => '[ 1, 50, 100, 150, 200, 250, ' . $this->users->count_active() . ' ]',
                     'TRANSFORM' => 'function (v) { return -v; }',
                     'INVERSE_TRANSFORM' => 'function (v) { return -v; }',
                     'COLOR' => '#5166ED',
                     'STYLE' => 'line'
-                ));
+                ]);
             } else if ($id == 2) {
-                $xSerie = "[";
-                $data = "[";
+                $xSerie = '[';
+                $data = '[';
                 $nbJournee = 1;
                 $last_stat = null;
                 $maxPts = 0;
@@ -2325,7 +2327,7 @@ class BetEngine
                         $points = ($stat['points'] - $last_stat['points']);
                     }
 
-                    $data .= " [ $nbJournee, " . $points . "], ";
+                    $data .= " [ $nbJournee, " . $points . '], ';
                     $xSerie .= " [ $nbJournee, ''], ";
 
                     if ($points > $maxPts) {
@@ -2335,8 +2337,8 @@ class BetEngine
                     $nbJournee++;
                     $last_stat = $stat;
                 }
-                $data .= " ]";
-                $xSerie .= " ]";
+                $data .= ' ]';
+                $xSerie .= ' ]';
 
                 if ($maxPts < 20) {
                     $maxPts = 20;
@@ -2347,7 +2349,7 @@ class BetEngine
                     $ticks[$i] = $i * $inc;
                 }
 
-                $this->template->assign_block_vars('stats', array(
+                $this->template->assign_block_vars('stats', [
                     'TYPE' => $type,
                     'ID' => $id,
                     'DATA' => '[ ' . $data . ' ]',
@@ -2359,7 +2361,7 @@ class BetEngine
                     'INVERSE_TRANSFORM' => 'false',
                     'COLOR' => '#50BA50',
                     'STYLE' => 'bar'
-                ));
+                ]);
             }
         }
 

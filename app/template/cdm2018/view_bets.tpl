@@ -22,7 +22,7 @@
             <script type="text/javascript">
                 $(document).ready(function() {
                     if ($('.user-infos').css('display') !== 'none') {
-                        displayChart({stats.ID}, {stats.DATA}, '{stats.COLOR}', {stats.XSERIE}, {stats.YTICKS}, {stats.YMIN}, {stats.YMAX}, {stats.TRANSFORM}, {stats.INVERSE_TRANSFORM});
+                        displayChart({stats.ID}, {stats.DATA}, '{stats.STYLE}', '{stats.COLOR}', {stats.XSERIE}, {stats.YTICKS}, {stats.YMIN}, {stats.YMAX}, {stats.TRANSFORM}, {stats.INVERSE_TRANSFORM});
                     }
                 });
             </script>
