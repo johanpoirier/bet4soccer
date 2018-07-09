@@ -102,7 +102,7 @@ class Bets {
 
         # Audit log
         $bet = $this->get_by_id($userID, $matchID);
-        if ($bet['scoreA'] && $bet['scoreB']) {
+        if (isset($bet['scoreA'], $bet['scoreB'])) {
             $this->parent->audit->add($userID, 'bets', sprintf('a pronostiqué %s-%s pour le match %s : %s - %s (début : %s)', $bet['scoreA'], $bet['scoreB'], $matchID, $match['teamAname'], $match['teamBname'], $match['date_str']));
         }
 
