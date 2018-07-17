@@ -286,6 +286,7 @@ if (GET_HTTP_MATCH) {
 } elseif (UPDATE_HTTP_STATS) {
     if ($debug)
         echo "UPDATE_HTTP_STATS<br />";
+    set_time_limit(300); // 5 minutes allowed for this action
     $bet->stats->generate_user_stats();
     exit();
 } elseif (IMPORT_CSV_FILE) {
