@@ -2530,6 +2530,11 @@ class BetEngine
             $match = $this->matches->get($bet['matchID']);
             $result = $this->bets->get_points($bet);
 
+            $dateLen = strlen($bet['date_str']);
+            if (strpos($bet['date_str'], '00') === $dateLen - 2) {
+                $bet['date_str'] = substr($bet['date_str'], 0, $dateLen - 2);
+            }
+
             $points = "0pt";
             $color = "red";
             $diff = $result['diff'];
@@ -2610,6 +2615,11 @@ class BetEngine
             $match = $this->matches->get($bet['matchID']);
             $result = $this->bets->get_points($bet);
 
+            $dateLen = strlen($bet['date_str']);
+            if (strpos($bet['date_str'], '00') === $dateLen - 2) {
+                $bet['date_str'] = substr($bet['date_str'], 0, $dateLen - 2);
+            }
+            
             $points = "0pt";
             $color = "red";
             $diff = $result['diff'];
