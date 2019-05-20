@@ -83,7 +83,7 @@
     <aside>
         <div class="financialSupport">
             &#128176;
-            <a href="https://www.leetchi.com/c/site-de-pronostics-pour-la-coupe-du-monde-2018" target="_blank" rel="noopener norefferer nofollow">Soutenez ce projet !</a>
+            <a href="{LEETCHI}" target="_blank" rel="noopener norefferer nofollow">Soutenez ce projet !</a>
         </div>
         <div class="headline">
             <div class="headline-title">

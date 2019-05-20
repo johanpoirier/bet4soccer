@@ -702,7 +702,8 @@ class BetEngine
             'NB_USERS' => $this->users->count(),
             'NB_MATCHES' => ($nb_matches > 1) ? $nb_matches . " matches" : $nb_matches . " match",
             'NB_ACTIVE_USERS' => $this->users->count_active(),
-            'LABEL_TEAMS_RANKING' => $this->lang['LABEL_TEAMS_RANKING']
+            'LABEL_TEAMS_RANKING' => $this->lang['LABEL_TEAMS_RANKING'],
+            'LEETCHI' => $this->config['leetchi']
         ));
 
         $ses_g1 = ($_SESSION['group_name'] != "");
