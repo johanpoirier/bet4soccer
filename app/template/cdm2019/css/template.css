@@ -1093,6 +1093,20 @@ td.game-date {
     left: 4em;
 }
 
+.final-bet-team {
+    position: relative;
+}
+
+.final-bet-team:hover .fifa-rank-tip {
+    background-color: white;
+    box-shadow: -1px 2px 4px 1px rgba(0, 0, 0, 0.7);
+    display: block;
+    padding: 8px;
+    position: absolute;
+    top: 24px;
+    z-index: 999;
+}
+
 .bets-list-game-score, .bets-list-game-bet {
     flex-basis: 8%;
     font-size: 15px;

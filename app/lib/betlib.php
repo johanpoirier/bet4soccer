@@ -2270,7 +2270,8 @@ class BetEngine
                             'COLOR' => '#F9F9F9',
                             'IMG' => ($teamName !== '') ? '&nbsp;<img width="15px" src="' . $this->template_web_location . 'images/flag/' . ($this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($teamName)) : rawurlencode($teamName)) . '.png" />' : '',
                             'SCORE' => '',
-                            'RESULT' => ''
+                            'RESULT' => '',
+                            'FIFA_RANK' => $bet['team' . $team . 'fifaRank']
                         ]);
                     }
 
