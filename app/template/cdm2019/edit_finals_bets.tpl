@@ -215,8 +215,10 @@
                                     <!-- BEGIN edit -->
                                     <td style="border:1px solid #999999;" bgcolor="{finals.rounds.ranks.teams.COLOR}"
                                         id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_NAME"
-                                        onClick="javascript:setWinner({finals.rounds.ranks.MATCH_ID},'{finals.rounds.ranks.teams.TEAM}',{finals.rounds.ROUND},{finals.rounds.ranks.RANK});">{finals.rounds.ranks.teams.IMG}
-                                        &nbsp;{finals.rounds.ranks.teams.NAME}</td>
+                                        onClick="javascript:setWinner({finals.rounds.ranks.MATCH_ID},'{finals.rounds.ranks.teams.TEAM}',{finals.rounds.ROUND},{finals.rounds.ranks.RANK});">
+                                        {finals.rounds.ranks.teams.IMG}&nbsp;{finals.rounds.ranks.teams.NAME}
+                                        <span class="fifa-rank-tip">Classement FIFA : {finals.rounds.ranks.teams.FIFA_RANK}</span>
+                                    </td>
                                     <td style="border:1px solid #999999; text-align:center;font-weight:600;font-size:15px;" bgcolor="{finals.rounds.ranks.teams.COLOR}">
                                         <input type="number" min="0" max="99" size="2"
                                                name="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_SCORE"

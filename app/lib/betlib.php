@@ -2254,7 +2254,8 @@ class BetEngine
                             'COLOR' => $color[$team],
                             'IMG' => ($teamName !== '') ? '&nbsp;<img width="15px" src="' . $this->template_web_location . 'images/flag/' . ($this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($teamName)) : rawurlencode($teamName)) . '.png" />' : '',
                             'SCORE' => (isset($bet['scoreBet' . $team])) ? $bet['scoreBet' . $team] : '',
-                            'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : ''
+                            'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : '',
+                            'FIFA_RANK' => $bet['team' . $team . 'fifaRank']
                         ));
 
                         if (((($team == 'A') && ($i % 2 == 1)) || (($team == 'B') && ($i % 2 == 0))) && ($match['scoreB'] !== null) && ($match['scoreA'] !== null)) {
