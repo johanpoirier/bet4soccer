@@ -2246,7 +2246,7 @@ class BetEngine
 
                     $teamName = (isset($bet['team' . $team . 'name'])) ? $bet['team' . $team . 'name'] : "";
                     if ($edit || !$this->matches->is_open($match['matchID'])) {
-                        $this->template->assign_block_vars('finals.rounds.ranks.teams', array(
+                        $this->template->assign_block_vars('finals.rounds.ranks.teams', [
                             'TEAM' => $team,
                             'ID' => (isset($bet['teamBet' . $team])) ? $bet['teamBet' . $team] : '',
                             'TEAM_REAL' => (isset($prev_match['teamW'])) ? $prev_match['teamW'] : '',
@@ -2254,8 +2254,9 @@ class BetEngine
                             'COLOR' => $color[$team],
                             'IMG' => ($teamName !== '') ? '&nbsp;<img width="15px" src="' . $this->template_web_location . 'images/flag/' . ($this->config['force_encoding_fs'] ? rawurlencode(utf8_decode($teamName)) : rawurlencode($teamName)) . '.png" />' : '',
                             'SCORE' => (isset($bet['scoreBet' . $team])) ? $bet['scoreBet' . $team] : '',
-                            'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : ''
-                        ));
+                            'RESULT' => (isset($match['score' . $team])) ? $match['score' . $team] : '',
+                            'FIFA_RANK' => $match['team' . $team . 'fifaRank']
+                        ]);
 
                         if (((($team == 'A') && ($i % 2 == 1)) || (($team == 'B') && ($i % 2 == 0))) && ($match['scoreB'] !== null) && ($match['scoreA'] !== null)) {
                             $this->template->assign_block_vars('finals.rounds.ranks.teams.points', []);

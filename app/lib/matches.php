@@ -328,6 +328,8 @@ class Matches
         $req .= ' tB.teamID as teamBid,';
         $req .= ' tA.name as teamAname,';
         $req .= ' tB.name as teamBname,';
+        $req .= ' tA.fifaRank as teamAfifaRank,';
+        $req .= ' tB.fifaRank as teamBfifaRank,';
         $req .= ' tA.pool as teamPool,';
         $req .= ' DATE_FORMAT(date,\'le %W %d/%m à %Hh%i\') as date_str,';
         $req .= ' TIME_TO_SEC(TIMEDIFF(date,NOW())) as delay_sec,';
