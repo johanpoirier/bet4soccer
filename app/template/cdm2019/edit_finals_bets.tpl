@@ -215,7 +215,7 @@
                                     <!-- BEGIN edit -->
                                     <td style="border:1px solid #999999;" bgcolor="{finals.rounds.ranks.teams.COLOR}"
                                         id="{finals.rounds.ROUND}TH_{finals.rounds.ranks.RANK}_TEAM_{finals.rounds.ranks.teams.TEAM}_NAME"
-                                        class="final-bet-team"
+                                        class="final-bet-team team-{finals.rounds.ranks.teams.TEAM}"
                                         onClick="javascript:setWinner({finals.rounds.ranks.MATCH_ID},'{finals.rounds.ranks.teams.TEAM}',{finals.rounds.ROUND},{finals.rounds.ranks.RANK});">
                                         {finals.rounds.ranks.teams.IMG}&nbsp;{finals.rounds.ranks.teams.NAME}
                                         <span class="fifa-rank-tip">Classement FIFA : {finals.rounds.ranks.teams.FIFA_RANK}</span>
