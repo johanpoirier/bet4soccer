@@ -15,7 +15,7 @@ $config['show_all_users_in_team'] = true;
 $config['encoding'] = 'UTF8';
 $config['force_encoding_fs'] = false;
 
-$config['sendinblue_apikey'] = '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';
+$config['sendinblue_apikey'] = 'your api key';
 $config['support_team'] = 'FIFA Coupe du Monde 2019';
 $config['email_address_sender'] = 'cdm2019@jops-dev.com';
 $config['email_address_replyto'] = 'johan.poirier@gmail.com';
