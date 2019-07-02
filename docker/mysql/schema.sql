@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS `bets`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+02:00";
 
@@ -10,10 +12,10 @@ use bets;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__audit`
+-- Structure de la table `cdm2019__audit`
 --
 
-CREATE TABLE `cdm2018__audit` (
+CREATE TABLE `cdm2019__audit` (
   `id` int(12) UNSIGNED NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `userID` int(9) UNSIGNED NOT NULL,
@@ -24,10 +26,10 @@ CREATE TABLE `cdm2018__audit` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__bets`
+-- Structure de la table `cdm2019__bets`
 --
 
-CREATE TABLE `cdm2018__bets` (
+CREATE TABLE `cdm2019__bets` (
   `userID` int(9) UNSIGNED NOT NULL,
   `matchID` int(9) UNSIGNED NOT NULL,
   `scoreA` int(2) UNSIGNED DEFAULT NULL,
@@ -41,10 +43,10 @@ CREATE TABLE `cdm2018__bets` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__groups`
+-- Structure de la table `cdm2019__groups`
 --
 
-CREATE TABLE `cdm2018__groups` (
+CREATE TABLE `cdm2019__groups` (
   `groupID` int(9) UNSIGNED NOT NULL,
   `password` varchar(30) COLLATE utf8_general_ci NOT NULL,
   `ownerID` int(9) UNSIGNED DEFAULT NULL,
@@ -58,10 +60,10 @@ CREATE TABLE `cdm2018__groups` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__invitations`
+-- Structure de la table `cdm2019__invitations`
 --
 
-CREATE TABLE `cdm2018__invitations` (
+CREATE TABLE `cdm2019__invitations` (
   `code` varchar(32) COLLATE utf8_general_ci NOT NULL,
   `senderID` int(9) UNSIGNED NOT NULL,
   `groupID` int(9) UNSIGNED NOT NULL,
@@ -73,10 +75,10 @@ CREATE TABLE `cdm2018__invitations` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__matches`
+-- Structure de la table `cdm2019__matches`
 --
 
-CREATE TABLE `cdm2018__matches` (
+CREATE TABLE `cdm2019__matches` (
   `matchID` int(9) UNSIGNED NOT NULL,
   `teamA` int(9) UNSIGNED DEFAULT NULL,
   `teamB` int(9) UNSIGNED DEFAULT NULL,
@@ -92,10 +94,10 @@ CREATE TABLE `cdm2018__matches` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__settings`
+-- Structure de la table `cdm2019__settings`
 --
 
-CREATE TABLE `cdm2018__settings` (
+CREATE TABLE `cdm2019__settings` (
   `name` varchar(35) COLLATE utf8_general_ci NOT NULL,
   `value` varchar(35) COLLATE utf8_general_ci DEFAULT NULL,
   `date` datetime DEFAULT NULL,
@@ -105,10 +107,10 @@ CREATE TABLE `cdm2018__settings` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__stats_user`
+-- Structure de la table `cdm2019__stats_user`
 --
 
-CREATE TABLE `cdm2018__stats_user` (
+CREATE TABLE `cdm2019__stats_user` (
   `userID` int(9) UNSIGNED NOT NULL DEFAULT '0',
   `label` varchar(30) COLLATE utf8_general_ci NOT NULL,
   `rank` int(5) UNSIGNED NOT NULL DEFAULT '1',
@@ -121,10 +123,10 @@ CREATE TABLE `cdm2018__stats_user` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__tags`
+-- Structure de la table `cdm2019__tags`
 --
 
-CREATE TABLE `cdm2018__tags` (
+CREATE TABLE `cdm2019__tags` (
   `tagID` int(9) UNSIGNED NOT NULL,
   `userID` int(9) UNSIGNED NOT NULL,
   `groupID` int(9) UNSIGNED DEFAULT NULL,
@@ -135,10 +137,10 @@ CREATE TABLE `cdm2018__tags` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cdm2018__teams`
+-- Structure de la table `cdm2019__teams`
 --
 
-CREATE TABLE `cdm2018__teams` (
+CREATE TABLE `cdm2019__teams` (
   `teamID` int(9) UNSIGNED NOT NULL,
   `name` varchar(50) COLLATE utf8_general_ci NOT NULL,
   `fifaRank` int(4) NOT NULL DEFAULT '0',
@@ -147,10 +149,10 @@ CREATE TABLE `cdm2018__teams` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Structure de la table `cdm2018__tokens`
+-- Structure de la table `cdm2019__tokens`
 --
 
-CREATE TABLE `cdm2018__tokens` (
+CREATE TABLE `cdm2019__tokens` (
   `userID` int(9) UNSIGNED NOT NULL,
   `device` VARCHAR(36) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -158,10 +160,10 @@ CREATE TABLE `cdm2018__tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Structure de la table `cdm2018__users`
+-- Structure de la table `cdm2019__users`
 --
 
-CREATE TABLE `cdm2018__users` (
+CREATE TABLE `cdm2019__users` (
   `userID` int(9) UNSIGNED NOT NULL,
   `name` varchar(40) COLLATE utf8_general_ci NOT NULL,
   `login` varchar(30) COLLATE utf8_general_ci NOT NULL,
@@ -213,83 +215,83 @@ CREATE TABLE `bet4soccer__palmares` (
 --
 
 --
--- Index pour la table `cdm2018__audit`
+-- Index pour la table `cdm2019__audit`
 --
-ALTER TABLE `cdm2018__audit`
+ALTER TABLE `cdm2019__audit`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_date` (`date`),
   ADD KEY `idx_category` (`category`),
   ADD KEY `userID` (`userID`);
 
 --
--- Index pour la table `cdm2018__bets`
+-- Index pour la table `cdm2019__bets`
 --
-ALTER TABLE `cdm2018__bets`
+ALTER TABLE `cdm2019__bets`
 ADD PRIMARY KEY (`userID`,`matchID`),
 ADD KEY `teamA` (`teamA`),
 ADD KEY `teamB` (`teamB`),
 ADD KEY `matchID` (`matchID`);
 
 --
--- Index pour la table `cdm2018__groups`
+-- Index pour la table `cdm2019__groups`
 --
-ALTER TABLE `cdm2018__groups`
+ALTER TABLE `cdm2019__groups`
 ADD PRIMARY KEY (`groupID`),
 ADD UNIQUE KEY `name` (`name`),
 ADD KEY `ownerID` (`ownerID`);
 
 --
--- Index pour la table `cdm2018__invitations`
+-- Index pour la table `cdm2019__invitations`
 --
-ALTER TABLE `cdm2018__invitations`
+ALTER TABLE `cdm2019__invitations`
   ADD PRIMARY KEY (`code`),
   ADD KEY `groupID` (`groupID`);
 
 --
--- Index pour la table `cdm2018__matches`
+-- Index pour la table `cdm2019__matches`
 --
-ALTER TABLE `cdm2018__matches`
+ALTER TABLE `cdm2019__matches`
   ADD PRIMARY KEY (`matchID`),
   ADD UNIQUE KEY `round` (`round`,`rank`),
   ADD KEY `teamA` (`teamA`),
   ADD KEY `teamB` (`teamB`);
 
 --
--- Index pour la table `cdm2018__settings`
+-- Index pour la table `cdm2019__settings`
 --
-ALTER TABLE `cdm2018__settings`
+ALTER TABLE `cdm2019__settings`
   ADD PRIMARY KEY (`name`);
 
 --
--- Index pour la table `cdm2018__stats_user`
+-- Index pour la table `cdm2019__stats_user`
 --
-ALTER TABLE `cdm2018__stats_user`
+ALTER TABLE `cdm2019__stats_user`
   ADD KEY `userID` (`userID`);
 
 --
--- Index pour la table `cdm2018__tags`
+-- Index pour la table `cdm2019__tags`
 --
-ALTER TABLE `cdm2018__tags`
+ALTER TABLE `cdm2019__tags`
   ADD PRIMARY KEY (`tagID`),
   ADD KEY `userID` (`userID`),
   ADD KEY `groupID` (`groupID`);
 
 --
--- Index pour la table `cdm2018__teams`
+-- Index pour la table `cdm2019__teams`
 --
-ALTER TABLE `cdm2018__teams`
+ALTER TABLE `cdm2019__teams`
   ADD PRIMARY KEY (`teamID`);
 
 --
--- Index pour la table `cdm2018__tokens`
+-- Index pour la table `cdm2019__tokens`
 --
-ALTER TABLE `cdm2018__tokens`
+ALTER TABLE `cdm2019__tokens`
   ADD PRIMARY KEY (`userID`,`device`);
 
 --
--- Index pour la table `cdm2018__users`
+-- Index pour la table `cdm2019__users`
 --
-ALTER TABLE `cdm2018__users`
+ALTER TABLE `cdm2019__users`
   ADD PRIMARY KEY (`userID`),
   ADD KEY `login` (`login`);
 
@@ -315,34 +317,34 @@ ALTER TABLE `bet4soccer__palmares`
 --
 
 --
--- AUTO_INCREMENT pour la table `cdm2018__audit`
+-- AUTO_INCREMENT pour la table `cdm2019__audit`
 --
-ALTER TABLE `cdm2018__audit`
+ALTER TABLE `cdm2019__audit`
   MODIFY `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `cdm2018__groups`
+-- AUTO_INCREMENT pour la table `cdm2019__groups`
 --
-ALTER TABLE `cdm2018__groups`
+ALTER TABLE `cdm2019__groups`
 MODIFY `groupID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `cdm2018__matches`
+-- AUTO_INCREMENT pour la table `cdm2019__matches`
 --
-ALTER TABLE `cdm2018__matches`
+ALTER TABLE `cdm2019__matches`
 MODIFY `matchID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `cdm2018__tags`
+-- AUTO_INCREMENT pour la table `cdm2019__tags`
 --
-ALTER TABLE `cdm2018__tags`
+ALTER TABLE `cdm2019__tags`
 MODIFY `tagID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `cdm2018__teams`
+-- AUTO_INCREMENT pour la table `cdm2019__teams`
 --
-ALTER TABLE `cdm2018__teams`
+ALTER TABLE `cdm2019__teams`
 MODIFY `teamID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `cdm2018__users`
+-- AUTO_INCREMENT pour la table `cdm2019__users`
 --
-ALTER TABLE `cdm2018__users`
+ALTER TABLE `cdm2019__users`
 MODIFY `userID` int(9) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `bet4soccer__competitions`
@@ -360,52 +362,52 @@ ALTER TABLE `bet4soccer__palmares`
 --
 
 --
--- Contraintes pour la table `cdm2018__bets`
+-- Contraintes pour la table `cdm2019__bets`
 --
-ALTER TABLE `cdm2018__bets`
-ADD CONSTRAINT `cdm2018__bets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2018__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `cdm2018__bets_ibfk_2` FOREIGN KEY (`matchID`) REFERENCES `cdm2018__matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `cdm2018__bets_ibfk_3` FOREIGN KEY (`teamA`) REFERENCES `cdm2018__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `cdm2018__bets_ibfk_4` FOREIGN KEY (`teamB`) REFERENCES `cdm2018__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cdm2019__bets`
+ADD CONSTRAINT `cdm2019__bets_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2019__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `cdm2019__bets_ibfk_2` FOREIGN KEY (`matchID`) REFERENCES `cdm2019__matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `cdm2019__bets_ibfk_3` FOREIGN KEY (`teamA`) REFERENCES `cdm2019__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `cdm2019__bets_ibfk_4` FOREIGN KEY (`teamB`) REFERENCES `cdm2019__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `cdm2018__groups`
+-- Contraintes pour la table `cdm2019__groups`
 --
-ALTER TABLE `cdm2018__groups`
-ADD CONSTRAINT `cdm2018__groups_ibfk_1` FOREIGN KEY (`ownerID`) REFERENCES `cdm2018__users` (`userID`) ON DELETE SET NULL ON UPDATE SET NULL;
+ALTER TABLE `cdm2019__groups`
+ADD CONSTRAINT `cdm2019__groups_ibfk_1` FOREIGN KEY (`ownerID`) REFERENCES `cdm2019__users` (`userID`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Contraintes pour la table `cdm2018__invitations`
+-- Contraintes pour la table `cdm2019__invitations`
 --
-ALTER TABLE `cdm2018__invitations`
-ADD CONSTRAINT `cdm2018__invitations_ibfk_1` FOREIGN KEY (`groupID`) REFERENCES `cdm2018__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `cdm2018__invitations_ibfk_10` FOREIGN KEY (`groupID`) REFERENCES `cdm2018__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cdm2019__invitations`
+ADD CONSTRAINT `cdm2019__invitations_ibfk_1` FOREIGN KEY (`groupID`) REFERENCES `cdm2019__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `cdm2019__invitations_ibfk_10` FOREIGN KEY (`groupID`) REFERENCES `cdm2019__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `cdm2018__matches`
+-- Contraintes pour la table `cdm2019__matches`
 --
-ALTER TABLE `cdm2018__matches`
-ADD CONSTRAINT `cdm2018__matches_ibfk_1` FOREIGN KEY (`teamA`) REFERENCES `cdm2018__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `cdm2018__matches_ibfk_2` FOREIGN KEY (`teamB`) REFERENCES `cdm2018__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cdm2019__matches`
+ADD CONSTRAINT `cdm2019__matches_ibfk_1` FOREIGN KEY (`teamA`) REFERENCES `cdm2019__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `cdm2019__matches_ibfk_2` FOREIGN KEY (`teamB`) REFERENCES `cdm2019__teams` (`teamID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `cdm2018__stats_user`
+-- Contraintes pour la table `cdm2019__stats_user`
 --
-ALTER TABLE `cdm2018__stats_user`
-ADD CONSTRAINT `cdm2018__stats_user_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2018__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cdm2019__stats_user`
+ADD CONSTRAINT `cdm2019__stats_user_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2019__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `cdm2018__tags`
+-- Contraintes pour la table `cdm2019__tags`
 --
-ALTER TABLE `cdm2018__tags`
-ADD CONSTRAINT `cdm2018__tags_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2018__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `cdm2018__tags_ibfk_2` FOREIGN KEY (`groupID`) REFERENCES `cdm2018__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cdm2019__tags`
+ADD CONSTRAINT `cdm2019__tags_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2019__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `cdm2019__tags_ibfk_2` FOREIGN KEY (`groupID`) REFERENCES `cdm2019__groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `cdm2018__tokens`
+-- Contraintes pour la table `cdm2019__tokens`
 --
-ALTER TABLE `cdm2018__tokens`
-  ADD CONSTRAINT `cdm2018__tokens_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2018__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cdm2019__tokens`
+  ADD CONSTRAINT `cdm2019__tokens_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `cdm2019__users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 
@@ -413,7 +415,7 @@ ALTER TABLE `cdm2018__tokens`
 -- Contenu pour les tables exportées
 --
 
-INSERT INTO `cdm2018__settings` (`name`, `value`, `date`, `status`) VALUES
+INSERT INTO `cdm2019__settings` (`name`, `value`, `date`, `status`) VALUES
   ('IS_GROUP_RANKING_GENERATING', '', NULL, 0),
   ('IS_RANKING_GENERATING', '', '0000-00-00 00:00:00', 0),
   ('IS_USER_RANKING_GENERATING', '', NULL, 0),
@@ -424,20 +426,20 @@ INSERT INTO `cdm2018__settings` (`name`, `value`, `date`, `status`) VALUES
   ('RANK_GROUPS_UPDATE', NULL, '2014-07-13 23:36:35', 0),
   ('RANK_UPDATE', NULL, '2014-07-13 23:36:34', 0);
 
-INSERT INTO `cdm2018__users` (`userID`, `name`, `login`, `password`, `email`, `status`) VALUES
+INSERT INTO `cdm2019__users` (`userID`, `name`, `login`, `password`, `email`, `status`) VALUES
   (1, 'John Foo', 'admin', 'c87a9050eb2f1734881f89e638770e4317abb184eb69a9fbdb35d24d11d14254', 'admin@bet4soccer.fr', 1);
 
-INSERT INTO `cdm2018__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) VALUES
+INSERT INTO `cdm2019__teams` (`teamID`, `name`, `fifaRank`, `pool`, `status`) VALUES
   (1, 'Russie', '17', 'A', 1),
   (2, 'Arabie Saoudite', '24', 'A', 1),
   (3, 'Egypte', '8', 'A', 1),
   (4, 'Uruguay', '32', 'A', 1);
 
-INSERT INTO `cdm2018__matches` (`matchID`, `teamA`, `teamB`, `scoreA`, `scoreB`, `date`) VALUES
+INSERT INTO `cdm2019__matches` (`matchID`, `teamA`, `teamB`, `scoreA`, `scoreB`, `date`) VALUES
   (1, 1, 2, NULL, NULL, '2018-06-14 17:00:00'),
   (2, 3, 4, NULL, NULL, '2018-06-15 14:00:00');
 
-INSERT INTO `cdm2018__bets` (`userID`, `matchID`, `scoreA`, `scoreB`) VALUES (1, 1, 2, 1);
+INSERT INTO `cdm2019__bets` (`userID`, `matchID`, `scoreA`, `scoreB`) VALUES (1, 1, 2, 1);
 
 
 INSERT INTO `bet4soccer__competitions` (`id`, `domain`, `name`, `startDate`, `endDate`) VALUES
@@ -1078,3 +1080,6 @@ VALUES (1, 1, 'Raymond Cinquin', 585, 43, 6),
 (658, 11, 'Grégory Piani', 49, 35, 2),
 (659, 11, 'Patrick Baudet', 48, 31, 4),
 (660, 11, 'Patrice Schaeffer', 45, 35, 3);
+
+CREATE USER 'bet4soccer'@'%' IDENTIFIED BY 'password';
+GRANT ALL ON bets.* TO 'bet4soccer'@'%';

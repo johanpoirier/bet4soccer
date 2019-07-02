@@ -1,5 +1,5 @@
 <?php
-$host = "localhost";
+$host = "db";
 $dbname = "bets";
-$username = 'root';
-$password = 'root';
+$username = 'bet4soccer';
+$password = 'password';
