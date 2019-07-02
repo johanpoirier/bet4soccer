@@ -11,6 +11,8 @@ $debug = false;
 $bet = new BetEngine(false, $debug);
 $w = '';
 
+Sentry\init(['dsn' => $bet->config['sentry_dsn']]);
+
 // keep me logged in
 if (!$bet->islogin()) {
     $bet->remember_me();
