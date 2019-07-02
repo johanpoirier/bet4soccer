@@ -250,10 +250,10 @@ class Users
         // Main Query
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' WHERE login = \'' . $login . '\'';
+        $req .= ' WHERE login = ?';
 
         $nb_users = 0;
-        $user = $this->parent->db->select_line($req, $nb_users);
+        $user = $this->parent->db->selectLine($req, [$login], $nb_users);
 
         if ($this->parent->debug) {
             array_show($user);
@@ -264,14 +264,13 @@ class Users
 
     function get_by_email($email)
     {
-        prepare_alphanumeric_data(array(&$email));
         // Main Query
         $req = 'SELECT *';
         $req .= ' FROM ' . $this->parent->config['db_prefix'] . 'users';
-        $req .= ' WHERE email = \'' . $email . '\'';
+        $req .= ' WHERE email = ?';
 
         $nb_users = 0;
-        $user = $this->parent->db->select_line($req, $nb_users);
+        $user = $this->parent->db->selectLine($req, [$email], $nb_users);
 
         if ($this->parent->debug) {
             array_show($user);
