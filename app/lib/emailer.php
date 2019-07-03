@@ -19,6 +19,15 @@ class Emailer
       return true;
     }
 
+    if ($this->config(['email_use_third_party_sender']) === true) {
+      return $this->sendWithSendinBlue($recipientEmail, $recipientName, $subject, $content);
+    } else {
+      return utf8_mail($recipientEmail, $subject, $content, $this->config['support_team'], $this->config['email_address_sender']);
+    }
+  }
+
+  public function sendWithSendinBlue($recipientEmail, $recipientName, $subject, $content)
+  {
     $email = new SendinBlue\Client\Model\SendSmtpEmail([
       'sender' => new SendinBlue\Client\Model\SendSmtpEmailSender([
         'email' => $this->config['email_address_sender'],
