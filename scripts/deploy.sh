@@ -11,6 +11,7 @@ then
     mkdir -p "$targetPath/versions/$version/web/"
 
     cd "$projectDir"
+    composer install
     cp -r app/* "$targetPath/versions/$version/web/"
 
     mkdir "$targetPath/versions/$version/logs"
@@ -32,6 +33,8 @@ then
     ln -s "$targetPath/versions/$version/" "$targetPath/current"
 
     echo "Version $version created"
+
+    sudo /etc/init.d/php7.2-fpm restart
 else
     echo "$target does not exist"
 fi

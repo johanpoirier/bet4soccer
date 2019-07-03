@@ -1,5 +1,5 @@
 {
-  "name": "Bet4Soccer",
+  "name": "jops/bet4soccer",
   "description": "Bets for international soccer competitions.",
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -9,6 +9,7 @@
   "require": {
     "debril/feed-io": "*",
     "ircmaxell/random-lib": "^1.1",
-    "mailjet/mailjet-apiv3-php": "^1.2"
+    "sendinblue/api-v3-sdk": "^6.1.0",
+    "sentry/sdk": "2.0.3"
   }
 }

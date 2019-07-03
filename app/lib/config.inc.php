@@ -15,18 +15,22 @@ $config['show_all_users_in_team'] = true;
 $config['encoding'] = 'UTF8';
 $config['force_encoding_fs'] = false;
 
-$config['mailjet_apikey_public'] = 'your api key';
-$config['mailjet_apikey_private'] = 'your api secret';
-$config['support_team'] = 'FIFA Coupe du Monde 2018';
-$config['email_address_sender'] = 'cdm2018@jops-dev.com';
-$config['email_address_replyto'] = 'cdm2018@jops-dev.com';
+$config['support_team'] = 'FIFA Coupe du Monde 2019';
+$config['email_address_sender'] = 'cdm2019@jops-dev.com';
+$config['email_address_replyto'] = 'johan.poirier@gmail.com';
 $config['email_simulation'] = false;
+$config['email_use_third_party_sender'] = false;
+
+$config['sendinblue_apikey'] = 'your api key';
+
+$config['sentry_enable'] = false;
+$config['sentry_dsn'] = 'your Sentry dsn';
 
 $config['palmares_domain'] = 'Public';
 $config['palmares_illustration'] = null;
 
 $config['DB'] = 'MySQL';
-$config['db_prefix'] = 'cdm2018__';
+$config['db_prefix'] = 'cdm2019__';
 $config['db_common_prefix'] = 'bet4soccer__';
 
 $config['auth'] = 'md5';
