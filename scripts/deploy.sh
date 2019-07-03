@@ -33,6 +33,8 @@ then
     ln -s "$targetPath/versions/$version/" "$targetPath/current"
 
     echo "Version $version created"
+
+    sudo /etc/init.d/php7.2-fpm restart
 else
     echo "$target does not exist"
 fi

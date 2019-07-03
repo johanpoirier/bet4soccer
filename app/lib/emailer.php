@@ -19,7 +19,7 @@ class Emailer
       return true;
     }
 
-    if ($this->config(['email_use_third_party_sender']) === true) {
+    if ($this->config['email_use_third_party_sender'] === true) {
       return $this->sendWithSendinBlue($recipientEmail, $recipientName, $subject, $content);
     } else {
       return utf8_mail($recipientEmail, $subject, $content, $this->config['support_team'], $this->config['email_address_sender']);
