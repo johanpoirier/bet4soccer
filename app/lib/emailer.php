@@ -9,8 +9,11 @@ class Emailer
   public function __construct(&$config)
   {
     $this->config = $config;
-    $sendInBlueConfig = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->config['sendinblue_apikey']);
-    $this->client = new SendinBlue\Client\Api\SMTPApi(new GuzzleHttp\Client(), $sendInBlueConfig);
+
+    if ($this->config['email_use_third_party_sender'] === true) {
+      $sendInBlueConfig = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->config['sendinblue_apikey']);
+      $this->client = new SendinBlue\Client\Api\SMTPApi(new GuzzleHttp\Client(), $sendInBlueConfig);
+    }
   }
 
   public function send($recipientEmail, $recipientName, $subject, $content)
@@ -33,13 +36,15 @@ class Emailer
         'email' => $this->config['email_address_sender'],
         'name' => $this->config['support_team']
       ]),
-      'to' => $recipientEmail,
+      'to' => [
+        ['name' => $recipientName, 'email' => $recipientEmail]
+      ],
       'replyTo' => new SendinBlue\Client\Model\SendSmtpEmailReplyTo([
         'email' => $this->config['email_address_replyto'],
         'name' => $this->config['support_team']
       ]),
       'subject' => $subject,
-      'htmlContent' => $content
+      'textContent' => $content
     ]);
     
     try {
