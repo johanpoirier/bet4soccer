@@ -21,6 +21,7 @@ $config['email_address_sender'] = 'cdm2019@jops-dev.com';
 $config['email_address_replyto'] = 'johan.poirier@gmail.com';
 $config['email_simulation'] = false;
 
+$config['sentry_enable'] = false;
 $config['sentry_dsn'] = 'your Sentry dsn';
 
 $config['palmares_domain'] = 'Public';
