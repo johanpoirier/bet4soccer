@@ -11,6 +11,7 @@ then
     mkdir -p "$targetPath/versions/$version/web/"
 
     cd "$projectDir"
+    composer install
     cp -r app/* "$targetPath/versions/$version/web/"
 
     mkdir "$targetPath/versions/$version/logs"
