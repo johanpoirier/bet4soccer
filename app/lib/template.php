@@ -84,8 +84,7 @@ class Template {
             return false;
         }
 
-        reset($filename_array);
-        while (list($handle, $filename) = each($filename_array)) {
+        foreach ($filename_array as $handle => $filename) {
             $this->files[$handle] = $this->make_filename($filename);
         }
 
@@ -177,10 +176,9 @@ class Template {
      * any existing variable assignment with the same name.
      */
     function assign_vars($vararray) {
-        reset($vararray);
-        while (list($key, $val) = each($vararray)) {
+        foreach ($vararray as $key => $val) {
             $this->_tpldata['.'][0][$key] = $val;
-        }
+        }   
 
         return true;
     }
